@@ -1,0 +1,187 @@
+import { Request, Response } from "express";
+import { generateHash } from "../../../core/encryptor/hash.encryptor";
+import {httpError} from "../../../core/errorHandler/http.error.handler"
+import { IBatch, IMATADATA_RECORDS, IPatientAddress, IPatients, IRecord, ISourceProvider, ITests, IVaccinations } from "../../../interfaces/record.interface";
+export class RecordsCtrl{
+    constructor(){}
+    async login(req: Request, res: Response) {
+        console.log("req-->",req.body)
+        let { username, password}=req.body
+        console.log("res-->",res)
+        if(!username){
+            return httpError(res,422,"username is missing",{desc:`mandatory fields are "username" and "password"`})
+        }
+        if(!password){
+            return httpError(res,422,"password is missing",{desc:`mandatory fields are "username" and "password"`})
+        }
+        return res.send("login functionality..")
+    }
+    async getById(req: Request, res: Response) {
+        return res.send("get By id..")
+    }
+}
+
+export class BatchCtrl{
+    // private batch:IBatch
+    private jsonObjs:any[]
+    private sourceProvider:ISourceProvider
+    constructor(jsonObjs:any[],sourceProvider:ISourceProvider){
+        this.jsonObjs=jsonObjs
+        this.sourceProvider=sourceProvider
+    }
+    async generateBatch():Promise<IBatch>{
+        // console.log("enter into generate batch")
+        let batch_id=await this.getBatchId()
+        return{
+            batch_id: batch_id,
+            no_of_records:this.jsonObjs.length,
+            source:this.sourceProvider,
+            status:'PENDING',
+            upload_start_at:new Date(),
+            records:this.getRecords(this.jsonObjs,batch_id)
+        } as IBatch
+    }
+    getRecords(jsonObjs:any[],batch_id:string):IRecord[]{
+        // console.log("enter into getRecords")
+        return jsonObjs.map(jsonObj=>{
+            return {
+                metadata_records:this.getMetadataFromJSON(jsonObj),
+                patients:this.getPatientFromJSON(jsonObj,batch_id),
+                tests:this.getTestFromJSON(jsonObj),
+                vaccinations:this.getVaccinationFromJSON(jsonObj)
+            } as IRecord
+        });
+    }
+    getMetadataFromJSON(jsonObj:any):IMATADATA_RECORDS{
+        // console.log("enter into getMetadataFromJSON")
+        return {
+            created_timestamp:jsonObj["created_timestamp"],
+            status:{
+                state:jsonObj["meta_status_state"]
+            }
+        } as IMATADATA_RECORDS;
+    }
+    getVaccinationFromJSON(jsonObj:any):IVaccinations{
+        // console.log("enter into getVaccinationFromJSON")
+        return {
+            // skyflow_id:jsonObj["skyflow_id"],
+            admin_address:{
+                country:jsonObj["country"],
+                county:jsonObj["county"],
+                county_fips:jsonObj["county_fips"],
+                state:jsonObj["state"],
+                street_address:jsonObj["street_address"],
+                zip_code:jsonObj["zip_code"]
+            },
+            admin_date:jsonObj["admin_date"],
+            admin_name:jsonObj["admin_name"],
+            admin_type:jsonObj["admin_type"],
+            cmorbid_status:jsonObj["cmorbid_status"],
+            created_timestamp:jsonObj["created_timestamp"],
+            cvx:jsonObj["cvx"],
+            dose_num:jsonObj["dose_num"],
+            extract_type:jsonObj["extract_type"],
+            lot_number:jsonObj["lot_number"],
+            mvx:jsonObj["mvx"],
+            ndc:jsonObj["ndc"],
+            // patients_skyflow_id:jsonObj["patients_skyflow_id"],
+            pprl_id:jsonObj["pprl_id"],
+            recip_missed_appt:jsonObj["recip_missed_appt"],
+            responsible_org:jsonObj["responsible_org"],
+            serology:jsonObj["serology"],
+            updated_timestamp:jsonObj["updated_timestamp"],
+            vax_admin_site:jsonObj["vax_admin_site"],
+            vax_effective:jsonObj["vax_effective"],
+            vax_event_id:jsonObj["vax_event_id"],
+            vax_expiration:jsonObj["vax_expiration"],
+            vax_prov_suffix:jsonObj["vax_prov_suffix"],
+            vax_refusal:jsonObj["vax_refusal"],
+            vax_route:jsonObj["vax_route"],
+            vax_series_complete:jsonObj["vax_series_complete"]
+        } as IVaccinations;
+    }
+    getPatientFromJSON(jsonObj:any,batch_id:string):IPatients{
+        // console.log("enter into getPatientFromJSON")
+        let age=jsonObj["age"] && !isNaN(jsonObj["age"])?parseInt(jsonObj["age"]):0;
+        return {
+            name:jsonObj["name"],
+            unique_identifier:batch_id,
+            address:this.getAddressFromJSON(jsonObj),
+            age:age,
+            // consent:{
+            //     timestamp:jsonObj["patient_consent_timestamp"],
+            //     given:jsonObj["patient_consent_given"].toLowerCase()==="true"
+            // },
+            date_of_birth:jsonObj["date_of_birth"],
+            employed_in_healthcare:{
+                occupation:jsonObj["employed_in_healthcare_occupation"],
+                value:jsonObj["employed_in_healthcare_value"]
+            },
+            // ethnicity:jsonObj["ethnicity"],
+            phone_number:jsonObj["phone_number"],
+            // race:jsonObj["race"],
+            residence_in_congregate_care:{
+                care_type:jsonObj["residence_in_congregate_care_type"],
+                value:jsonObj["residence_in_congregate_care_value"]
+            },
+            sex:jsonObj["sex"]
+        } as IPatients
+    }
+    getTestFromJSON(jsonObj:any):ITests{
+        // console.log("enter into getTestFromJSON")
+        return {
+            ordered:jsonObj["ordered"],
+            result:{
+                date:jsonObj["test_result_date"],
+                test:jsonObj["test_result_test"],
+                value:jsonObj["test_result_value"]
+            },
+            report_date:jsonObj["test_reported_date"],
+            consent_given:jsonObj["test_consent_given"] && jsonObj["test_consent_given"].toLowerCase()=="true"?true:false,
+            county:jsonObj["test_county"],
+            device_identifier:jsonObj["device_identifier"],
+            ordering_provider:{
+                address:this.getAddressFromJSON(jsonObj),
+                name:jsonObj["ordering_provider_name"],
+                phone_number:jsonObj["ordering_provider_phone_number"]
+            },
+            specimen_source:jsonObj["test_specimen_source"],
+            first_test:{
+                value:jsonObj["first_test_value"],
+                previous_test_and_result:{
+                    conclusion:jsonObj["previous_test_and_result_conclusion"],
+                    previous_result:jsonObj["previous_result"],
+                    type:jsonObj["previous_test_and_result_type"]
+                },
+                previous_test_date:jsonObj["previous_test_date"]
+            },
+            symptomatic:{
+                date:jsonObj["symptomatic_date"],
+                value:jsonObj["symptomatic_value"],
+                symptom:jsonObj["symptom"].split('|')
+            },
+            pregnant:jsonObj["pregnant"],
+            state:jsonObj["state"],
+            test_image:"",
+            zip_code:jsonObj["zip_code"]
+        } as ITests
+    }
+    getAddressFromJSON(jsonObj:any):IPatientAddress{
+        // console.log("enter into getAddressFromJSON")
+        return {
+            country:jsonObj["country"],
+            county:jsonObj["county"],
+            county_fips:jsonObj["county_fips"],
+            state:jsonObj["state"],
+            street_address:jsonObj["street_address"],
+            zip_code:jsonObj["zip_code"]
+        } as IPatientAddress
+    }
+    async getBatchId():Promise<string>{
+        console.log("enter into getBatchId")
+        let dt=new Date()
+        return await generateHash(dt.getTime().toString(),10)
+        
+    }
+}
+

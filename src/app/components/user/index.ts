@@ -1,0 +1,1 @@
+ export *  as userRoutes from "./routes/user.routes"
