@@ -6,10 +6,10 @@ let router=Router()
 
 
 export function routesConfig():Router {
-    let userCtrl=new RecordsCtrl()
+    let recordCtrl=new RecordsCtrl()
     console.log("enter into router--->")
-    router.post('/login',userCtrl.login);
-    router.get('/user/getById',isAuthenticated,userCtrl.getById)
+    router.get('/batch',recordCtrl.getAllBatchMeta);
+    router.get('/batch/testUrl',recordCtrl.testTurl);
     // app.post('/users/signup',signup);
     // app.get('/user/passwordreset/:email',passwordReset);
     

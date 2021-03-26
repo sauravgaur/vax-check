@@ -1,23 +1,33 @@
 import { Request, Response } from "express";
 import { generateHash } from "../../../core/encryptor/hash.encryptor";
 import {httpError} from "../../../core/errorHandler/http.error.handler"
+import {BatchService} from "../services/batch.service"
+import {SkyflowDal} from "../dals/skyflow.dals"
 import { IBatch, IMATADATA_RECORDS, IPatientAddress, IPatients, IRecord, ISourceProvider, ITests, IVaccinations } from "../../../interfaces/record.interface";
 export class RecordsCtrl{
-    constructor(){}
-    async login(req: Request, res: Response) {
-        console.log("req-->",req.body)
-        let { username, password}=req.body
-        console.log("res-->",res)
-        if(!username){
-            return httpError(res,422,"username is missing",{desc:`mandatory fields are "username" and "password"`})
-        }
-        if(!password){
-            return httpError(res,422,"password is missing",{desc:`mandatory fields are "username" and "password"`})
-        }
-        return res.send("login functionality..")
+    constructor(){
     }
-    async getById(req: Request, res: Response) {
-        return res.send("get By id..")
+    async getAllBatchMeta(req: Request, res: Response){
+        try{
+            let batchService=new BatchService()
+            let response=await batchService.getAllBatchMeta()
+            return res.send({response:response.recordset})
+        }catch(err){
+            console.log("err-->",err)
+            return res.status(500).send(err)
+        }
+        
+    }
+    async testTurl(req: Request, res: Response){
+        try{
+            let skyflowDal=new SkyflowDal(null,null,null,null)
+            let response=await skyflowDal.testUrl()
+            return res.send({response})
+        }catch(err){
+            console.log("err-->",err)
+            return res.status(500).send(err)
+        }
+        
     }
 }
 
@@ -38,19 +48,22 @@ export class BatchCtrl{
             source:this.sourceProvider,
             status:'PENDING',
             upload_start_at:new Date(),
-            records:this.getRecords(this.jsonObjs,batch_id)
+            records:await this.getRecords(this.jsonObjs)
         } as IBatch
     }
-    getRecords(jsonObjs:any[],batch_id:string):IRecord[]{
+    getRecords(jsonObjs:any[]):Promise<IRecord[]>{
         // console.log("enter into getRecords")
-        return jsonObjs.map(jsonObj=>{
-            return {
+        return Promise.all(jsonObjs.map(async jsonObj=>{
+            const patients = await this.getPatientFromJSON(jsonObj)
+            const record:IRecord={
                 metadata_records:this.getMetadataFromJSON(jsonObj),
-                patients:this.getPatientFromJSON(jsonObj,batch_id),
+                patients:patients,
                 tests:this.getTestFromJSON(jsonObj),
                 vaccinations:this.getVaccinationFromJSON(jsonObj)
-            } as IRecord
-        });
+            } 
+            return record
+        })
+        ); 
     }
     getMetadataFromJSON(jsonObj:any):IMATADATA_RECORDS{
         // console.log("enter into getMetadataFromJSON")
@@ -100,8 +113,8 @@ export class BatchCtrl{
             vax_series_complete:jsonObj["vax_series_complete"]
         } as IVaccinations;
     }
-    getPatientFromJSON(jsonObj:any,batch_id:string):IPatients{
-        // console.log("enter into getPatientFromJSON")
+    async getPatientFromJSON(jsonObj:any):Promise<IPatients>{
+        const batch_id= await this.getBatchId()
         let age=jsonObj["age"] && !isNaN(jsonObj["age"])?parseInt(jsonObj["age"]):0;
         return {
             name:jsonObj["name"],

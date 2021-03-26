@@ -56,4 +56,11 @@ export class RecordsDal{
             throw err
         }
     }
+
+    async getAllBatchMeta(){
+        const query =`select * from batch_master`
+        let data= await this.connection.request().query(query)
+        
+        return data;
+    }
 }

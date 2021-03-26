@@ -3,6 +3,7 @@ import * as axiosObj from "axios"
 import { sign } from "jsonwebtoken"
 import { promises } from "fs"
 import { IRecord } from "../../../interfaces/record.interface"
+import { response } from "express"
 
 export class SkyflowDal {
     private skyflowBaseUrl: string
@@ -78,6 +79,7 @@ export class SkyflowDal {
             records: this.transformRecordsForBatch(records)
         }
         console.log("records-->",JSON.stringify(data))
+        // return null;
 
         // let data = {
         //     "records": [
@@ -222,15 +224,16 @@ export class SkyflowDal {
 
         this.setHeader(accessToken, tokenType)
         let data = {
-            "query": "select count(*) FROM patients"
+            "query": "select * FROM patients"
         }
         try {
             let resp = await axiosObj.default.post(`${this.skyflowBaseUrl}/query`, data, this.httpConfig)
-            console.log("resp-->", resp)
+            return resp.data
         } catch (err) {
             console.log("err-->", err)
             throw err
         }
+        
 
     }
 }
