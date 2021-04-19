@@ -2,7 +2,7 @@ const companies=[{
     productName:"Moderna",
     matchingLabel:["mo"],
     dose:{
-        numberOfDose:2,
+        numberOfDose:1,
         expired_in:70,
         effective_in:14
     }
@@ -58,6 +58,7 @@ export class VaxCardService{
             return isMatchFound
         })
         if(company){
+            data.doseRecieved= 1
             if(company.dose.numberOfDose===1){
                 effectiveDate1.setDate(company.dose.effective_in)
                 expireDate1.setDate(company.dose.expired_in);
@@ -93,6 +94,7 @@ export class VaxCardService{
                     data["secondDoseExpireDate"]=expireDate2
                     data.isVaXCompleted=true;
                     data.vaxMsg= `Vax card verified`;
+                    data.doseRecieved=2;
                 }
             }
             
