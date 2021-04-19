@@ -22,6 +22,7 @@ export class SkyflowDal {
             headers: {
                 "Content-Type": "application/json",
                 'cache-control': 'no-cache',
+                'accept': `application/json, text/plain */*`
             }
         }
     }
@@ -55,6 +56,7 @@ export class SkyflowDal {
         const tokenURI = creds["tokenURI"]
         let resp = await axiosObj.default.post(tokenURI, body)
         console.log("resp-->", JSON.stringify(resp.data))
+        console.log("accessToken-->", JSON.stringify(resp.data["accessToken"]))
         return { accessToken: resp.data["accessToken"], tokenType: resp.data["tokenType"] }
     }
     transformRecordsForBatch(records: any[]) {
@@ -71,14 +73,14 @@ export class SkyflowDal {
 
         return arr
     }
-    async uploadBatch(records: IRecord[]):Promise<any> {
+    async uploadBatch(records: IRecord[]): Promise<any> {
         let { accessToken, tokenType } = await this.getBearerToken()
 
         this.setHeader(accessToken, tokenType)
         let data = {
             records: this.transformRecordsForBatch(records)
         }
-        console.log("records-->",JSON.stringify(data))
+        console.log("records-->", JSON.stringify(data))
         // return null;
 
         // let data = {
@@ -223,17 +225,80 @@ export class SkyflowDal {
         let { accessToken, tokenType } = await this.getBearerToken()
 
         this.setHeader(accessToken, tokenType)
-        let data = {
-            "query": "select * FROM patients"
-        }
+        // let data = {
+        //     "record": {
+        //         "fields": {
+        //             "vax_expiration": "Mon, 26 Apr 2021 08:26:24 GMT"
+        //         }
+        //     }
+        // }
+        // let data=this.updateVaccination()
+        // https://{URL}/v1/vaults/{VAULT_ID}/persons/{SKYFLOW_ID}
         try {
-            let resp = await axiosObj.default.post(`${this.skyflowBaseUrl}/query`, data, this.httpConfig)
+            // let resp = await axiosObj.default.put(`https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/patients/32149942-578a-4d5c-8c0d-629e84760c4f`, data, this.httpConfig)
+            // return resp.data
+
+            // let resp = await axiosObj.default.put(`https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/vaccinations/4a30ee30-9257-11eb-b974-8ac6688db8d0`, data, this.httpConfig)
+            // return resp.data
+
+            // let resp = await axiosObj.default.post(`https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/vaccinations`, data, this.httpConfig)
+            // return resp.data
+            // 4a30ee30-9257-11eb-b974-8ac6688db8d0
+            
+
+            // https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/query
+            // {
+            //     "query":"select redaction (patients.phone_number, 'PLAIN_TEXT'), redaction (patient.name, 'PLAIN_TEXT'), skyflow_id from patients"
+            // }
+            // let resp = await axiosObj.default.get(`https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/vaccinations?redaction=PLAIN_TEXT`, this.httpConfig)
+            // let resp = await axiosObj.default.get(`https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/patients?redaction=PLAIN_TEXT`, this.httpConfig)
+
+            let resp = await axiosObj.default.get(`https://sb1.firstvitals.vault.skyflowapis.com/v1/vaults/f9e68956780e11eba8a08295107109db/vaccinations/7cc540e1-9234-11eb-9b26-5a0c0b5cbe29?redaction=PLAIN_TEXT`, this.httpConfig)
             return resp.data
         } catch (err) {
-            console.log("err-->", err)
+            console.log("err-->", JSON.stringify(err.data))
             throw err
         }
-        
-
+    }
+    updateVaccination(){
+        let data={
+            "records":[{
+                "fields": {
+                    "admin_address": {
+                      "city": "Baltimore",
+                      "state": "HI",
+                      "street_address": "Adress123456",
+                      "zip_code": "12345"
+                    },
+                    "admin_date": "Mon, 15 Feb 2021 08:26:24 GMT",
+                    "admin_name": "Admib",
+                    "admin_type": "ADMINTYPE_CL",
+                    "cmorbid_status": "CMORBIDSTATUS_NO",
+                    "created_timestamp": "Mon, 15 Feb 2021 08:26:24 GMT",
+                    "cvx": "cvx",
+                    "dose_num": "DOSENUM_TWO",
+                    "extract_type": "EXTRACTTYPE_D",
+                    "lot_number": "123",
+                    "mvx": "mvx",
+                    "ndc": "ndc",
+                    "patients_skyflow_id": "19750bb8-7284-4396-ad39-afb88896f1a4",
+                    "pprl_id": "24234",
+                    "recip_missed_appt": "RECPMISSEDAPPT_NO",
+                    "responsible_org": "QUEENS",
+                    "serology": "SEROLOGY_YES",
+                    "vax_admin_site": "VAXADMINSITE_RA",
+                    "vax_effective": "Mon, 15 Feb 2021 08:26:24 GMT",
+                    "vax_event_id": "1",
+                    "vax_expiration": "Mon, 26 Apr 2021 08:26:24 GMT",
+                    "vax_prov_suffix": "VAXPROVSUFFIX_RN",
+                    "vax_refusal": "VAXREFUSAL_NO",
+                    "vax_route": "VAXROUTE_C38276",
+                    "vax_series_complete": "VAXSERIESCOMPLETE_YES"
+                  }
+            }]
+            
+        }
+        return data;
     }
 }
+

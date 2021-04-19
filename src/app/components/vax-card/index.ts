@@ -1,0 +1,1 @@
+export *  as vaxCardRoutes from "./routes/vax-card.routes";

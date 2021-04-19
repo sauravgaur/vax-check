@@ -1,19 +1,31 @@
 import express from 'express';
-import {userModule,recordsModule} from "./app/index"
+import {userModule,recordsModule,vaxCardModule} from "./app/index"
 import cors = require('cors');
 import * as bodyParser from 'body-parser';
 // rest of the code remains same
+const API_ROUTES=[
+  userModule.userRoutes.routesConfig(),
+  recordsModule.recordsRoutes.routesConfig(),
+  vaxCardModule.vaxCardRoutes.routesConfig()
+]
 
 export function app(port?:string){
-  const _app=express();
-  _app.use(bodyParser.json());
-  _app.use(cors({ origin: true }));
-
+  console.log('enter into app--->');
+  const exp=express();
+  exp.use(bodyParser.json());
+  exp.use(cors({ origin: true }));
+  exp.use(function(req, res, next) {
+    //set headers to allow cross origin request.
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
   // _app.use('/user',userModule.userRoutes.routesConfig())
-  _app.use('/api',[userModule.userRoutes.routesConfig(),recordsModule.recordsRoutes.routesConfig()])
-  _app.get('/', (req, res) => res.send('Server is running.'));
+  exp.use('/api',API_ROUTES);
+  exp.get('/', (req, res) => res.send('Server is running.'));
   console.log("port-->",port)
-  _app.listen(3000, () => {
+  exp.listen(3000, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
   });
 };

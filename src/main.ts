@@ -39,5 +39,3 @@ if(require.main===module){
 else{
     exports.Main=Main
 }
-
-
