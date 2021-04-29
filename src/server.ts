@@ -1,12 +1,13 @@
 import express from 'express';
-import {userModule,recordsModule,vaxCardModule} from "./app/index"
+import {userModule,recordsModule,vaxCardModule,safeTravellerModule} from "./app/index"
 import cors = require('cors');
 import * as bodyParser from 'body-parser';
 // rest of the code remains same
 const API_ROUTES=[
   userModule.userRoutes.routesConfig(),
   recordsModule.recordsRoutes.routesConfig(),
-  vaxCardModule.vaxCardRoutes.routesConfig()
+  vaxCardModule.vaxCardRoutes.routesConfig(),
+  safeTravellerModule.routesConfig()
 ]
 
 export function app(port?:string){
