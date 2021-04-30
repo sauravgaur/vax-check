@@ -20,8 +20,8 @@ export class SafeTravellerCtrl{
         if(!accessCode){
             return httpError(res,422,"accessCode is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "lastName"`})
         }
-        if(!lastName){
-            return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "lastName"`})
+        if(!middleName){
+            return httpError(res,422,"middleName is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "middleName"`})
         }
         let resp= await safeTravellerService.verifyAccessCode(firstName,middleName,dateOfBirth,accessCode,lastName)
         return res.send({msg:resp})
