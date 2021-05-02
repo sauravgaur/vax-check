@@ -17,14 +17,14 @@ export class SafeTravellerCtrl{
         if(!dateOfBirth){
             return httpError(res,422,"dateOfBirth is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "lastName"`})
         }
-        if(!accessCode){
+        if(!accessCode || accessCode.length===0){
             return httpError(res,422,"accessCode is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "lastName"`})
         }
-        if(!middleName){
-            return httpError(res,422,"middleName is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "middleName"`})
+        if(!lastName){
+            return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","dateOfBirth","accessCode"  and "lastName"`})
         }
-        let resp= await safeTravellerService.verifyAccessCode(firstName,middleName,dateOfBirth,accessCode,lastName)
-        return res.send({msg:resp})
+        let {status,response}= await safeTravellerService.verifyAccessCode(firstName,lastName,dateOfBirth,accessCode,middleName)
+        return res.status(status).send(response)
     }
     async getById(req: Request, res: Response) {
         return res.send("get By id..")
