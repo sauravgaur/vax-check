@@ -113,7 +113,7 @@ export interface IRecord{
 }
 
 export interface ISourceProvider{
-    id?:string,
+    id?:string|null,
     name?:string
 }
 

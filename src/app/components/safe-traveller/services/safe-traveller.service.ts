@@ -12,7 +12,10 @@ export class SafeTravellerService{
             };
              
             const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
-            const query=`select * from patients where name='${name}' and date_of_birth='${dateOfBirth}'`
+            const query=`select patients.skyflow_id,redaction(patients.name,'PLAIN_TEXT'),patients.date_of_birth,
+            vaccinations.cvx,vaccinations.vax_expiration from patients 
+            LEFT JOIN vaccinations on patients.skyflow_id=vaccinations.patients_skyflow_id 
+            WHERE patients.name='${name}' and patients.date_of_birth='${dateOfBirth}' and vaccinations.cvx='${accessCode}'`;
             console.log('query-->',query)
             resp.response= await skyflow.skyflowQueryWrapper(query)
             if(resp.response && resp.response.records.length==0){

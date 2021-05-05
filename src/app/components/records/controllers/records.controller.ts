@@ -4,6 +4,7 @@ import {httpError} from "../../../core/errorHandler/http.error.handler"
 import {BatchService} from "../services/batch.service"
 import {SkyflowDal} from "../dals/skyflow.dals"
 import { IBatch, IMATADATA_RECORDS, IPatientAddress, IPatients, IRecord, ISourceProvider, ITests, IVaccinations } from "../../../interfaces/record.interface";
+import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGenerator/password.generate";
 export class RecordsCtrl{
     constructor(){
     }
@@ -27,7 +28,30 @@ export class RecordsCtrl{
             console.log("err-->",err)
             return res.status(500).send(err)
         }
-        
+    }
+    async addPatientVax(req: Request, res: Response){
+        try{
+            let jsonObjs=req.body;
+            let accessCodeGenrator= new PasswordGenerator({
+                alphabets:true,
+                digits: true,
+                specialChars:false,
+                upperCase:false
+            } as IPasswordOptions)
+            jsonObjs["cvx"]=accessCodeGenrator.generate(32)
+            let batchCtrl=new BatchCtrl([jsonObjs],{
+                id:null,
+                name:"Vax-card form"
+            } as ISourceProvider)
+            let batch:IBatch =await batchCtrl.generateBatch()
+            let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
+            let resp=await batchService.addPatientVax(batch);
+            console.log("resp-->",resp);
+            return res.send({resp})
+        }catch(err){
+            console.log("err-->",err)
+            return res.status(500).send(err)
+        }
     }
 }
 
