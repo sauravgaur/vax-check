@@ -18,7 +18,16 @@ export class SafeTravellerService{
             WHERE patients.name='${name}' and patients.date_of_birth='${dateOfBirth}' and vaccinations.cvx='${accessCode}'`;
             console.log('query-->',query)
             resp.response= await skyflow.skyflowQueryWrapper(query)
-            if(resp.response && resp.response.records.length==0){
+            resp.response.records= resp.response.records.map((record:any)=>{
+                return{
+                    accessCode:record.fields.cvx,
+                    date_of_birth:record.fields.date_of_birth,
+                    name:record.fields.name,
+                    vaxcheck_id:record.fields.skyflow_id,
+                    vax_expiration:record.fields.vax_expiration
+                }
+            })
+            if(resp.response && resp.response.length==0){
                 resp.response["accessStatus"]="NOT_VERIFIED";
                 resp.status= 403
             }

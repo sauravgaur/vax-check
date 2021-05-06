@@ -73,16 +73,16 @@ export class RecordsCtrl{
             return httpError(res,500,"Internal server error",{desc:err})
         }
     }
-    // async unverifiedPatient(req: Request, res: Response){
-    //     try{
-    //         let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
-    //         let {status,response}= await batchService.checkUserExist(firstName,middleName,lastName,dateOfBirth)
-    //         return res.status(status).send(response)
+    async unverifiedPatient(req: Request, res: Response){
+        try{
+            let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
+            let {status,response}= await batchService.unverifiedPatients()
+            return res.status(status).send(response)
             
-    //     }catch(err){
-    //         return httpError(res,500,"Internal server error",{desc:err})
-    //     }
-    // }
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
 }
 
 export class BatchCtrl{

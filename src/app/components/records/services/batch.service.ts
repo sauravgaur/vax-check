@@ -40,6 +40,23 @@ export class BatchService{
         }
         
     }
+    async unverifiedPatients():Promise<IHTTPResponse>{
+        let resp:IHTTPResponse={
+            response:null,
+            status:200
+        };
+        try{
+            let skyFlow= new Skyflow(this.orgName,this.accountName,this.vaultId,this.skyflowCredPath)
+            let query=`select vaccinations.patients_skyflow_id,vaccinations.skyflow_id,patients.age,redaction(patients.name,'PLAIN_TEXT'),patients.date_of_birth,
+            vaccinations.cvx,vaccinations.vax_expiration,vaccinations.vax_effective,vaccinations.created_timestamp from vaccinations left JOIN patients on patients.skyflow_id=vaccinations.patients_skyflow_id where vaccinations.cvx=null or vaccinations.cvx='cvx' or vaccinations.cvx='cvx_code' `;
+            resp.response=await skyFlow.skyflowQueryWrapper(query)
+            resp.response.records=resp.response.records.map((record:any)=>record.fields)
+            return resp;
+        }catch(err){
+            throw err
+        }
+        
+    }
     async getAllBatchMeta():Promise<any>{
         await this.recordDals.openConnection()
         let data= await this.recordDals.getAllBatchMeta()
