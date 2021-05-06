@@ -1,4 +1,6 @@
 import { config } from "mssql"
+import { Skyflow } from "../../../core/skyflow-adapter/skyflow.adapter"
+import { IHTTPResponse } from "../../../interfaces/http-response.interface"
 import { IBatch, IRecord, IVaccinations } from "../../../interfaces/record.interface"
 import {RecordsDal} from "../dals/records.dals"
 import { SkyflowDal } from "../dals/skyflow.dals"
@@ -15,6 +17,28 @@ export class BatchService{
         this.vaultId=vaultId || null;
         this.skyflowCredPath=skyflowCredPath || null;
         this.recordDals=new RecordsDal(config)
+    }
+    async checkUserExist(firstName:string,middleName:string,lastName:string,dateOfBirth:string):Promise<IHTTPResponse>{
+        let resp:IHTTPResponse={
+            response:null,
+            status:200
+        };
+        try{
+            let skyFlow= new Skyflow(this.orgName,this.accountName,this.vaultId,this.skyflowCredPath)
+            const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
+            let query=`select * from patients where name='${name}' and date_of_birth='${dateOfBirth}'`;
+            resp.response=await skyFlow.skyflowQueryWrapper(query)
+            if(resp.response && resp.response.records.length==0){
+                resp.response["isUserExist"]=false;
+            }
+            else{
+                resp.response["isUserExist"]=true;
+            }
+            return resp;
+        }catch(err){
+            throw err
+        }
+        
     }
     async getAllBatchMeta():Promise<any>{
         await this.recordDals.openConnection()

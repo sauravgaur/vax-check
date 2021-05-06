@@ -53,6 +53,36 @@ export class RecordsCtrl{
             return res.status(500).send(err)
         }
     }
+    async checkUserExists(req: Request, res: Response){
+        try{
+            let {firstName,middleName,lastName,dateOfBirth} = req.body;
+            if(!firstName){
+                return httpError(res,422,"firstName is missing",{desc:`mandatory fields are "firstName","dateOfBirth" and "lastName"`})
+            }
+            if(!dateOfBirth){
+                return httpError(res,422,"dateOfBirth is missing",{desc:`mandatory fields are "firstName","dateOfBirth" and "lastName"`})
+            }
+            if(!lastName){
+                return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","dateOfBirth"  and "lastName"`})
+            }
+            let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
+            let {status,response}= await batchService.checkUserExist(firstName,middleName,lastName,dateOfBirth)
+            return res.status(status).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
+    // async unverifiedPatient(req: Request, res: Response){
+    //     try{
+    //         let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
+    //         let {status,response}= await batchService.checkUserExist(firstName,middleName,lastName,dateOfBirth)
+    //         return res.status(status).send(response)
+            
+    //     }catch(err){
+    //         return httpError(res,500,"Internal server error",{desc:err})
+    //     }
+    // }
 }
 
 export class BatchCtrl{
