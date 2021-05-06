@@ -13,7 +13,7 @@ export class SafeTravellerService{
              
             const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
             const query=`select patients.skyflow_id,redaction(patients.name,'PLAIN_TEXT'),patients.date_of_birth,
-            vaccinations.cvx,vaccinations.vax_expiration from patients 
+            vaccinations.cvx,vaccinations.vax_expiration,vaccinations.vax_effective from patients 
             LEFT JOIN vaccinations on patients.skyflow_id=vaccinations.patients_skyflow_id 
             WHERE patients.name='${name}' and patients.date_of_birth='${dateOfBirth}' and vaccinations.cvx='${accessCode}'`;
             console.log('query-->',query)
@@ -24,7 +24,8 @@ export class SafeTravellerService{
                     date_of_birth:record.fields.date_of_birth,
                     name:record.fields.name,
                     vaxcheck_id:record.fields.skyflow_id,
-                    vax_expiration:record.fields.vax_expiration
+                    vax_expiration:record.fields.vax_expiration,
+                    vax_effective:record.fields.vax_effective
                 }
             })
             if(resp.response && resp.response.length==0){
