@@ -24,7 +24,7 @@ export class SafeTravellerService{
                     date_of_birth:record.fields.date_of_birth,
                     name:record.fields.name,
                     vaxcheck_id:record.fields.skyflow_id,
-                    vax_expiration:record.fields.vax_expiration,
+                    // vax_expiration:record.fields.vax_expiration,
                     vax_effective:record.fields.vax_effective
                 }
             })
