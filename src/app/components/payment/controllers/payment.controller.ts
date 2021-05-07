@@ -11,6 +11,38 @@ const stripe = new Stripe(secretKey, {
 
 export class PaymentCtrl {
 
+    async sourcetoken(req: Request, res: Response) {
+        const {
+            token,
+            orderAmount,
+        }: {
+            token: string;
+            orderAmount: number;
+        } = req.body;
+
+        try {
+
+            let charge: Stripe.Charge;
+            if (token) {
+                const params: Stripe.ChargeCreateParams = {
+                    amount: Math.round(orderAmount * 100),
+                    currency: 'USD',
+                    source: token,
+                };
+
+                charge = await stripe.charges.create(params);
+
+                // TODO: Update traveler's payment status
+                res.send(charge);
+                return;
+            }
+
+            res.send({ error: 'Unkown errror' });
+        } catch (e) {
+            res.send({ error: e.message });
+        }
+    }
+
     async stripeKey(req: Request, res: Response) {
         res.send({ publishableKey });
     }
