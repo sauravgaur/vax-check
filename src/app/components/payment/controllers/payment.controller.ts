@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import Stripe from 'stripe';
 
-const publishableKey = 'pk_TODO';
-const secretKey = 'sk_TODO';
+const publishableKey = 'pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o';
+const secretKey = 'sk_test_51IllDFIoULcjF60KqXjT9U91x3LkH8s1q82izKZKGbgKnyg84mYb03c1z9pZ35r9Mw35gKqwfvV684Sl3mgUNR9f00BmGfTleU';
 
 const stripe = new Stripe(secretKey, {
     apiVersion: "2020-08-27",
@@ -86,6 +86,62 @@ export class PaymentCtrl {
         } catch (e) {
             res.send({ error: e.message });
         }
+    }
+
+    async createSession(req: Request, res: Response) {
+        const {
+            successUrl,
+            cancelUrl,
+            orderAmount,
+            masterId,
+            travelerEmail,
+        }: {
+            successUrl: string;
+            cancelUrl: string;
+            orderAmount: number;
+            masterId: string;
+            travelerEmail: string;
+        } = req.body;
+
+        try {
+            let session: Stripe.Checkout.Session;
+            if (successUrl && cancelUrl && orderAmount && masterId && travelerEmail) {
+                const params: Stripe.Checkout.SessionCreateParams = {
+                    success_url: successUrl,
+                    cancel_url: cancelUrl,
+                    mode: 'payment',
+                    payment_method_types: ['card'],
+                    billing_address_collection: 'required',
+                    customer_email: travelerEmail,
+                    line_items: [
+                        {
+                            price_data: {
+                                product: 'prod_JRb2gUDrev91kL',
+                                currency: 'usd',
+                                unit_amount: 2000,
+                            },
+                            quantity: 1,
+                            tax_rates: ['txr_1IohtoIoULcjF60K3AxkpKbl']
+                        }
+                    ],
+                    allow_promotion_codes: true,
+                };
+
+                session = await stripe.checkout.sessions.create(params);
+                // TODO: Assign sessionId to Traveler
+                res.send({ sessionId: session.id });
+                return;
+            }
+
+            res.send({ error: 'Unkown errror' });
+        } catch (e) {
+            res.send({ error: e.message });
+        }
+    }
+
+    async webHook(req: Request, res: Response) {
+        console.log('webHook: ', req.body);
+        res.send(200);
     }
 }
 
