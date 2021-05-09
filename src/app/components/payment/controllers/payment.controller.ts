@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Stripe from 'stripe';
+import sendMail = require('../../../utils/mailer/index');
 
 const publishableKey = 'pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o';
 const secretKey = 'sk_test_51IllDFIoULcjF60KqXjT9U91x3LkH8s1q82izKZKGbgKnyg84mYb03c1z9pZ35r9Mw35gKqwfvV684Sl3mgUNR9f00BmGfTleU';
@@ -134,6 +135,31 @@ export class PaymentCtrl {
             }
 
             res.send({ error: 'Unkown errror' });
+        } catch (e) {
+            res.send({ error: e.message });
+        }
+    }
+
+    async validatePayment(req: Request, res: Response) {
+        const {
+            travelerEmail,
+            sessionId,
+        }: {
+            travelerEmail: string;
+            sessionId: string;
+        } = req.body;
+
+        try {
+            const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+            if (session.payment_status === 'paid') {
+                // TODO: Update payment status of Traveler
+                // TODO: Update mail config and body
+                // TODO: Fetch Email address from DB to send email
+                await sendMail.sendMail(travelerEmail, 'Payment completed');
+            }
+
+            res.send({ payment_status: session.payment_status });
         } catch (e) {
             res.send({ error: e.message });
         }
