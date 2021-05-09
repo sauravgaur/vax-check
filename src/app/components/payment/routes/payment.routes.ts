@@ -10,6 +10,7 @@ export function routesConfig(): Router {
     router.post('/stripe/sourcetoken', paymentCtrl.sourcetoken);
     router.get('/stripe/key', paymentCtrl.stripeKey);
     router.post('/stripe/session/create', paymentCtrl.createSession);
+    router.post('/stripe/session/validate', paymentCtrl.validatePayment);
     router.post('/stripe/webhook', paymentCtrl.webHook);
 
     return router
