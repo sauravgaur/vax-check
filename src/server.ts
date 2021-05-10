@@ -1,5 +1,5 @@
 import express from 'express';
-import {userModule,recordsModule,vaxCardModule,safeTravellerModule,mediaModule} from "./app/index"
+import {userModule,recordsModule,vaxCardModule,safeTravellerModule,mediaModule,paymentModule} from "./app/index";
 import cors = require('cors');
 import * as bodyParser from 'body-parser';
 // rest of the code remains same
@@ -8,7 +8,8 @@ const API_ROUTES=[
   recordsModule.recordsRoutes.routesConfig(),
   vaxCardModule.vaxCardRoutes.routesConfig(),
   safeTravellerModule.routesConfig(),
-  mediaModule.routesConfig()
+  mediaModule.routesConfig(),
+  paymentModule.paymentRoutes.routesConfig(),
 ]
 
 export function app(port?:string){
