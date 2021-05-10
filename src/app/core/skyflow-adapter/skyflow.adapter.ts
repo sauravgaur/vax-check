@@ -1,17 +1,18 @@
 
 import * as axiosObj from "axios"
+import { PathLike } from "fs"
 import { promises } from "fs"
 import { sign } from "jsonwebtoken"
+import { IRecord } from "../../interfaces/record.interface"
+import { ISkyflowConfig } from "../../interfaces/skyflow-config.interface"
 
 export class Skyflow{
     private skyflowBaseUrl: string
     private httpConfig: axiosObj.AxiosRequestConfig
-    private skyflowCredPath: string
-    constructor(orgName: string | null, accountName: string | null, vaultId: string | null, skyflowCredPath: string | null) {
-        orgName = orgName || process.env.SKYFLOW_ORG_NAME as string;
-        accountName = accountName || process.env.SKYFLOW_ACCOUNT_NAME as string;
-        vaultId = vaultId || process.env.SKYFLOW_VAULT_ID as string;
-        this.skyflowCredPath = skyflowCredPath || process.env.SKYFLOW_CRED_PATH as string;
+    private skyflowCredPath: PathLike | promises.FileHandle
+    constructor(skyflowConfig : ISkyflowConfig) {
+        const {orgName, accountName, vaultId, skyflowCredPath} = skyflowConfig;
+        this.skyflowCredPath = skyflowCredPath;
 
         this.skyflowBaseUrl = `https://${orgName}.${accountName}.vault.skyflowapis.com/v1/vaults/${vaultId}`
         this.httpConfig = {
@@ -74,5 +75,37 @@ export class Skyflow{
             throw err
         }
         
+    }
+    transformRecordsForBatch(records: any[]) {
+        let arr: any = []
+        records.forEach(record => {
+            for (let key in record) {
+                let obj: any = {}
+                obj["tableName"] = key
+                obj["method"] = "POST"
+                obj["fields"] = record[key]
+                arr.push(obj)
+            }
+        });
+
+        return arr
+    }
+
+    async uploadBatch(records: IRecord[]): Promise<any> {
+        let { accessToken, tokenType } = await this.getBearerToken()
+
+        this.setHeader(accessToken, tokenType)
+        let data = {
+            records: this.transformRecordsForBatch(records)
+        }
+        console.log("records-->", JSON.stringify(data))
+        try {
+            let resp = await axiosObj.default.post(`${this.skyflowBaseUrl}`, data, this.httpConfig)
+            console.log(JSON.stringify(resp.data));
+            return resp.data
+        } catch (err) {
+            console.log("err-->", JSON.stringify(err))
+            throw err
+        }
     }
 }

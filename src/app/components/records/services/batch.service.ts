@@ -3,19 +3,16 @@ import { Skyflow } from "../../../core/skyflow-adapter/skyflow.adapter"
 import { IHTTPResponse } from "../../../interfaces/http-response.interface"
 import { IBatch, IRecord, IVaccinations } from "../../../interfaces/record.interface"
 import {RecordsDal} from "../dals/records.dals"
-import { SkyflowDal } from "../dals/skyflow.dals"
+// import { skyflow } from "../dals/skyflow.dals"
+import {DEFAULT_VAULT} from "../../../vaults/index"
+import { ISkyflowConfig } from "../../../interfaces/skyflow-config.interface"
 
 export class BatchService{
     recordDals:RecordsDal
-    orgName:string|null
-    accountName:string|null
-    vaultId:string|null
-    skyflowCredPath:string|null
-    constructor(config?:config,orgName?:string|null,accountName?:string|null,vaultId?:string|null,skyflowCredPath?:string|null){
-        this.orgName=orgName || null;
-        this.accountName=accountName || null;
-        this.vaultId=vaultId || null;
-        this.skyflowCredPath=skyflowCredPath || null;
+    vaultConfig:ISkyflowConfig
+    constructor(config?:config,vaultConfig?:ISkyflowConfig){
+        console.log('DEFAULT_VAULT-->',DEFAULT_VAULT);
+        this.vaultConfig=vaultConfig ||DEFAULT_VAULT
         this.recordDals=new RecordsDal(config)
     }
     async checkUserExist(firstName:string,middleName:string,lastName:string,dateOfBirth:string):Promise<IHTTPResponse>{
@@ -24,7 +21,7 @@ export class BatchService{
             status:200
         };
         try{
-            let skyFlow= new Skyflow(this.orgName,this.accountName,this.vaultId,this.skyflowCredPath)
+            let skyFlow= new Skyflow(this.vaultConfig)
             const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
             let query=`select * from patients where name='${name}' and date_of_birth='${dateOfBirth}'`;
             resp.response=await skyFlow.skyflowQueryWrapper(query)
@@ -46,7 +43,7 @@ export class BatchService{
             status:200
         };
         try{
-            let skyFlow= new Skyflow(this.orgName,this.accountName,this.vaultId,this.skyflowCredPath)
+            let skyFlow= new Skyflow(this.vaultConfig)
             let query=`select vaccinations.patients_skyflow_id,vaccinations.skyflow_id,patients.age,redaction(patients.name,'PLAIN_TEXT'),patients.date_of_birth,
             vaccinations.cvx,vaccinations.vax_expiration,vaccinations.vax_effective,vaccinations.created_timestamp from vaccinations left JOIN patients on patients.skyflow_id=vaccinations.patients_skyflow_id where vaccinations.cvx=null or vaccinations.cvx='cvx' or vaccinations.cvx='cvx_code' `;
             resp.response=await skyFlow.skyflowQueryWrapper(query)
@@ -65,19 +62,19 @@ export class BatchService{
         return data;
     }
     async addPatientVax(batch:IBatch):Promise<any>{
-        let skyflowDal=new SkyflowDal(this.orgName,this.accountName,this.vaultId,this.skyflowCredPath)
+        let skyflow=new Skyflow(this.vaultConfig)
         batch.records=await this.uploadPatientBatch(batch.records)
-        let batchUploadResponse= await skyflowDal.uploadBatch(batch.records)
+        let batchUploadResponse= await skyflow.uploadBatch(batch.records)
     }
     async uploadPatientBatch(records:IRecord[]):Promise<IRecord[]>{
-        let skyflowDal=new SkyflowDal(this.orgName,this.accountName,this.vaultId,this.skyflowCredPath)
+        let skyflow=new Skyflow(this.vaultConfig)
         const patientBatch=records.map(record=>{
-            return {patients:record.patients}
+            return {profiles:record.profiles}
         });
-        const patientResponse=await skyflowDal.uploadBatch(patientBatch)
+        const patientResponse=await skyflow.uploadBatch(patientBatch)
         for(let index=0;index<patientResponse.responses.length;index++){
-            (records[index].vaccinations as IVaccinations).patients_skyflow_id=patientResponse.responses[index].records[0].skyflow_id
-            delete records[index].patients;
+            (records[index].vaccinations as IVaccinations).profiles_skyflow_id=patientResponse.responses[index].records[0].skyflow_id
+            delete records[index].profiles;
         }
         return records
     }

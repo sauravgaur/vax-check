@@ -3,8 +3,9 @@ import { generateHash } from "../../../core/encryptor/hash.encryptor";
 import {httpError} from "../../../core/errorHandler/http.error.handler"
 import {BatchService} from "../services/batch.service"
 import {SkyflowDal} from "../dals/skyflow.dals"
-import { IBatch, IMATADATA_RECORDS, IPatientAddress, IPatients, IRecord, ISourceProvider, ITests, IVaccinations } from "../../../interfaces/record.interface";
+import { IBatch, IMATADATA_RECORDS, IPatientAddress, IProfile, IRecord, ISourceProvider, ITests, IVaccinations } from "../../../interfaces/record.interface";
 import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGenerator/password.generate";
+import { VaxCheckService } from "../services/vax-check.service";
 export class RecordsCtrl{
     constructor(){
     }
@@ -29,30 +30,43 @@ export class RecordsCtrl{
             return res.status(500).send(err)
         }
     }
-    async addPatientVax(req: Request, res: Response){
+    async saveVaxProfile(req: Request, res: Response){
         try{
-            let jsonObjs=req.body;
-            let accessCodeGenrator= new PasswordGenerator({
-                alphabets:true,
-                digits: true,
-                specialChars:false,
-                upperCase:false
-            } as IPasswordOptions)
-            jsonObjs["cvx"]=accessCodeGenrator.generate(32)
-            let batchCtrl=new BatchCtrl([jsonObjs],{
-                id:null,
-                name:"Vax-card form"
-            } as ISourceProvider)
-            let batch:IBatch =await batchCtrl.generateBatch()
-            let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
-            let resp=await batchService.addPatientVax(batch);
-            console.log("resp-->",resp);
-            return res.send({resp})
+            let profile=req.body.profile as IProfile;
+            let vaccination=req.body.vaccination as IVaccinations;
+            let vaxCheckService= new VaxCheckService();
+            let resp= await vaxCheckService.saveVaxProfile(profile,vaccination)
+            return res.send(resp)
+            
         }catch(err){
             console.log("err-->",err)
             return res.status(500).send(err)
         }
     }
+    // async addPatientVax(req: Request, res: Response){
+    //     try{
+    //         let jsonObjs=req.body;
+    //         let accessCodeGenrator= new PasswordGenerator({
+    //             alphabets:true,
+    //             digits: true,
+    //             specialChars:false,
+    //             upperCase:false
+    //         } as IPasswordOptions)
+    //         jsonObjs["cvx"]=accessCodeGenrator.generate(32)
+    //         let batchCtrl=new BatchCtrl([jsonObjs],{
+    //             id:null,
+    //             name:"Vax-card form"
+    //         } as ISourceProvider)
+    //         let batch:IBatch =await batchCtrl.generateBatch()
+    //         let batchService= new BatchService();
+    //         let resp=await batchService.addPatientVax(batch);
+    //         console.log("resp-->",resp);
+    //         return res.send({resp})
+    //     }catch(err){
+    //         console.log("err-->",err)
+    //         return res.status(500).send(err)
+    //     }
+    // }
     async checkUserExists(req: Request, res: Response){
         try{
             let {firstName,middleName,lastName,dateOfBirth} = req.body;
@@ -65,7 +79,7 @@ export class RecordsCtrl{
             if(!lastName){
                 return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","dateOfBirth"  and "lastName"`})
             }
-            let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
+            let batchService= new BatchService();
             let {status,response}= await batchService.checkUserExist(firstName,middleName,lastName,dateOfBirth)
             return res.status(status).send(response)
             
@@ -75,7 +89,7 @@ export class RecordsCtrl{
     }
     async unverifiedPatient(req: Request, res: Response){
         try{
-            let batchService= new BatchService(undefined,null,null,"f9e68956780e11eba8a08295107109db",null);
+            let batchService= new BatchService();
             let {status,response}= await batchService.unverifiedPatients()
             return res.status(status).send(response)
             
@@ -111,7 +125,7 @@ export class BatchCtrl{
             const patients = await this.getPatientFromJSON(jsonObj)
             const record:IRecord={
                 metadata_records:this.getMetadataFromJSON(jsonObj),
-                patients:patients,
+                profiles:patients,
                 tests:this.getTestFromJSON(jsonObj),
                 vaccinations:this.getVaccinationFromJSON(jsonObj)
             } 
@@ -131,49 +145,55 @@ export class BatchCtrl{
     getVaccinationFromJSON(jsonObj:any):IVaccinations{
         // console.log("enter into getVaccinationFromJSON")
         return {
-            // skyflow_id:jsonObj["skyflow_id"],
-            admin_address:{
-                country:jsonObj["country"],
-                county:jsonObj["county"],
-                county_fips:jsonObj["county_fips"],
-                state:jsonObj["state"],
-                street_address:jsonObj["street_address"],
-                zip_code:jsonObj["zip_code"]
-            },
-            admin_date:jsonObj["admin_date"],
-            admin_name:jsonObj["admin_name"],
-            admin_type:jsonObj["admin_type"],
-            cmorbid_status:jsonObj["cmorbid_status"],
-            created_timestamp:jsonObj["created_timestamp"],
-            cvx:jsonObj["cvx"],
-            dose_num:jsonObj["dose_num"],
-            extract_type:jsonObj["extract_type"],
+            vaccination_event_identifier:jsonObj["vaccination_event_identifier"],
+            vaccination_certification_status:jsonObj["vaccination_certification_status"],
+            vaccination_issuer_type:jsonObj["vaccination_issuer_type"],
+            ordered_date:jsonObj["ordered_date"],
+            administered_date:jsonObj["administered_date"],
+            effective_date:jsonObj["effective_date"],
+            expiration_date:jsonObj["expiration_date"],
+            vaccine_name:jsonObj["vaccine_name"],
+            vaccine_cvx_code:jsonObj["vaccine_cvx_code"],
+            vaccine_product_code:jsonObj["vaccine_product_code"],
+            vaccine_manufacturer_name:jsonObj["vaccine_manufacturer_name"],
             lot_number:jsonObj["lot_number"],
-            mvx:jsonObj["mvx"],
-            ndc:jsonObj["ndc"],
-            // patients_skyflow_id:jsonObj["patients_skyflow_id"],
-            pprl_id:jsonObj["pprl_id"],
-            recip_missed_appt:jsonObj["recip_missed_appt"],
-            responsible_org:jsonObj["responsible_org"],
+            site:jsonObj["site"],
+            route:jsonObj["route"],
+            dose_number:jsonObj["dose_number"],
+            series_complete:jsonObj["series_complete"],
+            series_doses:jsonObj["series_doses"],
+            vaccine_refusal:jsonObj["vaccine_refusal"],
+            recipient_comorbidity_status:jsonObj["recipient_comorbidity_status"],
+            recipient_missed_appt:jsonObj["recipient_missed_appt"],
             serology:jsonObj["serology"],
-            updated_timestamp:jsonObj["updated_timestamp"],
-            vax_admin_site:jsonObj["vax_admin_site"],
-            vax_effective:jsonObj["vax_effective"],
-            vax_event_id:jsonObj["vax_event_id"],
-            vax_expiration:jsonObj["vax_expiration"],
-            vax_prov_suffix:jsonObj["vax_prov_suffix"],
-            vax_refusal:jsonObj["vax_refusal"],
-            vax_route:jsonObj["vax_route"],
-            vax_series_complete:jsonObj["vax_series_complete"]
+            extract_type:jsonObj["extract_type"],
+            master_id:jsonObj["master_id"],
+            reference_id:jsonObj["reference_id"],
+            reference_system:jsonObj["reference_system"],
+            verification_source:jsonObj["verification_source"],
+            verification_status:jsonObj["verification_status"],
+            travel_date:jsonObj["travel_date"],
+            access_code:jsonObj["access_code"],
+            supporting_doc:jsonObj["supporting_doc"],
+            traveler_type:jsonObj["traveler_type"],
+            service_availed:jsonObj["service_availed"],
+            recipient:jsonObj["recipient"],
+            performer:jsonObj["performer"],
+
         } as IVaccinations;
     }
-    async getPatientFromJSON(jsonObj:any):Promise<IPatients>{
+    async getPatientFromJSON(jsonObj:any):Promise<IProfile>{
         const batch_id= await this.getBatchId()
         let age=jsonObj["age"] && !isNaN(jsonObj["age"])?parseInt(jsonObj["age"]):0;
         return {
-            name:jsonObj["name"],
+            name:{
+                "First Name":jsonObj["first_name"],
+                "Middle Name":jsonObj["middle_name"],
+                "Last Name":jsonObj["last_name"],
+            },
             unique_identifier:batch_id,
             address:this.getAddressFromJSON(jsonObj),
+            email_address:jsonObj["email"],
             age:age,
             // consent:{
             //     timestamp:jsonObj["patient_consent_timestamp"],
@@ -192,7 +212,7 @@ export class BatchCtrl{
                 value:jsonObj["residence_in_congregate_care_value"]
             },
             sex:jsonObj["sex"]
-        } as IPatients
+        } as IProfile
     }
     getTestFromJSON(jsonObj:any):ITests{
         // console.log("enter into getTestFromJSON")

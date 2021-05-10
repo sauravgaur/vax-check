@@ -1,10 +1,16 @@
 import {Skyflow} from "../../../core"
 import { IHTTPResponse } from "../../../interfaces/http-response.interface";
-
+import { ISkyflowConfig } from "../../../interfaces/skyflow-config.interface";
+import {DEFAULT_VAULT} from "../../../vaults/index"
 export class SafeTravellerService{
-    constructor(){}
+    vaultConfig:ISkyflowConfig
+    constructor(
+        vaultConfig?:ISkyflowConfig
+    ){
+        this.vaultConfig=vaultConfig || DEFAULT_VAULT
+    }
     async verifyAccessCode(firstName:string,lastName:string,dateOfBirth:string,accessCode:string,middleName?:string):Promise<IHTTPResponse> {
-        let skyflow= new Skyflow(null,null,"f9e68956780e11eba8a08295107109db",null)
+        let skyflow= new Skyflow(this.vaultConfig)
         try{
             let resp:IHTTPResponse={
                 response:null,

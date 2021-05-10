@@ -6,11 +6,12 @@ export class MediaController{
     async uploadSnapshot(req: Request, res: Response){
         const path = req.file.path;
         try{
-           let text =await readText(path)
-           let vaxCardService = new VaxCardService();
-            text.responseObj = vaxCardService.calcuateEffectiveNExpiry(text.responseObj);
+            return res.send({msg:"success",text:path});
+        //    let text =await readText(path)
+        //    let vaxCardService = new VaxCardService();
+            // text.responseObj = vaxCardService.calcuateEffectiveNExpiry(text.responseObj);
         //    console.log('text-->',text);
-           return res.send({msg:"success",text:text});
+        //    return res.send({msg:"success",text:text});
         }catch(err){
             return res.status(500).send({msg:"Issue in image reading"})
         }

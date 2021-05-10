@@ -1,24 +1,28 @@
-export interface IPatients{
+export interface IProfile{
     unique_identifier:string
-    name:string
-    date_of_birth?:string
     age?:number
+    date_of_birth?:string
     race?:string
+    race2?:string
+    race3?:string
     ethnicity?:string
     sex?:'MALE'|'FEMALE'|'OTHER'
+    mobile_number?:string
+    email_address?:string
+    name:Record<"First Name"|"Last Name"|"Middle Name",string>,
     address?:IPatientAddress
-    phone_number?:string
-    employed_in_healthcare?:{
+    healthcare_employee?:{
         value?:'YES'|'NO'
-        occupation?:string
+        role?:string
+        npi?:string
     }
-    residence_in_congregate_care?:{
+    congregate_residency_status?:{
         value?:'YES'|'NO'
         care_type?:string
     }
     consent?:{
         given?:boolean
-        timestamp:Date
+        timestamp?:Date
     }
 }
 
@@ -68,36 +72,64 @@ export interface IMATADATA_RECORDS{
 
 export interface IVaccinations{
     skyflow_id:string
-    patients_skyflow_id?:string
+    profiles_skyflow_id?:string
     created_timestamp?:string
     updated_timestamp?:string
-    vax_event_id?:string
-    admin_date?:string
-    vax_effective?:string
-    cvx?:string
-    ndc?:string
-    mvx?:string
+    vaccination_event_identifier?:string
+    vaccination_certification_status?:string
+    vaccination_issuer_type?:string
+    ordered_date?:string
+    administered_date?:string
+    effective_date?:string
+    expiration_date?:string
+    vaccine_name?:string
+    vaccine_cvx_code?:string
+    vaccine_product_code?:string
+    vaccine_manufacturer_name?:string
     lot_number?:string
-    vax_expiration?:string
-    vax_admin_site?:string
-    vax_route?:string
-    dose_num?:string
-    vax_series_complete?:string
-    responsible_org?:string
-    admin_name?:string
-    admin_type?:string
-    admin_address?:IPatientAddress
-    vax_prov_suffix?:string
-    vax_refusal?:string
-    cmorbid_status?:string
-    recip_missed_appt?:string
+    site?:string
+    route?:string
+    dose_number?:string
+    series_complete?:string
+    series_doses?:number
+    provider_suffix?:string
+    vaccine_refusal?:string
+    recipient_comorbidity_status?:string
+    recipient_missed_appt?:string
     serology?:string
     extract_type?:string
-    pprl_id?:string
+    master_id?:string
+    reference_id?:string
+    reference_system?:string
+    verification_source?:string
+    verification_status?:string
+    access_code?:string
+    travel_date?:string
+    supporting_doc?:string
+    traveler_type?:string
+    service_availed?:string
+    recipient?:{
+        unique_identifier?:string,
+        phone_number?:string,
+        email_address?:string,
+        date_of_birth?:string,
+        sex?:string,
+        Race?:string,
+        Ethnicity?:string,
+        name?:Record<"Prefix"|"First Name"|"Last Name"|"Middle Name",string>,
+    },
+    performer?:{
+        performer_org_name?:string,
+        performer_name?:string,
+        performer_type?:string,
+        performer_npi?:string,
+        performer_address?:IPatientAddress
+    }
 }
 
 export interface IPatientAddress{
     street_address?:string
+    street_address2?:string
     state?:string
     country?:string
     zip_code?:string
@@ -106,7 +138,7 @@ export interface IPatientAddress{
 }
 
 export interface IRecord{
-    patients?:IPatients
+    profiles?:IProfile
     tests?:ITests
     metadata_records?:IMATADATA_RECORDS
     vaccinations?:IVaccinations
