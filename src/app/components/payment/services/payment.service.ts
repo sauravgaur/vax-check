@@ -35,7 +35,7 @@ export class PaymentService {
                             unit_amount: 2000,
                         },
                         quantity: 1,
-                        tax_rates: ['txr_1IohtoIoULcjF60K3AxkpKbl']
+                        tax_rates: ['txr_1Ir8J3IoULcjF60KTZk4cML7']
                     }
                 ],
                 allow_promotion_codes: true,
