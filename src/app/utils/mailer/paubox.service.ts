@@ -1,4 +1,4 @@
-import request from 'request';
+import * as axiosObj from "axios"
 import { IEmailResponse, IEmailTrackResponse, IEmail } from './mail.interface';
 
 export class PauboxService {
@@ -7,77 +7,76 @@ export class PauboxService {
     return process.env.PAUBOX_TOKEN;
   }
 
+  private getHeaders(): any {
+    return {
+      Authorization: `Token token=${this.getPauboxToken()}`,
+      'Content-Type': 'application/json'
+    };
+  }
+
   public async send(emailOption: IEmail): Promise<IEmailResponse> {
     try {
-      const options = {
-        method: 'POST',
+      const httpConfig: axiosObj.AxiosRequestConfig = {
         url: `${process.env.PAUBOX_BASE_API}/messages.json`,
-        headers:
-        {
-          authorization: `Token token=${this.getPauboxToken()}`,
-          'content-type': 'application/json'
-        },
-        body:
-        {
-          data:
-          {
-            message:
-            {
+        method: 'POST',
+        headers: this.getHeaders(),
+        responseType: 'json',
+        data: {
+          data: {
+            message: {
               recipients: [emailOption.to],
               bcc: emailOption.bcc,
               cc: emailOption.cc,
-              headers:
-              {
+              headers: {
                 subject: emailOption.subject,
                 from: emailOption.from
               },
-              content:
-              {
+              content: {
                 'text/html': emailOption.html
               },
               attachments: emailOption.attachments
             }
           }
-        },
-        json: true
+        }
       };
-      return new Promise((resolve, reject) => {
-        request(options, (error: any, response: any, body: any) => {
-          if (error) reject(error as IEmailResponse);
 
-          console.log("paubox response-->", body)
-          resolve(body as IEmailResponse);
-        });
-      });
+      const response = await axiosObj.default.request<IEmailResponse>(httpConfig);
+      return response.data;
     } catch (err) {
-      return {
-        errors: [
-          {
-            "code": 400,
-            "title": err.message,
-          }
-        ]
-      };
+      return this.handlePauboxError(err) as IEmailResponse;
     }
   }
 
   public async checkMailStatus(sourceTrackingId: string): Promise<IEmailTrackResponse> {
-    const url = `${process.env.PAUBOX_BASE_API}/message_receipt?sourceTrackingId=${sourceTrackingId}`
-    const options = {
-      method: 'GET',
-      url,
-      headers:
-      {
-        authorization: `Token token=${this.getPauboxToken()}`,
-        'content-type': 'application/json'
-      },
-      json: true
+    try {
+      const httpConfig: axiosObj.AxiosRequestConfig = {
+        url: `${process.env.PAUBOX_BASE_API}/message_receipt?sourceTrackingId=${sourceTrackingId}`,
+        method: 'GET',
+        headers: this.getHeaders(),
+        responseType: 'json',
+      };
+      const response = await axiosObj.default.request<IEmailTrackResponse>(httpConfig);
+      return response.data;
+    } catch (err) {
+      return this.handlePauboxError(err) as IEmailTrackResponse;
+    }
+  }
+
+  private handlePauboxError(err: any): any {
+    if (err.isAxiosError) {
+      console.log('Paubox mail error: ', err.response.data);
+      return err.response.data;
+    }
+
+    console.error('Paubox mail unknown error: ', err.message);
+
+    return {
+      errors: [
+        {
+          "code": 400,
+          "title": err.message,
+        }
+      ]
     };
-    return new Promise((resolve, reject) => {
-      request(options, (error: any, response: any, body: any) => {
-        if (error) reject(error as IEmailTrackResponse);
-        resolve(body as IEmailTrackResponse);
-      });
-    });
   }
 }
