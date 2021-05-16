@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import { IStripeSessionRequest, IStripeSessionResponse, IStripeSessionValidateRequest } from "../../../interfaces/payment.interface";
 import { MailService } from '../../../utils/mailer/mail.service';
 
-const secretKey = 'sk_test_51IllDFIoULcjF60KqXjT9U91x3LkH8s1q82izKZKGbgKnyg84mYb03c1z9pZ35r9Mw35gKqwfvV684Sl3mgUNR9f00BmGfTleU';
+const secretKey = process.env.STRIPE_SECRET_KEY || 'Not-Defined';
 
 const stripe = new Stripe(secretKey, {
     apiVersion: "2020-08-27",

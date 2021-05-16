@@ -11,7 +11,7 @@ export class PauboxService {
     try {
       const options = {
         method: 'POST',
-        url: 'https://api.paubox.net/v1/firstvitals/messages.json',
+        url: `${process.env.PAUBOX_BASE_API}/messages.json`,
         headers:
         {
           authorization: `Token token=${this.getPauboxToken()}`,
@@ -62,7 +62,7 @@ export class PauboxService {
   }
 
   public async checkMailStatus(sourceTrackingId: string): Promise<IEmailTrackResponse> {
-    const url = `https://api.paubox.net/v1/firstvitals/message_receipt?sourceTrackingId=${sourceTrackingId}`
+    const url = `${process.env.PAUBOX_BASE_API}/message_receipt?sourceTrackingId=${sourceTrackingId}`
     const options = {
       method: 'GET',
       url,
