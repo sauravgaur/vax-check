@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IStripeSessionRequest, IStripeSessionResponse, IStripeSessionValidateRequest } from "../../../interfaces/payment.interface";
 import { PaymentService } from "../services/payment.service";
 
-const publishableKey = 'pk_test_51IllDFIoULcjF60KfMk1Jbb3COmYyAbZ1QLxLRMugIk3WU6p2k2nWp5YgCPTswBQqhbLjQspbDeONmOmh7z8r1hv00LOfVmm6o';
+const publishableKey = process.env.STRIPE_PUBLIC_KEY || 'Not-Defined';
 
 export class PaymentCtrl {
 
