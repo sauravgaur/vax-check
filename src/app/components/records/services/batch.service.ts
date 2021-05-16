@@ -52,7 +52,6 @@ export class BatchService{
         }catch(err){
             throw err
         }
-        
     }
     async getAllBatchMeta():Promise<any>{
         await this.recordDals.openConnection()

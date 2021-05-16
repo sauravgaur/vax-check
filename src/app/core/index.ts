@@ -1,3 +1,7 @@
  export * from './auth/index'
  export * from './fileConverter/csv2json.converter'
  export * from './skyflow-adapter/skyflow.adapter'
+ export * from './encryptor/hash.encryptor'
+ export * from './passwordGenerator/password.generate'
+ export * from './imageProcessing/index'
+ export * from './errorHandler/http.error.handler'

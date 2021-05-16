@@ -71,8 +71,8 @@ export class Skyflow{
             const response = await axiosObj.default.post(url,data,this.httpConfig)
             return response.data
         }catch(err){
-            console.log("err-->", JSON.stringify(err))
-            throw err
+            console.log("err.response.data.error.message-->", err.response.data.error.message)
+            throw err.response.data.error
         }
         
     }
@@ -93,7 +93,7 @@ export class Skyflow{
 
     async uploadBatch(records: IRecord[]): Promise<any> {
         let { accessToken, tokenType } = await this.getBearerToken()
-
+        
         this.setHeader(accessToken, tokenType)
         let data = {
             records: this.transformRecordsForBatch(records)
@@ -104,8 +104,10 @@ export class Skyflow{
             console.log(JSON.stringify(resp.data));
             return resp.data
         } catch (err) {
-            console.log("err-->", JSON.stringify(err))
-            throw err
+            // console.log("err-->", JSON.stringify(err))
+            console.log("err.response.data.error.message-->", err.response.data.error.message)
+            
+            throw err.response.data.error
         }
     }
 }

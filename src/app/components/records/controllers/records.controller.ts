@@ -43,30 +43,6 @@ export class RecordsCtrl{
             return res.status(500).send(err)
         }
     }
-    // async addPatientVax(req: Request, res: Response){
-    //     try{
-    //         let jsonObjs=req.body;
-    //         let accessCodeGenrator= new PasswordGenerator({
-    //             alphabets:true,
-    //             digits: true,
-    //             specialChars:false,
-    //             upperCase:false
-    //         } as IPasswordOptions)
-    //         jsonObjs["cvx"]=accessCodeGenrator.generate(32)
-    //         let batchCtrl=new BatchCtrl([jsonObjs],{
-    //             id:null,
-    //             name:"Vax-card form"
-    //         } as ISourceProvider)
-    //         let batch:IBatch =await batchCtrl.generateBatch()
-    //         let batchService= new BatchService();
-    //         let resp=await batchService.addPatientVax(batch);
-    //         console.log("resp-->",resp);
-    //         return res.send({resp})
-    //     }catch(err){
-    //         console.log("err-->",err)
-    //         return res.status(500).send(err)
-    //     }
-    // }
     async checkUserExists(req: Request, res: Response){
         try{
             let {firstName,middleName,lastName,dateOfBirth} = req.body;
@@ -187,9 +163,8 @@ export class BatchCtrl{
         let age=jsonObj["age"] && !isNaN(jsonObj["age"])?parseInt(jsonObj["age"]):0;
         return {
             name:{
-                "First Name":jsonObj["first_name"],
-                "Middle Name":jsonObj["middle_name"],
-                "Last Name":jsonObj["last_name"],
+                first_name:jsonObj["first_name"],
+                last_name:jsonObj["last_name"],
             },
             unique_identifier:batch_id,
             address:this.getAddressFromJSON(jsonObj),
