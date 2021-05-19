@@ -13,6 +13,9 @@ export function routesConfig():Router {
     router.post('/batch/patient-vax',recordCtrl.saveVaxProfile);
     router.post('/batch/check-patient',recordCtrl.checkUserExists);
     router.get('/batch/unverified-patient',recordCtrl.unverifiedPatient);
+    router.get('/batch/all-patient',recordCtrl.allPatient);
+    router.get('/batch/patient-by-id/:id',recordCtrl.patientById);
+    router.put('/batch/patient/status-update',recordCtrl.patientStatusUpdate);
     
     return router
  }

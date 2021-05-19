@@ -16,12 +16,13 @@ export class SafeTravellerService{
                 response:null,
                 status:200
             };
-             
             const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
-            const query=`select patients.skyflow_id,redaction(patients.name,'PLAIN_TEXT'),patients.date_of_birth,
-            vaccinations.cvx,vaccinations.vax_expiration,vaccinations.vax_effective from patients 
-            LEFT JOIN vaccinations on patients.skyflow_id=vaccinations.patients_skyflow_id 
-            WHERE patients.name='${name}' and patients.date_of_birth='${dateOfBirth}' and vaccinations.cvx='${accessCode}'`;
+            let query=`select profiles.skyflow_id, redaction(profiles.name, 'PLAIN_TEXT'),redaction(profiles.access_code, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT') from profiles 
+            LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id WHERE 
+            profiles.name->'first_name' = to_json('${firstName}'::text) AND profiles.name->'last_name' = to_json('${lastName}'::text) and profiles.date_of_birth='${dateOfBirth}' and profiles.access_code='${accessCode}`;
+            if(middleName){
+                query+=` and profiles.name->'middle_name' = to_json('${middleName}'::text)`
+            }
             console.log('query-->',query)
             resp.response= await skyflow.skyflowQueryWrapper(query)
             resp.response.records= resp.response.records.map((record:any)=>{

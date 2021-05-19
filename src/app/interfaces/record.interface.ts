@@ -15,6 +15,7 @@ export interface IProfile {
     email_address?: string
     name: {
         first_name: string,
+        middle_name: string,
         last_name: string
     },
     address?: IPatientAddress

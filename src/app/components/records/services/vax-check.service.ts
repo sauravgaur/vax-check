@@ -55,4 +55,13 @@ export class VaxCheckService {
             throw err;
         }
     }
+    async patientStatusUpdate(id:string,verification_status:string,verification_source:string,evedence_path:string) {
+        try {
+            // let skyflow = new Skyflow(this.vaultConfig)
+            // let vaccination:IVaccinations={verification_status,verification_source,tes}
+        } catch (err) {
+            throw err;
+        }
+    }
+    
 }

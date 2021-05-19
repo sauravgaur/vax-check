@@ -43,6 +43,28 @@ export class RecordsCtrl{
             return res.status(500).send(err)
         }
     }
+    async patientStatusUpdate(req: Request, res: Response){
+        try{
+            let {id,verification_status,verification_source,evedence_path}=req.body;
+            if(!id){
+                return httpError(res,422,"id is missing",{desc:`mandatory fields are "id","verification_status" and "verification_source"`})
+            }
+            if(!verification_status){
+                return httpError(res,422,"verification_status is missing",{desc:`mandatory fields are "id","verification_status" and "verification_source"`})
+            }
+            if(!verification_source){
+                return httpError(res,422,"verification_source is missing",{desc:`mandatory fields are "id","verification_status" and "verification_source"`})
+            }
+            let vaxCheckService= new VaxCheckService();
+            let resp= await vaxCheckService.patientStatusUpdate(id,verification_status,verification_source,evedence_path)
+            return res.send(resp)
+            
+        }catch(err){
+            console.log("err-->",err)
+            return res.status(500).send(err)
+        }
+    }
+    
     async checkUserExists(req: Request, res: Response){
         try{
             let {firstName,middleName,lastName,dateOfBirth} = req.body;
@@ -73,6 +95,28 @@ export class RecordsCtrl{
             return httpError(res,500,"Internal server error",{desc:err})
         }
     }
+    async allPatient(req: Request, res: Response){
+        try{
+            let batchService= new BatchService();
+            let {status,response}= await batchService.allPatient()
+            return res.status(status).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
+    async patientById(req: Request, res: Response){
+        try{
+            let batchService= new BatchService();
+            let {id} = req.params
+            let {status,response}= await batchService.patientById(id)
+            return res.status(status).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
+    
 }
 
 export class BatchCtrl{
@@ -165,6 +209,7 @@ export class BatchCtrl{
             name:{
                 first_name:jsonObj["first_name"],
                 last_name:jsonObj["last_name"],
+                middle_name:jsonObj["middle_name"]
             },
             unique_identifier:batch_id,
             address:this.getAddressFromJSON(jsonObj),

@@ -3,15 +3,15 @@ import * as axiosObj from "axios"
 import { PathLike } from "fs"
 import { promises } from "fs"
 import { sign } from "jsonwebtoken"
-import { IRecord } from "../../interfaces/record.interface"
+import { IMATADATA_RECORDS, IProfile, IRecord, ITests, IVaccinations } from "../../interfaces/record.interface"
 import { ISkyflowConfig } from "../../interfaces/skyflow-config.interface"
 
-export class Skyflow{
+export class Skyflow {
     private skyflowBaseUrl: string
     private httpConfig: axiosObj.AxiosRequestConfig
     private skyflowCredPath: PathLike | promises.FileHandle
-    constructor(skyflowConfig : ISkyflowConfig) {
-        const {orgName, accountName, vaultId, skyflowCredPath} = skyflowConfig;
+    constructor(skyflowConfig: ISkyflowConfig) {
+        const { orgName, accountName, vaultId, skyflowCredPath } = skyflowConfig;
         this.skyflowCredPath = skyflowCredPath;
 
         this.skyflowBaseUrl = `https://${orgName}.${accountName}.vault.skyflowapis.com/v1/vaults/${vaultId}`
@@ -59,23 +59,47 @@ export class Skyflow{
         console.log("accessToken-->", JSON.stringify(resp.data["accessToken"]))
         return { accessToken: resp.data["accessToken"], tokenType: resp.data["tokenType"] }
     }
-    async skyflowQueryWrapper(query:string){
+    async skyflowQueryWrapper(query: string) {
         const url = `${this.skyflowBaseUrl}/query`;
-        // {
-        //     "query": "select count(*) FROM patients"
-        //   }
-        const data = {query}
-        try{
+        const data = { query }
+        try {
             let { accessToken, tokenType } = await this.getBearerToken()
             this.setHeader(accessToken, tokenType)
-            const response = await axiosObj.default.post(url,data,this.httpConfig)
+            const response = await axiosObj.default.post(url, data, this.httpConfig)
             return response.data
-        }catch(err){
+        } catch (err) {
             console.log("err.response.data.error.message-->", err.response.data.error.message)
             throw err.response.data.error
         }
-        
+
     }
+    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATA_RECORDS|ITests, tableName: string, skyflowId: string) {
+        const url = `${this.skyflowBaseUrl}/${tableName}/${skyflowId}`;
+        let data = {
+            "record": {
+                "fields": fields
+            }
+        }
+        try {
+            let { accessToken, tokenType } = await this.getBearerToken()
+            this.setHeader(accessToken, tokenType)
+            const response = await axiosObj.default.post(url, data, this.httpConfig)
+            return response.data
+        } catch (err) {
+            console.log("err.response.data.error.message-->", err.response.data.error.message)
+            throw err.response.data.error
+        }
+
+    }
+    // let data = {
+    //     "record": {
+    //         "fields": {
+    //             "vax_expiration": "Mon, 26 Apr 2021 08:26:24 GMT"
+    //         }
+    //     }
+    // }
+    // let data=this.updateVaccination()
+    // https://{URL}/v1/vaults/{VAULT_ID}/persons/{SKYFLOW_ID}
     transformRecordsForBatch(records: any[]) {
         let arr: any = []
         records.forEach(record => {
@@ -93,7 +117,7 @@ export class Skyflow{
 
     async uploadBatch(records: IRecord[]): Promise<any> {
         let { accessToken, tokenType } = await this.getBearerToken()
-        
+
         this.setHeader(accessToken, tokenType)
         let data = {
             records: this.transformRecordsForBatch(records)
@@ -106,7 +130,7 @@ export class Skyflow{
         } catch (err) {
             // console.log("err-->", JSON.stringify(err))
             console.log("err.response.data.error.message-->", err.response.data.error.message)
-            
+
             throw err.response.data.error
         }
     }
