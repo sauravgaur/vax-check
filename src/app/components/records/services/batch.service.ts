@@ -41,7 +41,27 @@ export class BatchService{
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id `;
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
-            this.resp.response.records=this.resp.response.records.map((record:any)=>record.fields)
+            this.resp.response.records=this.resp.response.records.map((data:any)=>{
+                let record:IRecord={
+                    profiles:{
+                        name:data.fields.name,
+                        created_timestamp:data.fields.created_timestamp,
+                        date_of_birth:data.fields.date_of_birth,
+                        age:data.fields.age,
+                        travel_date:data.fields.travel_date,
+                        traveler_type:data.fields.traveler_type,
+                        address:data.fields.address,
+                        email_address:data.fields.email_address,
+                    },
+                    vaccinations:{
+                        profiles_skyflow_id:data.fields.profiles_skyflow_id,
+                        expiration_date:data.fields.expiration_date,
+                        effective_date:data.fields.effective_date,
+                        site:data.fields.site,
+                    }
+                };
+                return record;
+            })
             return this.resp;
         }catch(err){
             throw err
@@ -62,7 +82,6 @@ export class BatchService{
             redaction(profiles.mobile_number2, 'PLAIN_TEXT'),
             redaction(profiles.email_address, 'PLAIN_TEXT'),
             redaction(profiles.travel_date, 'PLAIN_TEXT'),
-            redaction(profiles.traveler_type, 'PLAIN_TEXT'),
             redaction(profiles.traveler_type, 'PLAIN_TEXT'),
             redaction(profiles.name, 'PLAIN_TEXT'),
             redaction(profiles.address, 'PLAIN_TEXT'),
@@ -104,7 +123,58 @@ export class BatchService{
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id 
             where profiles.skyflow_id= '${id}'`;
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
-            this.resp.response.records=this.resp.response.records.map((record:any)=>record.fields)
+            this.resp.response.records=this.resp.response.records.map((data:any)=>{
+                let record:IRecord={
+                    profiles:{
+                        age:data.fields.age,
+                        date_of_birth:data.fields.date_of_birth,
+                        race:data.fields.race,
+                        ethnicity:data.fields.ethnicity,
+                        sex:data.fields.sex,
+                        mobile_number:data.fields.mobile_number,
+                        mobile_number2:data.fields.mobile_number2,
+                        email_address:data.fields.email_address,
+                        travel_date:data.fields.travel_date,
+                        traveler_type:data.fields.traveler_type,
+                        name:data.fields.name,
+                        address:data.fields.address,
+                        healthcare_employee:data.fields.healthcare_employee,
+                    },
+                    vaccinations:{
+                        vaccination_event_identifier:data.fields.vaccination_event_identifier,
+                        vaccination_certification_status:data.fields.vaccination_certification_status,
+                        vaccination_issuer_type:data.fields.vaccination_issuer_type,
+                        ordered_date:data.fields.ordered_date,
+                        administered_date:data.fields.administered_date,
+                        effective_date:data.fields.effective_date,
+                        expiration_date:data.fields.expiration_date,
+                        vaccine_name:data.fields.vaccine_name,
+                        vaccine_cvx_code:data.fields.vaccine_cvx_code,
+                        vaccine_product_code:data.fields.vaccine_product_code,
+                        vaccine_manufacturer_name:data.fields.vaccine_manufacturer_name,
+                        lot_number:data.fields.lot_number,
+                        site:data.fields.site,
+                        route:data.fields.route,
+                        dose_number:data.fields.dose_number,
+                        series_complete:data.fields.series_complete,
+                        series_doses:data.fields.series_doses,
+                        provider_suffix:data.fields.provider_suffix,
+                        vaccine_refusal:data.fields.vaccine_refusal,
+                        recipient_comorbidity_status:data.fields.recipient_comorbidity_status,
+                        recipient_missed_appt:data.fields.recipient_missed_appt,
+                        serology:data.fields.serology,
+                        extract_type:data.fields.extract_type,
+                        master_id:data.fields.master_id,
+                        reference_id:data.fields.reference_id,
+                        reference_system:data.fields.reference_system,
+                        verification_source:data.fields.verification_source,
+                        verification_status:data.fields.verification_status,
+                        verification_expiry_date:data.fields.verification_expiry_date,
+                        service_availed:data.fields.service_availed,
+                    }
+                };
+                return record;
+            })
             return this.resp;
         }catch(err){
             throw err

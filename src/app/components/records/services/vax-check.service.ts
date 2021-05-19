@@ -66,6 +66,9 @@ export class VaxCheckService {
             throw err;
         }
     }
+    async isPaymentDone(profile: IProfile,skyflow?:Skyflow){
+
+    }
     async saveVaxProfile(profile: IProfile, vaccination: IVaccinations,diagnostic_reports:IDiagnosticReports) {
         try {
             profile = await this.updateProfileMeta(profile);

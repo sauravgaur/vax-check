@@ -186,6 +186,7 @@ export interface IVaccinations {
     supporting_doc?: string
     traveler_type?: string
     service_availed?: string
+    verification_expiry_date?:string
     recipient?: {
         unique_identifier?: string,
         phone_number?: string,
