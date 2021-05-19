@@ -3,7 +3,7 @@ import { generateHash } from "../../../core/encryptor/hash.encryptor";
 import {httpError} from "../../../core/errorHandler/http.error.handler"
 import {BatchService} from "../services/batch.service"
 import {SkyflowDal} from "../dals/skyflow.dals"
-import { IBatch, IMATADATA_RECORDS, IPatientAddress, IProfile, IRecord, ISourceProvider, ITests, IVaccinations } from "../../../interfaces/record.interface";
+import { IBatch, IMATADATA_RECORDS, IPatientAddress, IProfile, IRecord, ISourceProvider, IDiagnosticReports, IVaccinations } from "../../../interfaces/record.interface";
 import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGenerator/password.generate";
 import { VaxCheckService } from "../services/vax-check.service";
 export class RecordsCtrl{
@@ -34,8 +34,9 @@ export class RecordsCtrl{
         try{
             let profile=req.body.profile as IProfile;
             let vaccination=req.body.vaccination as IVaccinations;
+            let diagnostic_reports=req.body.diagnostic_reports as IDiagnosticReports;
             let vaxCheckService= new VaxCheckService();
-            let resp= await vaxCheckService.saveVaxProfile(profile,vaccination)
+            let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports)
             return res.send(resp)
             
         }catch(err){
@@ -146,7 +147,7 @@ export class BatchCtrl{
             const record:IRecord={
                 metadata_records:this.getMetadataFromJSON(jsonObj),
                 profiles:patients,
-                tests:this.getTestFromJSON(jsonObj),
+                diagnostic_reports:this.getdiagnoReportFromJSON(jsonObj),
                 vaccinations:this.getVaccinationFromJSON(jsonObj)
             } 
             return record
@@ -234,7 +235,7 @@ export class BatchCtrl{
             sex:jsonObj["sex"]
         } as IProfile
     }
-    getTestFromJSON(jsonObj:any):ITests{
+    getdiagnoReportFromJSON(jsonObj:any):IDiagnosticReports{
         // console.log("enter into getTestFromJSON")
         return {
             ordered:jsonObj["ordered"],
@@ -271,7 +272,7 @@ export class BatchCtrl{
             state:jsonObj["state"],
             test_image:"",
             zip_code:jsonObj["zip_code"]
-        } as ITests
+        } as IDiagnosticReports
     }
     getAddressFromJSON(jsonObj:any):IPatientAddress{
         // console.log("enter into getAddressFromJSON")

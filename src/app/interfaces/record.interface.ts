@@ -36,41 +36,109 @@ export interface IProfile {
     updated_timestamp?: string | Date
 }
 
-export interface ITests {
-    ordered?: string
-    result?: {
-        date?: string
-        test?: string
-        value?: string
-    }
-    report_date?: string
-    device_identifier?: string
-    ordering_provider?: {
-        name?: string
-        address?: IPatientAddress
-        phone_number?: string
-    }
-    specimen_source?: string
-    first_test?: {
-        value?: 'YES' | 'NO'
-        previous_test_and_result?: {
-            previous_result?: string
-            type?: string
-            conclusion?: string
+export interface IDiagnosticReports {
+    profiles_skyflow_id?:string
+    diagnostic_event_identifier?:string
+    diagnostic_test_ordered?:string
+    diagnostic_test_type?:'ANTIBODY'|'ANTIGEN'|'MOLECULAR'
+    diagnostic_test_code?:string
+    diagnostic_certificate_status?:string
+    device_identifier?:string
+    specimen_source?:string
+    specimen_number?:string
+    administration_date?:string
+    test_image?:string
+    pregnant?:string
+    report_date?:Date
+    consent?: {
+        given?: boolean
+        timestamp?: Date
+    },
+    ordering_provider?:{
+        name?:string,
+        phone_number?:string
+        address?:{
+            street_address?:string,
+            street_address2?:string,
+            city?:string
+            state?:string
+            country?:string
+            zip_code?:string
+            county?:string
+            county_fips?:string
+            island?:string
+        },
+        npi?:{
+            value?:string
         }
-        previous_test_date?: string
+    },
+    first_test?:{
+        value?:string,
+        previous_test_date?:string
+        previous_test_and_result?:{
+            previous_result?:string,
+            type?:string,
+            conclusion?:string
+        }
+    },
+    symptomatic?:{
+        value?:string,
+        date?:string,
+        symptom?:string
+    },
+    conclusion?:{
+        date?:string,
+        test?:string,
+        value?:string
+    },
+    recipient?:{
+        unique_identifier?:string
+        phone_number?:string
+        email_address?:string
+        date_of_birth?:string
+        sex?:string
+        race?:string
+        race2?:string
+        race3?:string
+        ethnicity?:string
+        name?:{
+            prefix?:string
+            first_name?:string
+            middle_name?:string
+            last_name?:string
+            use?:string
+            suffix?:string
+        },
+        address?:{
+            street_address?:string,
+            street_address2?:string
+            city?:string
+            state?:string
+            country?:string
+            zip_code?:string
+            county?:string
+            county_fips?:string
+            island?:string
+        }
+    },
+    performer?:{
+        performer_org_name?:string,
+        performer_name?:string,
+        performer_type?:string,
+        performer_npi?:string,
+        performer_address?:{
+            street_address?:string,
+            street_address2?:string,
+            city?:string,
+            state?:string,
+            country?:string,
+            zip_code?:string,
+            county?:string,
+            county_fips?:string,
+            island?:string
+        }
     }
-    symptomatic?: {
-        value?: 'YES' | 'NO'
-        date?: string
-        symptom?: string[]
-    }
-    pregnant?: string
-    zip_code?: string
-    state?: string
-    county?: string
-    consent_given?: boolean
-    test_image?: string | null
+
 }
 
 export interface IMATADATA_RECORDS {
@@ -161,7 +229,7 @@ export interface IPatientAddress {
 
 export interface IRecord {
     profiles?: IProfile
-    tests?: ITests
+    diagnostic_reports?: IDiagnosticReports
     metadata_records?: IMATADATA_RECORDS
     vaccinations?: IVaccinations
 }
