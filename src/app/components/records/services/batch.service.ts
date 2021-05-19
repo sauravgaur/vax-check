@@ -20,25 +20,6 @@ export class BatchService{
             status:200
         }
     }
-    async checkUserExist(firstName:string,middleName:string,lastName:string,dateOfBirth:string):Promise<IHTTPResponse>{
-        
-        try{
-            let skyFlow= new Skyflow(this.vaultConfig)
-            const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
-            let query=`select * from patients where name='${name}' and date_of_birth='${dateOfBirth}'`;
-            this.resp.response=await skyFlow.skyflowQueryWrapper(query)
-            if(this.resp.response && this.resp.response.records.length==0){
-                this.resp.response["isUserExist"]=false;
-            }
-            else{
-                this.resp.response["isUserExist"]=true;
-            }
-            return this.resp;
-        }catch(err){
-            throw err
-        }
-        
-    }
     async unverifiedPatients():Promise<IHTTPResponse>{
         
         try{

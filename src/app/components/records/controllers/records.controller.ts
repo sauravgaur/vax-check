@@ -78,9 +78,17 @@ export class RecordsCtrl{
             if(!lastName){
                 return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","dateOfBirth"  and "lastName"`})
             }
-            let batchService= new BatchService();
-            let {status,response}= await batchService.checkUserExist(firstName,middleName,lastName,dateOfBirth)
-            return res.status(status).send(response)
+            let vaxCheckService= new VaxCheckService();
+            let profile:IProfile={
+                name:{
+                    first_name:firstName,
+                    middle_name:middleName,
+                    last_name:lastName,
+                },
+                date_of_birth:dateOfBirth
+            }
+            let response= await vaxCheckService.checkUserExist(profile)
+            return res.status(200).send(response)
             
         }catch(err){
             return httpError(res,500,"Internal server error",{desc:err})

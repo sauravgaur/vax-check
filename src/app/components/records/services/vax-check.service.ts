@@ -22,12 +22,12 @@ export class VaxCheckService {
             specialChars: false,
             upperCase: false
         } as IPasswordOptions)
-        let unixTimestamp = (new Date()).toISOString()
+        // let unixTimestamp = (new Date()).toISOString()
 
         profile.unique_identifier = await generateHash(JSON.stringify(profile));
         profile.access_code = accessCodeGenrator.generate(32);
-        profile.created_timestamp = unixTimestamp;
-        profile.updated_timestamp = unixTimestamp;
+        // profile.created_timestamp = unixTimestamp;
+        // profile.updated_timestamp = unixTimestamp;
 
         return profile;
     }
@@ -48,19 +48,32 @@ export class VaxCheckService {
         return diagnostic_reports;
     }
 
-    async checkPatient(profile: IProfile,skyflow:Skyflow):Promise<boolean>{
-        let isPatientExist=false
-        let query=`select count(*) as numb from profiles
-            where 
-        `;
-        let resp=skyflow.skyflowQueryWrapper(query)
-        return isPatientExist;
+    async checkUserExist(profile: IProfile,skyflow?:Skyflow):Promise<boolean>{
+        try{
+            if(!skyflow){
+                skyflow=new Skyflow(this.vaultConfig)
+            }
+            let query=`select count(*) as numb from profiles
+                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' and sex='${profile.sex}' 
+            `;
+            if(profile.name.middle_name){
+                query+=` and name->'middle_name' = to_json('${profile.name.middle_name}'::text)`
+            }
+            console.log('query-->',query);
+            let resp=await skyflow.skyflowQueryWrapper(query)
+            return parseInt(resp.records[0].fields.numb)>0;
+        }catch(err){
+            throw err;
+        }
     }
     async saveVaxProfile(profile: IProfile, vaccination: IVaccinations,diagnostic_reports:IDiagnosticReports) {
         try {
             profile = await this.updateProfileMeta(profile);
             
             let skyflow = new Skyflow(this.vaultConfig)
+            if(await this.checkUserExist(profile,skyflow)){
+                return {msg:"user is already exist."}
+            }
             console.log("saveVaxProfilesaveVaxProfilesaveVaxProfile-->", JSON.stringify(profile));
             let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])
             let profiles_skyflow_id = profileResponse.responses[0].records[0].skyflow_id

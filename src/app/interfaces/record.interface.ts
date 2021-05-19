@@ -1,5 +1,5 @@
 export interface IProfile {
-    unique_identifier: string
+    unique_identifier?: string
     age?: number
     date_of_birth?: string
     race?: string
