@@ -3,7 +3,7 @@ import { generateHash } from "../../../core/encryptor/hash.encryptor";
 import {httpError} from "../../../core/errorHandler/http.error.handler"
 import {BatchService} from "../services/batch.service"
 import {SkyflowDal} from "../dals/skyflow.dals"
-import { IBatch, IMATADATA_RECORDS, IPatientAddress, IProfile, IRecord, ISourceProvider, IDiagnosticReports, IVaccinations } from "../../../interfaces/record.interface";
+import { IBatch, IMATADATARECORDS, IPatientAddress, IProfile, IRecord, ISourceProvider, IDiagnosticReports, IVaccinations, IMedia } from "../../../interfaces/record.interface";
 import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGenerator/password.generate";
 import { VaxCheckService } from "../services/vax-check.service";
 export class RecordsCtrl{
@@ -35,8 +35,9 @@ export class RecordsCtrl{
             let profile=req.body.profile as IProfile;
             let vaccination=req.body.vaccination as IVaccinations;
             let diagnostic_reports=req.body.diagnostic_reports as IDiagnosticReports;
+            let media=req.body.media as IMedia[]
             let vaxCheckService= new VaxCheckService();
-            let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports)
+            let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports,media)
             return res.send(resp)
             
         }catch(err){
@@ -94,6 +95,35 @@ export class RecordsCtrl{
             return httpError(res,500,"Internal server error",{desc:err})
         }
     }
+    async paymentStatus(req: Request, res: Response){
+        try{
+            let {firstName,middleName,lastName,dateOfBirth} = req.body;
+            if(!firstName){
+                return httpError(res,422,"firstName is missing",{desc:`mandatory fields are "firstName","dateOfBirth" and "lastName"`})
+            }
+            if(!dateOfBirth){
+                return httpError(res,422,"dateOfBirth is missing",{desc:`mandatory fields are "firstName","dateOfBirth" and "lastName"`})
+            }
+            if(!lastName){
+                return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","dateOfBirth"  and "lastName"`})
+            }
+            let vaxCheckService= new VaxCheckService();
+            let profile:IProfile={
+                name:{
+                    first_name:firstName,
+                    middle_name:middleName,
+                    last_name:lastName,
+                },
+                date_of_birth:dateOfBirth
+            }
+            let response= await vaxCheckService.paymentStatus(profile)
+            return res.status(200).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
+    
     async unverifiedPatient(req: Request, res: Response){
         try{
             let batchService= new BatchService();
@@ -162,14 +192,14 @@ export class BatchCtrl{
         })
         ); 
     }
-    getMetadataFromJSON(jsonObj:any):IMATADATA_RECORDS{
+    getMetadataFromJSON(jsonObj:any):IMATADATARECORDS{
         // console.log("enter into getMetadataFromJSON")
         return {
             created_timestamp:jsonObj["created_timestamp"],
             status:{
                 state:jsonObj["meta_status_state"]
             }
-        } as IMATADATA_RECORDS;
+        } as IMATADATARECORDS;
     }
     getVaccinationFromJSON(jsonObj:any):IVaccinations{
         // console.log("enter into getVaccinationFromJSON")

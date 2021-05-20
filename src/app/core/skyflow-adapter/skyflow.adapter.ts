@@ -3,7 +3,7 @@ import * as axiosObj from "axios"
 import { PathLike } from "fs"
 import { promises } from "fs"
 import { sign } from "jsonwebtoken"
-import { IMATADATA_RECORDS, IProfile, IRecord, IDiagnosticReports, IVaccinations } from "../../interfaces/record.interface"
+import { IMATADATARECORDS, IProfile, IRecord, IDiagnosticReports, IVaccinations } from "../../interfaces/record.interface"
 import { ISkyflowConfig } from "../../interfaces/skyflow-config.interface"
 
 export class Skyflow {
@@ -73,7 +73,7 @@ export class Skyflow {
         }
 
     }
-    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATA_RECORDS|IDiagnosticReports, tableName: string, skyflowId: string) {
+    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports, tableName: string, skyflowId: string) {
         const url = `${this.skyflowBaseUrl}/${tableName}/${skyflowId}`;
         let data = {
             "record": {
@@ -104,11 +104,21 @@ export class Skyflow {
         let arr: any = []
         records.forEach(record => {
             for (let key in record) {
-                let obj: any = {}
-                obj["tableName"] = key
-                obj["method"] = "POST"
-                obj["fields"] = record[key]
-                arr.push(obj)
+                if(Array.isArray(record[key])){
+                    record[key].forEach((elem:any)=>{
+                        let obj: any = {}
+                        obj["tableName"] = key
+                        obj["method"] = "POST"
+                        obj["fields"] = elem
+                        arr.push(obj)
+                    })
+                }else{
+                    let obj: any = {}
+                    obj["tableName"] = key
+                    obj["method"] = "POST"
+                    obj["fields"] = record[key]
+                    arr.push(obj)
+                }
             }
         });
 
