@@ -12,6 +12,7 @@ export function routesConfig():Router {
     router.get('/batch/testUrl',recordCtrl.testTurl);
     router.post('/batch/patient-vax',recordCtrl.saveVaxProfile);
     router.post('/batch/check-patient',recordCtrl.checkUserExists);
+    router.post('/batch/payment-status',recordCtrl.paymentStatus);
     router.get('/batch/unverified-patient',recordCtrl.unverifiedPatient);
     router.get('/batch/all-patient',recordCtrl.allPatient);
     router.get('/batch/patient-by-id/:id',recordCtrl.patientById);

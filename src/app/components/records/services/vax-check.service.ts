@@ -80,11 +80,9 @@ export class VaxCheckService {
         }
     }
     
-    async paymentStatus(profile: IProfile,skyflow?:Skyflow):Promise<IHTTPResponse>{
+    async paymentStatus(profile: IProfile):Promise<IHTTPResponse>{
         try{
-            if(!skyflow){
-                skyflow=new Skyflow(this.vaultConfig)
-            }
+            let skyflow=new Skyflow(this.vaultConfig)
             let isTravelerExists=false, isPaymentDone=false;
             let query=`select vaccinations.service_availed as numb from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
@@ -96,15 +94,19 @@ export class VaxCheckService {
             console.log('query-->',query);
             // as of now only 2 attributes... "isTravelerExists" and "isPaymentDone"
             let resp=await skyflow.skyflowQueryWrapper(query)
-            if(resp.response.record.length>0){
+            console.log('ssss',JSON.stringify(resp))
+            if(resp.records.length>0){
                 isTravelerExists=true;
-                if(resp.response.record[0].service_availed==='VerifyFull'|| 
-                resp.response.record[0].service_availed==='VerifyRef' || 
-                resp.response.record[0].service_availed==='VerifyPromo'){
+                if(resp.records[0].fields.service_availed==='VerifyFull'|| 
+                resp.records[0].fields.service_availed==='VerifyRef' || 
+                resp.records[0].fields.service_availed==='VerifyPromo'){
                     isPaymentDone=true
                 }
             }
-            return this.resp.response({isTravelerExists,isPaymentDone})
+            console.log('ssss',JSON.stringify({isTravelerExists,isPaymentDone}))
+            console.log('this.resp',JSON.stringify(this.resp))
+            this.resp.response={isTravelerExists:isTravelerExists,isPaymentDone:isPaymentDone}
+            return this.resp
         }catch(err){
             throw err;
         }

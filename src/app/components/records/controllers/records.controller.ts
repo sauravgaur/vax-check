@@ -6,6 +6,7 @@ import {SkyflowDal} from "../dals/skyflow.dals"
 import { IBatch, IMATADATARECORDS, IPatientAddress, IProfile, IRecord, ISourceProvider, IDiagnosticReports, IVaccinations, IMedia } from "../../../interfaces/record.interface";
 import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGenerator/password.generate";
 import { VaxCheckService } from "../services/vax-check.service";
+import { IHTTPResponse } from "../../../interfaces/http-response.interface";
 export class RecordsCtrl{
     constructor(){
     }
@@ -116,8 +117,10 @@ export class RecordsCtrl{
                 },
                 date_of_birth:dateOfBirth
             }
-            let response= await vaxCheckService.paymentStatus(profile)
-            return res.status(200).send(response)
+            let {response,status}= await vaxCheckService.paymentStatus(profile)
+            console.log("response-->",response);
+            console.log("status-->",status);
+            return res.status(status).send(response)
             
         }catch(err){
             return httpError(res,500,"Internal server error",{desc:err})
