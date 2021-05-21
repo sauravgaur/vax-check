@@ -70,7 +70,7 @@ export class PaymentCtrl {
                     sessionId: session.id,
                 }
                 const paymentService = new PaymentService();
-                paymentService.validateSessionPayment(request);
+                paymentService.paymentSuccessEmail(request);
                 break;
             case 'checkout.session.async_payment_failed':
                 break;
