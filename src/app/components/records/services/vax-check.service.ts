@@ -123,12 +123,13 @@ export class VaxCheckService {
             let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])
             let profiles_skyflow_id = profileResponse.responses[0].records[0].skyflow_id
             vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
-            diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
-
             let records:IRecord[]=[{
                  vaccinations: vaccination,
-                 diagnostic_reports:diagnostic_reports 
                 }]
+            if(diagnostic_reports){
+                diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
+                records.push({diagnostic_reports:diagnostic_reports})
+            }
             if(medias && medias.length>0){
                 medias=this.updateMediaMeta(profiles_skyflow_id,medias)
                 records.push({media:medias})
