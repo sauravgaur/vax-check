@@ -27,6 +27,9 @@ export class PaymentService {
                 payment_method_types: ['card'],
                 billing_address_collection: 'required',
                 customer_email: sessionRequest.travelerEmail,
+                metadata: {
+                    masterId: sessionRequest.masterId,
+                },
                 line_items: [
                     {
                         price_data: {
@@ -67,6 +70,7 @@ export class PaymentService {
                 // TODO: Fetch Email address from DB to send email
                 const mailService = new MailService();
                 const emailResponse = await mailService.sendMail({ to: sessionRequest.travelerEmail, html: 'Payment completed' });
+                console.log('emailResponse', emailResponse);
             }
 
             response.sessionId = session.id;
