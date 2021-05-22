@@ -1,4 +1,4 @@
-import { ISkyflowConfig } from "../../../interfaces/skyflow-config.interface";
+import { ISkyflowConfig, ITokens } from "../../../interfaces/skyflow-config.interface";
 import { RecordsDal } from "../dals/records.dals";
 import { config } from "mssql"
 import { DEFAULT_VAULT } from "../../../vaults";
@@ -84,7 +84,7 @@ export class VaxCheckService {
         try{
             let skyflow=new Skyflow(this.vaultConfig)
             let isTravelerExists=false, isPaymentDone=false;
-            let query=`select vaccinations.service_availed as numb from profiles
+            let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT') from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
                 where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' and sex='${profile.sex}' 
             `;
@@ -123,12 +123,13 @@ export class VaxCheckService {
             let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])
             let profiles_skyflow_id = profileResponse.responses[0].records[0].skyflow_id
             vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
-            diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
-
             let records:IRecord[]=[{
                  vaccinations: vaccination,
-                 diagnostic_reports:diagnostic_reports 
                 }]
+            if(diagnostic_reports){
+                diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
+                records.push({diagnostic_reports:diagnostic_reports})
+            }
             if(medias && medias.length>0){
                 medias=this.updateMediaMeta(profiles_skyflow_id,medias)
                 records.push({media:medias})
@@ -142,12 +143,41 @@ export class VaxCheckService {
             throw err;
         }
     }
-    async patientStatusUpdate(id:string,verification_status:string,verification_source:string,evedence_path:string) {
+    async patientStatusUpdate(profiles_skyflow_id:string,verification_status:string,verification_source:string,evedence_path:string,vaccinations_skyflow_id?:string) {
         try {
-            // let skyflow = new Skyflow(this.vaultConfig)
-            // let vaccination:IVaccinations={verification_status,verification_source,tes}
+            let skyflow = new Skyflow(this.vaultConfig)
+            const tokens:ITokens= await skyflow.getBearerToken();
+            vaccinations_skyflow_id=vaccinations_skyflow_id || await this.getVaccinationId(profiles_skyflow_id,skyflow,tokens);
+            let vaccinationResp=await skyflow.skyflowUpdateWrapper({
+                verification_status,verification_source
+            } as IVaccinations,"vaccinations",vaccinations_skyflow_id,tokens);
+
+            let mediaResp= await skyflow.uploadBatch([{
+                media:[{
+                    document_type:'EVIDENCE',
+                    file_path:evedence_path,
+                    profiles_skyflow_id:profiles_skyflow_id
+                }]
+            }])
+
+            return {vaccinationResp,mediaResp};
         } catch (err) {
             throw err;
+        }
+    }
+    async getVaccinationId(profiles_skyflow_id:string,skyflow?:Skyflow,tokens?:ITokens):Promise<string>{
+        try{
+            let query=`select redaction(vaccinations.skyflow_id, 'PLAIN_TEXT'),redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT') 
+             from vaccinations WHERE vaccinations.profiles_skyflow_id='${profiles_skyflow_id}'`;
+            if(!skyflow)
+                skyflow= new Skyflow(this.vaultConfig)
+            let resp=await skyflow.skyflowQueryWrapper(query,tokens)
+            if(resp.records.length>0)
+                return resp.records[0].fields.skyflow_id
+        throw new Error("Incorrect profile Id")
+
+        }catch(err){
+            throw err
         }
     }
     

@@ -48,8 +48,8 @@ export class RecordsCtrl{
     }
     async patientStatusUpdate(req: Request, res: Response){
         try{
-            let {id,verification_status,verification_source,evedence_path}=req.body;
-            if(!id){
+            let {profiles_skyflow_id,vaccinations_skyflow_id,verification_status,verification_source,evedence_path}=req.body;
+            if(!profiles_skyflow_id){
                 return httpError(res,422,"id is missing",{desc:`mandatory fields are "id","verification_status" and "verification_source"`})
             }
             if(!verification_status){
@@ -59,7 +59,7 @@ export class RecordsCtrl{
                 return httpError(res,422,"verification_source is missing",{desc:`mandatory fields are "id","verification_status" and "verification_source"`})
             }
             let vaxCheckService= new VaxCheckService();
-            let resp= await vaxCheckService.patientStatusUpdate(id,verification_status,verification_source,evedence_path)
+            let resp= await vaxCheckService.patientStatusUpdate(profiles_skyflow_id,verification_status,verification_source,evedence_path,vaccinations_skyflow_id)
             return res.send(resp)
             
         }catch(err){

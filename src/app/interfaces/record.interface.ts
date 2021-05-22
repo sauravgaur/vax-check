@@ -208,7 +208,7 @@ export interface IVaccinations {
     reference_id?: string,
     reference_system?: string,
     verification_source?: string,
-    verification_status?: string,
+    verification_status?: 'PENDING'|'VERIFIED'|'DECLINED'|'CONDITION_APPROVAL',
     access_code?: string,
     travel_date?: string,
     supporting_doc?: string,

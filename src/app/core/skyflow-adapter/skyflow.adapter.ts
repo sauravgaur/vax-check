@@ -4,7 +4,7 @@ import { PathLike } from "fs"
 import { promises } from "fs"
 import { sign } from "jsonwebtoken"
 import { IMATADATARECORDS, IProfile, IRecord, IDiagnosticReports, IVaccinations } from "../../interfaces/record.interface"
-import { ISkyflowConfig } from "../../interfaces/skyflow-config.interface"
+import { ISkyflowConfig, ITokens } from "../../interfaces/skyflow-config.interface"
 
 export class Skyflow {
     private skyflowBaseUrl: string
@@ -47,7 +47,7 @@ export class Skyflow {
             throw err;
         }
     }
-    public async getBearerToken() {
+    public async getBearerToken():Promise<ITokens> {
         const { signedJWT, creds } = await this.signedJwtToken()
         let body = {
             'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -59,11 +59,11 @@ export class Skyflow {
         console.log("accessToken-->", JSON.stringify(resp.data["accessToken"]))
         return { accessToken: resp.data["accessToken"], tokenType: resp.data["tokenType"] }
     }
-    async skyflowQueryWrapper(query: string) {
+    async skyflowQueryWrapper(query: string,tokens?:ITokens) {
         const url = `${this.skyflowBaseUrl}/query`;
         const data = { query }
         try {
-            let { accessToken, tokenType } = await this.getBearerToken()
+            let { accessToken, tokenType } = tokens || await this.getBearerToken()
             this.setHeader(accessToken, tokenType)
             const response = await axiosObj.default.post(url, data, this.httpConfig)
             return response.data
@@ -73,7 +73,7 @@ export class Skyflow {
         }
 
     }
-    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports, tableName: string, skyflowId: string) {
+    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports, tableName: string, skyflowId: string,tokens?:ITokens) {
         const url = `${this.skyflowBaseUrl}/${tableName}/${skyflowId}`;
         let data = {
             "record": {
@@ -81,11 +81,12 @@ export class Skyflow {
             }
         }
         try {
-            let { accessToken, tokenType } = await this.getBearerToken()
+            let { accessToken, tokenType } = tokens || await this.getBearerToken()
             this.setHeader(accessToken, tokenType)
             const response = await axiosObj.default.post(url, data, this.httpConfig)
             return response.data
         } catch (err) {
+            console.log('err-->',JSON.stringify(err));
             console.log("err.response.data.error.message-->", err.response.data.error.message)
             throw err.response.data.error
         }
@@ -125,8 +126,8 @@ export class Skyflow {
         return arr
     }
 
-    async uploadBatch(records: IRecord[]): Promise<any> {
-        let { accessToken, tokenType } = await this.getBearerToken()
+    async uploadBatch(records: IRecord[],tokens?:ITokens): Promise<any> {
+        let { accessToken, tokenType } = tokens || await this.getBearerToken()
 
         this.setHeader(accessToken, tokenType)
         let data = {

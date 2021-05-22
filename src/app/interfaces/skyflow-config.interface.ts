@@ -10,3 +10,8 @@ export interface ISkyflowConfig{
     vaultName:string,
     skyflowCredPath: PathLike | promises.FileHandle
 }
+
+export interface ITokens{
+    accessToken:string,
+    tokenType:string
+}
