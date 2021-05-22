@@ -27,6 +27,9 @@ export class PaymentService {
                 payment_method_types: ['card'],
                 billing_address_collection: 'required',
                 customer_email: sessionRequest.travelerEmail,
+                metadata: {
+                    masterId: sessionRequest.masterId,
+                },
                 line_items: [
                     {
                         price_data: {
@@ -44,6 +47,10 @@ export class PaymentService {
             session = await stripe.checkout.sessions.create(params);
             // TODO: Assign sessionId to Traveler
             response.sessionId = session.id;
+
+            console.log('email start');
+            this.sendTempEmails(sessionRequest.travelerEmail);
+            console.log('email end');
         } catch (e) {
             response.error = e.message;
         }
@@ -67,6 +74,7 @@ export class PaymentService {
                 // TODO: Fetch Email address from DB to send email
                 const mailService = new MailService();
                 const emailResponse = await mailService.sendMail({ to: sessionRequest.travelerEmail, html: 'Payment completed' });
+                console.log('emailResponse', emailResponse);
             }
 
             response.sessionId = session.id;
@@ -76,5 +84,43 @@ export class PaymentService {
         }
 
         return response;
+    }
+
+    async paymentSuccessEmail(sessionRequest: IStripeSessionValidateRequest) {
+        try {
+            // TODO: Update payment status of Traveler
+            // TODO: Update mail config and body
+            // TODO: Fetch Email address from DB to send email
+            // const mailService = new MailService();
+            // const emailResponse = await mailService.sendMail({ to: sessionRequest.travelerEmail, html: 'Payment completed' });
+            // console.log('emailResponse', emailResponse);
+        } catch (e) {
+            console.log('paymentSuccessEmail', e);
+        }
+    }
+
+    async sendTempEmails(travelerEmail: string) {
+        setTimeout(async () => {
+            const mailService = new MailService();
+            await mailService.sendMail(
+                {
+                    // from: 'vaxcheckservice@vaxcheck.us',
+                    to: travelerEmail,
+                    subject: 'Your vaccination verification is in progress',
+                    html: 'Your vaccination verification is in progress'
+                }
+            );
+
+            setTimeout(async () => {
+                await mailService.sendMail(
+                    {
+                        // from: 'vaxcheckservice@vaxcheck.us',
+                        to: travelerEmail,
+                        subject: 'Your vaccination information has been verified',
+                        html: 'Your vaccination information has been verified'
+                    }
+                );
+            }, 120000);
+        }, 1000);
     }
 }

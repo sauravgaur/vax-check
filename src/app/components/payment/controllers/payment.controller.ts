@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import Stripe from "stripe";
 import { IStripeSessionRequest, IStripeSessionResponse, IStripeSessionValidateRequest } from "../../../interfaces/payment.interface";
 import { PaymentService } from "../services/payment.service";
 
@@ -58,7 +59,22 @@ export class PaymentCtrl {
     }
 
     async webHook(req: Request, res: Response) {
-        console.log('webHook: ', req.body);
+        const event = req.body;
+        // Handle the event
+        console.log(`Event Type: ${event.type}`);
+        switch (event.type) {
+            case 'checkout.session.completed':
+                const session = event.data.object as Stripe.Checkout.Session;
+                const request: IStripeSessionValidateRequest = {
+                    travelerEmail: session.customer_email ? session.customer_email : '',
+                    sessionId: session.id,
+                }
+                const paymentService = new PaymentService();
+                paymentService.paymentSuccessEmail(request);
+                break;
+            case 'checkout.session.async_payment_failed':
+                break;
+        }
         res.send(200);
     }
 }

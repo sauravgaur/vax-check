@@ -17,7 +17,7 @@ export class PauboxService {
   public async send(emailOption: IEmail): Promise<IEmailResponse> {
     try {
       const httpConfig: axiosObj.AxiosRequestConfig = {
-        url: `${process.env.PAUBOX_BASE_API}/messages.json`,
+        url: `${process.env.PAUBOX_BASE_API}/messages`,
         method: 'POST',
         headers: this.getHeaders(),
         responseType: 'json',
