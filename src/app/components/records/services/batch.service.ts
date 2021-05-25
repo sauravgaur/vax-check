@@ -117,11 +117,14 @@ export class BatchService{
             redaction(vaccinations.verification_status, 'PLAIN_TEXT'), 
             redaction(vaccinations.verification_expiry_date, 'PLAIN_TEXT'), 
             redaction(vaccinations.service_availed, 'PLAIN_TEXT'),
+            redaction(vaccinations.verification_notes, 'PLAIN_TEXT'),
            
             profiles.created_timestamp
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id 
             where profiles.skyflow_id= '${id}'`;
+            // redaction(vaccinations.vaccine_dose_1, 'PLAIN_TEXT'),
+            // redaction(vaccinations.vaccine_dose_2, 'PLAIN_TEXT'),
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
             this.resp.response.records=this.resp.response.records.map((data:any)=>{
                 let record:IRecord={
@@ -171,6 +174,9 @@ export class BatchService{
                         verification_status:data.fields.verification_status,
                         verification_expiry_date:data.fields.verification_expiry_date,
                         service_availed:data.fields.service_availed,
+                        verification_notes:data.fields.verification_notes,
+                        // vaccine_dose_1:data.fields.vaccine_dose_1,
+                        // vaccine_dose_2:data.fields.vaccine_dose_2
                     }
                 };
                 return record;

@@ -4,7 +4,7 @@ import {RecordsCtrl} from "../controllers/records.controller"
 
 let router=Router()
 
-
+// updateVaccinationNotes
 export function routesConfig():Router {
     let recordCtrl=new RecordsCtrl()
     console.log("enter into router--->")
@@ -17,6 +17,7 @@ export function routesConfig():Router {
     router.get('/batch/all-patient',recordCtrl.allPatient);
     router.get('/batch/patient-by-id/:id',recordCtrl.patientById);
     router.put('/batch/patient/status-update',recordCtrl.patientStatusUpdate);
+    router.put('/batch/patient/update-vax-note',recordCtrl.updateVaccinationNotes);
     
     return router
  }

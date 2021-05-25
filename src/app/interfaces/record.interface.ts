@@ -43,7 +43,6 @@ export interface IProfile {
 }
 
 export interface IVaccineDosing{
-    dose_number?:string,
     date?:string,
     lot_number?:string,
     site_name?:string,
@@ -215,7 +214,8 @@ export interface IVaccinations {
     traveler_type?: string,
     service_availed?: string,
     verification_expiry_date?: string,
-    vaccine_dosing?:IVaccineDosing[],
+    vaccine_dose_1?:IVaccineDosing,
+    vaccine_dose_2?:IVaccineDosing,
     recipient?: {
         unique_identifier?: string,
         phone_number?: string,

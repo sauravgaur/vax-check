@@ -7,6 +7,7 @@ import { IBatch, IMATADATARECORDS, IPatientAddress, IProfile, IRecord, ISourcePr
 import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGenerator/password.generate";
 import { VaxCheckService } from "../services/vax-check.service";
 import { IHTTPResponse } from "../../../interfaces/http-response.interface";
+import { VaccinationService } from "../services/vaccination.service";
 export class RecordsCtrl{
     constructor(){
     }
@@ -67,6 +68,26 @@ export class RecordsCtrl{
             return res.status(500).send(err)
         }
     }
+    async updateVaccinationNotes(req: Request, res: Response){
+        try{
+            let {verification_notes,profile_skyflow_id}=req.body;
+            if(!verification_notes){
+                return httpError(res,422,"verification_notes is missing",{desc:`mandatory fields are "verification_notes" and "profile_skyflow_id"`})
+            }
+            if(!profile_skyflow_id){
+                return httpError(res,422,"profile_skyflow_id is missing",{desc:`mandatory fields are "verification_notes" and "profile_skyflow_id"`})
+            }
+            
+            let vaccinationService= new VaccinationService();
+            let resp= await vaccinationService.updateVaccinationNotes(verification_notes,profile_skyflow_id)
+            return res.send(resp)
+            
+        }catch(err){
+            console.log("err-->",err)
+            return res.status(500).send(err)
+        }
+    }
+    
     
     async checkUserExists(req: Request, res: Response){
         try{

@@ -83,7 +83,7 @@ export class Skyflow {
         try {
             let { accessToken, tokenType } = tokens || await this.getBearerToken()
             this.setHeader(accessToken, tokenType)
-            const response = await axiosObj.default.post(url, data, this.httpConfig)
+            const response = await axiosObj.default.put(url, data, this.httpConfig)
             return response.data
         } catch (err) {
             console.log('err-->',JSON.stringify(err));

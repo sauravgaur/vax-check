@@ -45,6 +45,7 @@ export class PaymentService {
             };
 
             session = await stripe.checkout.sessions.create(params);
+            
             // TODO: Assign sessionId to Traveler
             response.sessionId = session.id;
 

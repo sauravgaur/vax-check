@@ -67,7 +67,6 @@ export const VAULT_CONFIGS: Record<string,ISkyflowConfig>={
         vaultName:"FirstVitals_dev_2",
         skyflowCredPath:join(VAULT_BASE_PATH,"credentials","FirstVitals_dev_2.json")
     }
-    // ""
 }
 
 export const DEFAULT_VAULT=VAULT_CONFIGS[process.env.DEFAULT_VAULT_NAME as string]
