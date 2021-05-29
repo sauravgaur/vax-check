@@ -165,7 +165,8 @@ export interface IProvider{
     provider_org_name?:string,
     provider_name?:string,
     provider_type?:string,
-    provider_npi?:string
+    provider_npi?:string,
+    provider_email?: string,
     provider_address?:IAddress2
 }
 
