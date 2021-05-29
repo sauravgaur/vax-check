@@ -166,9 +166,9 @@ export interface IProvider{
     provider_org_name?:string,
     provider_name?:string,
     provider_type?:string,
-    provider_npi?:string
-    provider_address?:IAddress2,
-    provider_email?:string
+    provider_npi?:string,
+    provider_email?: string,
+    provider_address?:IAddress2
 }
 
 export interface IMedia{
