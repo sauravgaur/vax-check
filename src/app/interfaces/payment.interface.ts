@@ -3,7 +3,7 @@ export interface IStripeSessionRequest {
     cancelUrl: string;
     orderAmount: number;
     travelerEmail: string;
-    skyflow_id:string
+    profiles_skyflow_id:string
 }
 
 export interface IStripeSessionValidateRequest {

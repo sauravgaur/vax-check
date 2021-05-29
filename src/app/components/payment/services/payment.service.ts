@@ -56,7 +56,7 @@ export class PaymentService {
                 billing_address_collection: 'required',
                 customer_email: sessionRequest.travelerEmail,
                 metadata: {
-                    skyflow_id: sessionRequest.skyflow_id
+                    profiles_skyflow_id: sessionRequest.profiles_skyflow_id
                 },
                 line_items: [
                     {
