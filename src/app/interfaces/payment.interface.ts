@@ -4,6 +4,7 @@ export interface IStripeSessionRequest {
     orderAmount: number;
     masterId: string;
     travelerEmail: string;
+    profiles_skyflow_id:string
 }
 
 export interface IStripeSessionValidateRequest {

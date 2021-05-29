@@ -1,6 +1,10 @@
 import Stripe from 'stripe';
+import { Skyflow } from '../../../core';
 import { IStripeSessionRequest, IStripeSessionResponse, IStripeSessionValidateRequest } from "../../../interfaces/payment.interface";
+import { IProfile, IVaccinations } from '../../../interfaces/record.interface';
+import { ISkyflowConfig, ITokens } from '../../../interfaces/skyflow-config.interface';
 import { MailService } from '../../../utils/mailer/mail.service';
+import { DEFAULT_VAULT } from '../../../vaults';
 
 const secretKey = process.env.STRIPE_SECRET_KEY || 'Not-Defined';
 
@@ -10,7 +14,27 @@ const stripe = new Stripe(secretKey, {
 });
 
 export class PaymentService {
+    async paymentSucceedIntent(session: Stripe.Checkout.Session){
+        try{
+            if(session.metadata){
+                let profiles_skyflow_id=session.metadata.profiles_skyflow_id
+                let skyflowConfig:ISkyflowConfig=DEFAULT_VAULT;
+                let skyflow=new Skyflow(skyflowConfig);
+                let tokens:ITokens= await skyflow.getBearerToken();
+                await skyflow.skyflowUpdateWrapper({
+                    stripe_session_id:session.id,
+                } as IProfile,"profiles",profiles_skyflow_id,tokens)
+                let vaccination_id=await skyflow.getVaccinationId(profiles_skyflow_id,tokens);
+                await skyflow.skyflowUpdateWrapper({
+                    service_availed:'VerifyFull'
+                }as IVaccinations,"vaccinations",vaccination_id,tokens)
+            }
 
+        }catch(err){
+            console.log("paymentSucceedIntent err-->",err)
+            throw err;
+        }
+    }
     async createSession(sessionRequest: IStripeSessionRequest): Promise<IStripeSessionResponse> {
         const response: IStripeSessionResponse = {
             sessionId: null,
@@ -19,6 +43,10 @@ export class PaymentService {
         };
 
         try {
+            // stripe.prices.list({
+            //     active:true,
+            //     currency:'usd'
+            // })
             let session: Stripe.Checkout.Session;
             const params: Stripe.Checkout.SessionCreateParams = {
                 success_url: sessionRequest.successUrl,
@@ -29,6 +57,7 @@ export class PaymentService {
                 customer_email: sessionRequest.travelerEmail,
                 metadata: {
                     masterId: sessionRequest.masterId,
+                    profiles_skyflow_id:sessionRequest.profiles_skyflow_id
                 },
                 line_items: [
                     {

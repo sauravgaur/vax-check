@@ -147,7 +147,7 @@ export class VaxCheckService {
         try {
             let skyflow = new Skyflow(this.vaultConfig)
             const tokens:ITokens= await skyflow.getBearerToken();
-            vaccinations_skyflow_id=vaccinations_skyflow_id || await this.getVaccinationId(profiles_skyflow_id,skyflow,tokens);
+            vaccinations_skyflow_id=vaccinations_skyflow_id || await skyflow.getVaccinationId(profiles_skyflow_id,tokens);
             let vaccinationResp=await skyflow.skyflowUpdateWrapper({
                 verification_status,verification_source
             } as IVaccinations,"vaccinations",vaccinations_skyflow_id,tokens);
@@ -163,21 +163,6 @@ export class VaxCheckService {
             return {vaccinationResp,mediaResp};
         } catch (err) {
             throw err;
-        }
-    }
-    async getVaccinationId(profiles_skyflow_id:string,skyflow?:Skyflow,tokens?:ITokens):Promise<string>{
-        try{
-            let query=`select redaction(vaccinations.skyflow_id, 'PLAIN_TEXT'),redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT') 
-             from vaccinations WHERE vaccinations.profiles_skyflow_id='${profiles_skyflow_id}'`;
-            if(!skyflow)
-                skyflow= new Skyflow(this.vaultConfig)
-            let resp=await skyflow.skyflowQueryWrapper(query,tokens)
-            if(resp.records.length>0)
-                return resp.records[0].fields.skyflow_id
-        throw new Error("Incorrect profile Id")
-
-        }catch(err){
-            throw err
         }
     }
     

@@ -65,6 +65,7 @@ export class PaymentCtrl {
         switch (event.type) {
             case 'checkout.session.completed':
                 const session = event.data.object as Stripe.Checkout.Session;
+                // session.metadata.profiles_skyflow_id
                 const request: IStripeSessionValidateRequest = {
                     travelerEmail: session.customer_email ? session.customer_email : '',
                     sessionId: session.id,

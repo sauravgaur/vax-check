@@ -8,6 +8,7 @@ export interface IProfile {
     age?: number,
     date_of_birth?: string,
     race?: string,
+    stripe_session_id?:string,
     race2?: string,
     race3?: string,
     ethnicity?: string,
@@ -166,7 +167,8 @@ export interface IProvider{
     provider_name?:string,
     provider_type?:string,
     provider_npi?:string
-    provider_address?:IAddress2
+    provider_address?:IAddress2,
+    provider_email?:string
 }
 
 export interface IMedia{
@@ -235,7 +237,7 @@ export interface IVaccinations {
         performer_name?: string,
         performer_type?: string,
         performer_npi?: string,
-        performer_address?: IPatientAddress
+        performer_address?: IPatientAddress,
     },
     provider?:IProvider
 }

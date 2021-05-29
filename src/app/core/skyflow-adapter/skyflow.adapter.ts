@@ -125,6 +125,20 @@ export class Skyflow {
 
         return arr
     }
+    async getVaccinationId(profiles_skyflow_id:string,tokens?:ITokens):Promise<string>{
+        try{
+            let { accessToken, tokenType } = tokens || await this.getBearerToken()
+            let query=`select redaction(vaccinations.skyflow_id, 'PLAIN_TEXT'),redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT') 
+             from vaccinations WHERE vaccinations.profiles_skyflow_id='${profiles_skyflow_id}'`;
+            let resp=await this.skyflowQueryWrapper(query,tokens)
+            if(resp.records.length>0)
+                return resp.records[0].fields.skyflow_id
+        throw new Error("Incorrect profile Id")
+
+        }catch(err){
+            throw err
+        }
+    }
 
     async uploadBatch(records: IRecord[],tokens?:ITokens): Promise<any> {
         let { accessToken, tokenType } = tokens || await this.getBearerToken()

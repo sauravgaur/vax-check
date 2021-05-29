@@ -30,7 +30,7 @@ export class VaccinationService {
             const vaxCheckService= new VaxCheckService(this.recordDatConfig,this.vaultConfig)
             let skyflow = new Skyflow(this.vaultConfig)
             const tokens:ITokens= await skyflow.getBearerToken();
-            const vaccinations_skyflow_id=await vaxCheckService.getVaccinationId(profiles_skyflow_id,skyflow,tokens);
+            const vaccinations_skyflow_id=await skyflow.getVaccinationId(profiles_skyflow_id,tokens);
             let updateResponse=await skyflow.skyflowUpdateWrapper({
                 verification_notes
             } as IVaccinations,"vaccinations",vaccinations_skyflow_id,tokens);
