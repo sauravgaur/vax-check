@@ -19,7 +19,7 @@ export class PaymentCtrl {
             error: null,
         }
 
-        if (sessionRequest.successUrl && sessionRequest.cancelUrl && sessionRequest.orderAmount && sessionRequest.masterId && sessionRequest.travelerEmail) {
+        if (sessionRequest.successUrl && sessionRequest.cancelUrl && sessionRequest.orderAmount && sessionRequest.skyflow_id && sessionRequest.travelerEmail) {
             const paymentService = new PaymentService();
             response = await paymentService.createSession(sessionRequest);
         } else {
