@@ -122,9 +122,10 @@ export class VaxCheckService {
             console.log("saveVaxProfilesaveVaxProfilesaveVaxProfile-->", JSON.stringify(profile));
             let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])
             let profiles_skyflow_id = profileResponse.responses[0].records[0].skyflow_id
-            vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
+            
             let records:IRecord[]=[]
             if(vaccination){
+                vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
                 records.push({
                     vaccinations: vaccination,
                    })
