@@ -18,7 +18,7 @@ export function routesConfig():Router {
     router.get('/batch/patient-by-id/:id',recordCtrl.patientById);
     router.put('/batch/patient/status-update',recordCtrl.patientStatusUpdate);
     router.put('/batch/patient/update-vax-note',recordCtrl.updateVaccinationNotes);
-    router.get('/batch/all-patient/:org_id',recordCtrl.allEmployees);
+    router.get('/batch/patient-by-org/:org_id',recordCtrl.allEmployees);
     
     return router
  }
