@@ -86,7 +86,7 @@ export class VaxCheckService {
             let isTravelerExists=false, isPaymentDone=false;
             let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT') from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
-                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' and sex='${profile.sex}' 
+                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' 
             `;
             if(profile.name.middle_name){
                 query+=` and name->'middle_name' = to_json('${profile.name.middle_name}'::text)`

@@ -34,11 +34,15 @@ export class RecordsCtrl{
     }
     async saveVaxProfile(req: Request, res: Response){
         try{
-            let profile=req.body.profile as IProfile;
+            let profile=req.body.profiles as IProfile;
             let vaccination=req.body.vaccination as IVaccinations;
             let diagnostic_reports=req.body.diagnostic_reports as IDiagnosticReports;
             let media=req.body.media as IMedia[]
             let vaxCheckService= new VaxCheckService();
+            console.log("profile-->",profile);
+            console.log("vaccination-->",vaccination);
+            console.log("diagnostic_reports-->",diagnostic_reports);
+            console.log("media-->",media);
             let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports,media)
             return res.send(resp)
             
@@ -70,16 +74,16 @@ export class RecordsCtrl{
     }
     async updateVaccinationNotes(req: Request, res: Response){
         try{
-            let {verification_notes,profile_skyflow_id}=req.body;
+            let {verification_notes,profiles_skyflow_id}=req.body;
             if(!verification_notes){
-                return httpError(res,422,"verification_notes is missing",{desc:`mandatory fields are "verification_notes" and "profile_skyflow_id"`})
+                return httpError(res,422,"verification_notes is missing",{desc:`mandatory fields are "verification_notes" and "profiles_skyflow_id"`})
             }
-            if(!profile_skyflow_id){
-                return httpError(res,422,"profile_skyflow_id is missing",{desc:`mandatory fields are "verification_notes" and "profile_skyflow_id"`})
+            if(!profiles_skyflow_id){
+                return httpError(res,422,"profiles_skyflow_id is missing",{desc:`mandatory fields are "verification_notes" and "profiles_skyflow_id"`})
             }
             
             let vaccinationService= new VaccinationService();
-            let resp= await vaccinationService.updateVaccinationNotes(verification_notes,profile_skyflow_id)
+            let resp= await vaccinationService.updateVaccinationNotes(verification_notes,profiles_skyflow_id)
             return res.send(resp)
             
         }catch(err){
