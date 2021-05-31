@@ -172,6 +172,16 @@ export class RecordsCtrl{
             return httpError(res,500,"Internal server error",{desc:err})
         }
     }
+    async allEmployees(req: Request, res: Response){
+        try{
+            let batchService= new BatchService();
+            let {status,response}= await batchService.allPatient()
+            return res.status(status).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
     async patientById(req: Request, res: Response){
         try{
             let batchService= new BatchService();

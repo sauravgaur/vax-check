@@ -123,9 +123,12 @@ export class VaxCheckService {
             let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])
             let profiles_skyflow_id = profileResponse.responses[0].records[0].skyflow_id
             vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
-            let records:IRecord[]=[{
-                 vaccinations: vaccination,
-                }]
+            let records:IRecord[]=[]
+            if(vaccination){
+                records.push({
+                    vaccinations: vaccination,
+                   })
+            }
             if(diagnostic_reports){
                 diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
                 records.push({diagnostic_reports:diagnostic_reports})
@@ -134,7 +137,9 @@ export class VaxCheckService {
                 medias=this.updateMediaMeta(profiles_skyflow_id,medias)
                 records.push({media:medias})
             }
-            let vaccincationResponse = await skyflow.uploadBatch(records)
+            let vaccincationResponse=null
+            if(records.length>0)
+                vaccincationResponse = await skyflow.uploadBatch(records)
             // if(medias && medias.length>0){
             //     await Promise.all(medias.map(async (media) => await skyflow.uploadBatch([{ media: media}])));
             // }
