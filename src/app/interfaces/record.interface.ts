@@ -8,6 +8,7 @@ export interface IProfile {
     age?: number,
     date_of_birth?: string,
     employeeId?:string,
+    org_id?:string,
     work_location?:string,
     race?: string,
     stripe_session_id?:string,
