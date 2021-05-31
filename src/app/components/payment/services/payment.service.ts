@@ -14,24 +14,24 @@ const stripe = new Stripe(secretKey, {
 });
 
 export class PaymentService {
-    async paymentSucceedIntent(session: Stripe.Checkout.Session){
-        try{
-            if(session.metadata){
-                let profiles_skyflow_id=session.metadata.profiles_skyflow_id
-                let skyflowConfig:ISkyflowConfig=DEFAULT_VAULT;
-                let skyflow=new Skyflow(skyflowConfig);
-                let tokens:ITokens= await skyflow.getBearerToken();
+    async paymentSucceedIntent(session: Stripe.Checkout.Session) {
+        try {
+            if (session.metadata) {
+                let profiles_skyflow_id = session.metadata.profiles_skyflow_id
+                let skyflowConfig: ISkyflowConfig = DEFAULT_VAULT;
+                let skyflow = new Skyflow(skyflowConfig);
+                let tokens: ITokens = await skyflow.getBearerToken();
                 await skyflow.skyflowUpdateWrapper({
-                    stripe_session_id:session.id,
-                } as IProfile,"profiles",profiles_skyflow_id,tokens)
-                let vaccination_id=await skyflow.getVaccinationId(profiles_skyflow_id,tokens);
+                    stripe_session_id: session.id,
+                } as IProfile, "profiles", profiles_skyflow_id, tokens)
+                let vaccination_id = await skyflow.getVaccinationId(profiles_skyflow_id, tokens);
                 await skyflow.skyflowUpdateWrapper({
-                    service_availed:'VerifyFull'
-                }as IVaccinations,"vaccinations",vaccination_id,tokens)
+                    service_availed: 'VerifyFull'
+                } as IVaccinations, "vaccinations", vaccination_id, tokens)
             }
 
-        }catch(err){
-            console.log("paymentSucceedIntent err-->",err)
+        } catch (err) {
+            console.log("paymentSucceedIntent err-->", err)
             throw err;
         }
     }
@@ -56,8 +56,7 @@ export class PaymentService {
                 billing_address_collection: 'required',
                 customer_email: sessionRequest.travelerEmail,
                 metadata: {
-                    masterId: sessionRequest.masterId,
-                    profiles_skyflow_id:sessionRequest.profiles_skyflow_id
+                    profiles_skyflow_id: sessionRequest.profiles_skyflow_id
                 },
                 line_items: [
                     {
@@ -74,7 +73,7 @@ export class PaymentService {
             };
 
             session = await stripe.checkout.sessions.create(params);
-            
+
             // TODO: Assign sessionId to Traveler
             response.sessionId = session.id;
 
