@@ -117,7 +117,7 @@ export class VaxCheckService {
             
             let skyflow = new Skyflow(this.vaultConfig)
             if(await this.checkUserExist(profile,skyflow)){
-                return {msg:"user is already exist."}
+                return {msg:"user is already exist.",status:403}
             }
             console.log("saveVaxProfilesaveVaxProfilesaveVaxProfile-->", JSON.stringify(profile));
             let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])

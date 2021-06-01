@@ -44,6 +44,9 @@ export class RecordsCtrl{
             console.log("diagnostic_reports-->",diagnostic_reports);
             console.log("media-->",media);
             let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports,media)
+            if(resp.status && resp.status===403){
+                return res.status(403).send({msg:resp.msg})
+            }
             return res.send(resp)
             
         }catch(err){
