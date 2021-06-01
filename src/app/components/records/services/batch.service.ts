@@ -41,7 +41,7 @@ export class BatchService{
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id `;
             if(org_id){
-                query+=`where profiles.org_id =${org_id}`
+                query+=`where profiles.org_id ='${org_id}'`
             }
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
             this.resp.response.records=this.resp.response.records.map((data:any)=>{

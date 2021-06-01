@@ -178,7 +178,8 @@ export class RecordsCtrl{
     async allEmployees(req: Request, res: Response){
         try{
             let batchService= new BatchService();
-            let {status,response}= await batchService.allPatient()
+            let {org_id}= req.params
+            let {status,response}= await batchService.allPatient(org_id)
             return res.status(status).send(response)
             
         }catch(err){
