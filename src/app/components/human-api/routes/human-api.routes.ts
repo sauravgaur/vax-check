@@ -7,7 +7,7 @@ export function routesConfig(): Router {
     const humanApiCtrl = new HumanApiCtrl()
     console.log("enter into router--->")
     router.post('/humanapi/create-token', humanApiCtrl.createToken);
-    router.post('/humanapi/create-access-token', humanApiCtrl.createToken);
+    router.post('/humanapi/create-access-token', humanApiCtrl.createAcessToken);
 
     return router
 }
