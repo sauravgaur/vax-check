@@ -189,6 +189,7 @@ export interface IVaccinations {
     vaccination_certification_status?: string,
     vaccination_issuer_type?: string,
     ordered_date?: string,
+    appointment_email_confirmation?: string,
     administered_date?: string,
     effective_date?: string,
     expiration_date?: string,
