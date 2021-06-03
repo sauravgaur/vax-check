@@ -39,9 +39,16 @@ export class Skyflow {
                 "aud": creds["tokenURI"],
                 "exp": currrentTimeStamp + (3600),
                 "sub": creds["clientID"],
+                "iat":0
             }
             const signedJWT = sign(claims, creds["privateKey"], { algorithm: 'RS256' })
-            return { signedJWT, creds }
+            console.log("signedJWT-->",signedJWT);
+            let resp:any=await new Promise((resolve,reject)=>{
+                return setTimeout(()=>{
+                    resolve({ signedJWT, creds })
+                },1000)
+            })
+            return {signedJWT:resp.signedJWT,creds}
         } catch (err) {
             console.log("err-->", err)
             throw err;
