@@ -39,7 +39,7 @@ export class BatchService{
             let query=`select redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT'),redaction(profiles.created_timestamp, 'PLAIN_TEXT') , redaction(profiles.name, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT'), redaction(profiles.age, 'PLAIN_TEXT') , redaction(vaccinations.site, 'PLAIN_TEXT'), redaction(profiles.travel_date, 'PLAIN_TEXT'), redaction(profiles.traveler_type, 'PLAIN_TEXT'), redaction(profiles.address, 'PLAIN_TEXT'), 
             redaction(profiles.mobile_number, 'PLAIN_TEXT'), 
             redaction(profiles.mobile_number2, 'PLAIN_TEXT'), 
-            redaction(profiles.employeeId, 'PLAIN_TEXT'), 
+            redaction(profiles.employeeid, 'PLAIN_TEXT'), 
             redaction(profiles.work_location, 'PLAIN_TEXT'), 
             redaction(vaccinations.verification_status, 'PLAIN_TEXT'), 
             redaction(profiles.email_address, 'PLAIN_TEXT')
@@ -48,6 +48,7 @@ export class BatchService{
             if(org_id){
                 query+=`where profiles.org_id ='${org_id}'`
             }
+            console.log("\n\n\n\n\n\n\n\n\n Query--->",query)
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
             this.resp.response.records=this.resp.response.records.map((data:any)=>{
                 let record:IRecord={
@@ -62,7 +63,7 @@ export class BatchService{
                         email_address:data.fields.email_address,
                         mobile_number:data.fields.mobile_number,
                         mobile_number2:data.fields.mobile_number2,
-                        employeeId:data.fields.employeeId,
+                        employeeid:data.fields.employeeid,
                         work_location:data.fields.work_location,
                     },
                     vaccinations:{

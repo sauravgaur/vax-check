@@ -7,7 +7,7 @@ export interface IProfile {
     unique_identifier?: string,
     age?: number,
     date_of_birth?: string,
-    employeeId?:string,
+    employeeid?:string,
     org_id?:string,
     work_location?:string,
     race?: string,

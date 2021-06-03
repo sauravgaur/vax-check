@@ -42,7 +42,7 @@ export class Skyflow {
                 "iat":0
             }
             const signedJWT = sign(claims, creds["privateKey"], { algorithm: 'RS256' })
-            console.log("signedJWT-->",signedJWT);
+            // console.log("signedJWT-->",signedJWT);
             let resp:any=await new Promise((resolve,reject)=>{
                 return setTimeout(()=>{
                     resolve({ signedJWT, creds })
@@ -62,8 +62,8 @@ export class Skyflow {
         }
         const tokenURI = creds["tokenURI"]
         let resp = await axiosObj.default.post(tokenURI, body)
-        console.log("resp-->", JSON.stringify(resp.data))
-        console.log("accessToken-->", JSON.stringify(resp.data["accessToken"]))
+        // console.log("resp-->", JSON.stringify(resp.data))
+        // console.log("accessToken-->", JSON.stringify(resp.data["accessToken"]))
         return { accessToken: resp.data["accessToken"], tokenType: resp.data["tokenType"] }
     }
     async skyflowQueryWrapper(query: string,tokens?:ITokens) {
@@ -154,10 +154,10 @@ export class Skyflow {
         let data = {
             records: this.transformRecordsForBatch(records)
         }
-        console.log("records-->", JSON.stringify(data))
+        // console.log("records-->", JSON.stringify(data))
         try {
             let resp = await axiosObj.default.post(`${this.skyflowBaseUrl}`, data, this.httpConfig)
-            console.log(JSON.stringify(resp.data));
+            // console.log(JSON.stringify(resp.data));
             return resp.data
         } catch (err) {
             // console.log("err-->", JSON.stringify(err))
