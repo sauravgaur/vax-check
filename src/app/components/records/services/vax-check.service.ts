@@ -83,8 +83,8 @@ export class VaxCheckService {
     async paymentStatus(profile: IProfile):Promise<IHTTPResponse>{
         try{
             let skyflow=new Skyflow(this.vaultConfig)
-            let isTravelerExists=false, isPaymentDone=false;
-            let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT') from profiles
+            let isTravelerExists=false, isPaymentDone=false,profiles_skyflow_id=null;
+            let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT'),profiles.skyflow_id from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
                 where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' 
             `;
@@ -97,6 +97,7 @@ export class VaxCheckService {
             console.log('ssss',JSON.stringify(resp))
             if(resp.records.length>0){
                 isTravelerExists=true;
+                profiles_skyflow_id=resp.records[0].fields.skyflow_id;
                 if(resp.records[0].fields.service_availed==='VerifyFull'|| 
                 resp.records[0].fields.service_availed==='VerifyRef' || 
                 resp.records[0].fields.service_availed==='VerifyPromo'){
@@ -105,7 +106,7 @@ export class VaxCheckService {
             }
             console.log('ssss',JSON.stringify({isTravelerExists,isPaymentDone}))
             console.log('this.resp',JSON.stringify(this.resp))
-            this.resp.response={isTravelerExists:isTravelerExists,isPaymentDone:isPaymentDone}
+            this.resp.response={isTravelerExists:isTravelerExists,isPaymentDone:isPaymentDone,profiles_skyflow_id}
             return this.resp
         }catch(err){
             throw err;
