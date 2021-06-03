@@ -34,7 +34,6 @@ export class BatchService{
         }
     }
     async allPatient(org_id?:string):Promise<IHTTPResponse>{
-        // EmployID, Location, Mobile Ph, Work Location, 
         try{
             let skyFlow= new Skyflow(this.vaultConfig)
             let query=`select redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT'),redaction(profiles.created_timestamp, 'PLAIN_TEXT') , redaction(profiles.name, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT'), redaction(profiles.age, 'PLAIN_TEXT') , redaction(vaccinations.site, 'PLAIN_TEXT'), redaction(profiles.travel_date, 'PLAIN_TEXT'), redaction(profiles.traveler_type, 'PLAIN_TEXT'), redaction(profiles.address, 'PLAIN_TEXT'), 
