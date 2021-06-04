@@ -3,6 +3,7 @@ import { Skyflow } from '../../../core';
 import { IStripeSessionRequest, IStripeSessionResponse, IStripeSessionValidateRequest } from "../../../interfaces/payment.interface";
 import { IProfile, IVaccinations } from '../../../interfaces/record.interface';
 import { ISkyflowConfig, ITokens } from '../../../interfaces/skyflow-config.interface';
+import { vaccinationInProcessEmail, vaccinationVerifiedEmail } from '../../../utils/mailer/mail-template/email.html';
 import { MailService } from '../../../utils/mailer/mail.service';
 import { DEFAULT_VAULT } from '../../../vaults';
 
@@ -101,9 +102,9 @@ export class PaymentService {
                 // TODO: Update payment status of Traveler
                 // TODO: Update mail config and body
                 // TODO: Fetch Email address from DB to send email
-                const mailService = new MailService();
-                const emailResponse = await mailService.sendMail({ to: sessionRequest.travelerEmail, html: 'Payment completed' });
-                console.log('emailResponse', emailResponse);
+                // const mailService = new MailService();
+                // const emailResponse = await mailService.sendMail({ to: sessionRequest.travelerEmail, html: 'Payment completed' });
+                // console.log('emailResponse', emailResponse);
             }
 
             response.sessionId = session.id;
@@ -136,17 +137,18 @@ export class PaymentService {
                     // from: 'vaxcheckservice@vaxcheck.us',
                     to: travelerEmail,
                     subject: 'Your vaccination verification is in progress',
-                    html: 'Your vaccination verification is in progress'
+                    html: vaccinationInProcessEmail()
                 }
             );
 
             setTimeout(async () => {
+                const accessCode = '3A899SK@72939@183#2';
                 await mailService.sendMail(
                     {
                         // from: 'vaxcheckservice@vaxcheck.us',
                         to: travelerEmail,
                         subject: 'Your vaccination information has been verified',
-                        html: 'Your vaccination information has been verified'
+                        html: vaccinationVerifiedEmail(accessCode)
                     }
                 );
             }, 120000);
