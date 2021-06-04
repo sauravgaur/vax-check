@@ -39,7 +39,7 @@ export class BatchService{
             let query=`select redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT'),redaction(profiles.created_timestamp, 'PLAIN_TEXT') , redaction(profiles.name, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT'), redaction(profiles.age, 'PLAIN_TEXT') , redaction(vaccinations.site, 'PLAIN_TEXT'), redaction(profiles.travel_date, 'PLAIN_TEXT'), redaction(profiles.traveler_type, 'PLAIN_TEXT'), redaction(profiles.address, 'PLAIN_TEXT'), 
             redaction(profiles.mobile_number, 'PLAIN_TEXT'), 
             redaction(profiles.mobile_number2, 'PLAIN_TEXT'), 
-            redaction(profiles.employeeid, 'PLAIN_TEXT'), 
+            redaction(profiles.emp_id, 'PLAIN_TEXT'), 
             redaction(profiles.work_location, 'PLAIN_TEXT'), 
             redaction(vaccinations.verification_status, 'PLAIN_TEXT'), 
             redaction(profiles.email_address, 'PLAIN_TEXT')
@@ -63,7 +63,7 @@ export class BatchService{
                         email_address:data.fields.email_address,
                         mobile_number:data.fields.mobile_number,
                         mobile_number2:data.fields.mobile_number2,
-                        employeeid:data.fields.employeeid,
+                        emp_id:data.fields.emp_id,
                         work_location:data.fields.work_location,
                     },
                     vaccinations:{
