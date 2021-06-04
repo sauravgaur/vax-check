@@ -11,6 +11,7 @@ const API_ROUTES=[
   mediaModule.routesConfig(),
   paymentModule.paymentRoutes.routesConfig(),
   humanApiModule.humanApiRoutes.routesConfig(),
+  userModule.userRoutes.routesConfig()
 ]
 
 export function app(port?:string){

@@ -1,3 +1,5 @@
+import { IUser } from "./user.interface";
+
 type YES_NO = 'YES' | 'NO';
 type GENDER = 'MALE' | 'FEMALE' | 'OTHER';
 type STATUS = 'PENDING' | 'SUCCESS' | 'FAIL';
@@ -282,7 +284,8 @@ export interface IRecord {
     diagnostic_reports?: IDiagnosticReports,
     metadata_records?: IMATADATARECORDS,
     vaccinations?: IVaccinations,
-    media?:IMedia[]
+    media?:IMedia[],
+    users?:IUser
 }
 
 export interface ISourceProvider {

@@ -10,7 +10,7 @@ export function routesConfig():Router {
     console.log("enter into router--->")
     router.post('/login',userCtrl.login);
     router.get('/user/getById',isAuthenticated,userCtrl.getById)
-    // app.post('/users/signup',signup);
+    router.post('/user/signup',userCtrl.signup);
     // app.get('/user/passwordreset/:email',passwordReset);
     
  
