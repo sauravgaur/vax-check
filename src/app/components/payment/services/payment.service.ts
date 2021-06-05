@@ -131,13 +131,14 @@ export class PaymentService {
 
     async sendTempEmails(travelerEmail: string) {
         setTimeout(async () => {
+            const firstName = 'First Name';
             const mailService = new MailService();
             await mailService.sendMail(
                 {
                     // from: 'vaxcheckservice@vaxcheck.us',
                     to: travelerEmail,
                     subject: 'Your vaccination verification is in progress',
-                    html: vaccinationInProcessEmail()
+                    html: vaccinationInProcessEmail(firstName)
                 }
             );
 
@@ -148,7 +149,7 @@ export class PaymentService {
                         // from: 'vaxcheckservice@vaxcheck.us',
                         to: travelerEmail,
                         subject: 'Your vaccination information has been verified',
-                        html: vaccinationVerifiedEmail(accessCode)
+                        html: vaccinationVerifiedEmail(accessCode, firstName)
                     }
                 );
             }, 120000);
