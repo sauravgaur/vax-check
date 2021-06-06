@@ -1,5 +1,6 @@
 import express from 'express';
-import {userModule,recordsModule,vaxCardModule,safeTravellerModule,mediaModule,paymentModule, humanApiModule} from "./app/index";
+import {userModule,recordsModule,vaxCardModule,safeTravellerModule,mediaModule,paymentModule, 
+  humanApiModule, orgListModule} from "./app/index";
 import cors = require('cors');
 import * as bodyParser from 'body-parser';
 // rest of the code remains same
@@ -11,7 +12,9 @@ const API_ROUTES=[
   mediaModule.routesConfig(),
   paymentModule.paymentRoutes.routesConfig(),
   humanApiModule.humanApiRoutes.routesConfig(),
-  userModule.userRoutes.routesConfig()
+  userModule.userRoutes.routesConfig(),
+  mediaModule.routesConfig(),
+  orgListModule.routesConfig()
 ]
 
 export function app(port?:string){

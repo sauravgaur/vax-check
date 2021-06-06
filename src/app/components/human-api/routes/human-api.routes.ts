@@ -8,6 +8,7 @@ export function routesConfig(): Router {
     console.log("enter into router--->")
     router.post('/humanapi/create-token', humanApiCtrl.createToken);
     router.post('/humanapi/create-access-token', humanApiCtrl.createAcessToken);
+    router.post('/humanapi/create-user-access-token', humanApiCtrl.createUserAcessToken);
 
     return router
 }
