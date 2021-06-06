@@ -86,10 +86,21 @@ export class VaxCheckService {
             let isTravelerExists=false, isPaymentDone=false,profiles_skyflow_id=null;
             let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT'),profiles.skyflow_id from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
-                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' 
-            `;
+                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) `;
             if(profile.name.middle_name){
                 query+=` and name->'middle_name' = to_json('${profile.name.middle_name}'::text)`
+            }
+            if(profile.date_of_birth){
+                query+=` and date_of_birth='${profile.date_of_birth}'`
+            }
+            if(profile.email_address){
+                query+=` and email_address='${profile.email_address}'`
+            }
+            if(profile.org_id){
+                query+=` and org_id='${profile.org_id}'`
+            }
+            if(profile.mobile_number){
+                query+=` and mobile_number='${profile.mobile_number}'`
             }
             console.log('query-->',query);
             // as of now only 2 attributes... "isTravelerExists" and "isPaymentDone"

@@ -154,6 +154,46 @@ export class RecordsCtrl{
             return httpError(res,500,"Internal server error",{desc:err})
         }
     }
+
+    async checkPatientExist(req: Request, res: Response){
+        try{
+            let {firstName,middleName,lastName,dateOfBirth,email_address,org_id,mobile_number} = req.body;
+            if(!firstName){
+                return httpError(res,422,"firstName is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
+            }
+            if(!email_address){
+                return httpError(res,422,"email_address is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
+            }
+            if(!lastName){
+                return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
+            }
+            if(!org_id){
+                return httpError(res,422,"org_id is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
+            }
+            if(!mobile_number){
+                return httpError(res,422,"mobile_number is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
+            }
+            let vaxCheckService= new VaxCheckService();
+            let profile:IProfile={
+                name:{
+                    first_name:firstName,
+                    middle_name:middleName,
+                    last_name:lastName,
+                },
+                email_address,
+                org_id,
+                mobile_number,
+                date_of_birth:dateOfBirth
+            }
+            let {response,status}= await vaxCheckService.paymentStatus(profile)
+            console.log("response-->",response);
+            console.log("status-->",status);
+            return res.status(status).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
     
     async unverifiedPatient(req: Request, res: Response){
         try{
