@@ -1,10 +1,686 @@
 [
     {
-        "name": "SAMS PHARMACY",
+        "name": "Costco Wholesale Iwilei",
+        "type": "HAPI"
+    },
+    {
+        "name": "Costco Wholesale Hawaii Kai Towne Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Costco Wholesale Waipio",
+        "type": "HAPI"
+    },
+    {
+        "name": "Costco Wholesale Kapolei",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS/Long Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Pharmacy, Open 24 hrs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Salt Lake Shopping Center) Open 24 hrs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Ala Moana Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Pearlridge Shopping Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Kaneohe Bay Shopping Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy (Inside Target",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Ewa Town Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Hauula",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy (drive thru",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy (Executive Centre Apts LLC",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (In Hawaii Pacific University",
+        "type": "HAPI"
+    },
+    {
+        "name": "Pali Longs CVS Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy Kailua (In Target",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Waianae Mall) 24 hours",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy Kapolei (In Target",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Waianae",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (In Kaimuki Shopping Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs CVS Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Waipahu",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Pearl City",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Pearl City Gateway",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (Kailua Professional Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Kailua",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Kapolei (Kapolei Market Place",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Ewa Beach",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Pharmacy (In Kahala Mall",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Manoa Markt Place",
+        "type": "HAPI"
+    },
+    {
+        "name": "CVS Pharmacy Kaheka Professional Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Hawaii Kai Shopping Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs Windward City Shopping Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Safeway",
+        "type": "HAPI"
+    },
+    {
+        "name": "Safeway--Kailua",
+        "type": "HAPI"
+    },
+    {
+        "name": "Safeway--Kapahulu",
+        "type": "HAPI"
+    },
+    {
+        "name": "Safeway--Waipahu",
+        "type": "HAPI"
+    },
+    {
+        "name": "Safeway--Ewa Beach",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser Permanente--Honolulu Medical Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser Permanente--Moanalua Medical Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser Permanente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Hawaii Kai Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Kahuku Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Kailua Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Kapolei Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Koolau Medical Office",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Mapunapuna Medical Office",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Nanaikeola Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser--Waipio Medical Office",
+        "type": "HAPI"
+    },
+    {
+        "name": "Sam’s Club Pharmacy in Honolulu",
+        "type": "HAPI"
+    },
+    {
+        "name": "Sam's Club Pharmacy in Pearl City",
+        "type": "HAPI"
+    },
+    {
+        "name": "Times Aiea Pharmacy",
         "type": "External"
     },
     {
-        "name": "Save Mart Supermarkets",
+        "name": "Times Royal Kunia Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Waipahu Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Waimalu Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Kamehameha Shopping Center Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Kahala Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Liliha Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Beretania Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times McCully Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Kaneohe Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Times Koolau Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Time Kailua Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Veterans Affairs--Honolulu Regional Office",
+        "type": "HAPI"
+    },
+    {
+        "name": "Spark M Matsunaga VA Medical Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy Koko Marina",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Specialty Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy at Liliha Professional Plaza",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy at Laulani Village Shopping Center",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walmart Pharmacy (Honolulu",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walmart Pharmacy (Fort Street Mall",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walmart Pharmacy (Pearl City",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walmart Pharmacy (Kunia",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walmart Pharmacy (Kapolei",
+        "type": "HAPI"
+    },
+    {
+        "name": "Adventist Health Castle - Ko'olau Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Hawaii Pacific Health - Long Term Care Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "HPH - Specialty & Infusion Pharmacy Service",
+        "type": "External"
+    },
+    {
+        "name": "HPH-Pier 2 Vaccination Pod",
+        "type": "External"
+    },
+    {
+        "name": "Pharmacare Kapiolani Medical Cener",
+        "type": "External"
+    },
+    {
+        "name": "Pharmacare - Straub Medical Center",
+        "type": "External"
+    },
+    {
+        "name": "Pharmacare - Pali Momi Medical Center",
+        "type": "External"
+    },
+    {
+        "name": "Leeward Community College Clinic",
+        "type": "External"
+    },
+    {
+        "name": "Mililani Town Association",
+        "type": "External"
+    },
+    {
+        "name": "Queen’s Health Systems--Queen's Medical Center",
+        "type": "External"
+    },
+    {
+        "name": "Queen's Health Care Center--Hawaii Kai",
+        "type": "External"
+    },
+    {
+        "name": "Queen's Health Care Center--Haleiwa",
+        "type": "External"
+    },
+    {
+        "name": "Queen's Health Care Center--Kapolei",
+        "type": "External"
+    },
+    {
+        "name": "Queen's Health Care Center--Mililani",
+        "type": "External"
+    },
+    {
+        "name": "Queen's Health Care Center--Kahala",
+        "type": "External"
+    },
+    {
+        "name": "Queen's Blaisdell Center",
+        "type": "External"
+    },
+    {
+        "name": "Windward POD at Windward Community College",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Kalihi Palama",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Kalihi Kokua Valley",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Ko'olauloa",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Wahiawa",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Waianae",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Waikiki",
+        "type": "External"
+    },
+    {
+        "name": "FQHC--Waimanalo",
+        "type": "External"
+    },
+    {
+        "name": "On Lāna‘i - Lana‘i Community Health Center",
+        "type": "External"
+    },
+    {
+        "name": "On Lāna‘i - Lana‘i Community Hospital",
+        "type": "External"
+    },
+    {
+        "name": "Moloka‘i Community Health Center",
+        "type": "External"
+    },
+    {
+        "name": "Moloka‘i General Hospital",
+        "type": "External"
+    },
+    {
+        "name": "Maui - Costco Wholesale",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kahului - CVS Pharmacy",
+        "type": "Hapi"
+    },
+    {
+        "name": "Lahaina - CVS Pharmacy",
+        "type": "Hapi"
+    },
+    {
+        "name": "Hana Health Clinic",
+        "type": "External"
+    },
+    {
+        "name": "Hui No Ke Ola Pono - J. Walter Cameron Center",
+        "type": "External"
+    },
+    {
+        "name": "Longs Drugs (CVS) - Lahaina",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (CVS) - Kahului",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (CVS) - Kihei",
+        "type": "HAPI"
+    },
+    {
+        "name": "Longs Drugs (CVS) - Pukalani",
+        "type": "HAPI"
+    },
+    {
+        "name": "Makawao Town Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Wailuku - Malama I Ke Ola Health Center",
+        "type": "External"
+    },
+    {
+        "name": "Maui Clinic Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Maui District Health Office",
+        "type": "External"
+    },
+    {
+        "name": "University of Hawaii, Maui College",
+        "type": "External"
+    },
+    {
+        "name": "Maderna Vaccine Clinics - UH Maui College",
+        "type": "External"
+    },
+    {
+        "name": "Maui Health – Kaiser Permanente",
+        "type": "External"
+    },
+    {
+        "name": "Maui Lani Medical Office",
+        "type": "External"
+    },
+    {
+        "name": "Maui Health – Maui Memorial Medical Center",
+        "type": "External"
+    },
+    {
+        "name": "Maui Medical Group",
+        "type": "External"
+    },
+    {
+        "name": "Mauliola Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Minit Medical Lahaina",
+        "type": "External"
+    },
+    {
+        "name": "Minit Medical Kahului",
+        "type": "External"
+    },
+    {
+        "name": "Minit Medical Kihei",
+        "type": "External"
+    },
+    {
+        "name": "Minit Medical Kahului Physical Therapy",
+        "type": "External"
+    },
+    {
+        "name": "Wailuku - Safeway Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kahului - Safeway Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kihei - Safeway Pharmacy",
+        "type": "HAPI"
+    },
+    {
+        "name": "Walgreens",
+        "type": "External"
+    },
+    {
+        "name": "Kahului - Walmart Inc",
+        "type": "HAPI"
+    },
+    {
+        "name": "Hilo Kilauea Av- CVS/Longs Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Hilo - Prince Kuhio Plaza  - CVS/ Longs Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Hilo - Target - CVS/Longs Drugs",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kailua-Kona  CVS/Long Drugs - Kuakini",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kailua-Kona  CVS/Long Drugs - Kuakini",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kailua-Kona  CVS/Long Drugs - Keauhou Shopping",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kailua-Kona  CVS/Long Drugs - Target",
+        "type": "HAPI"
+    },
+    {
+        "name": "Pahala  CVS/Long Drugs - Pikaka St",
+        "type": "HAPI"
+    },
+    {
+        "name": "Pahoa - CVS/Long Drugs",
+        "type": "External"
+    },
+    {
+        "name": "Hawai'i - Bay Clinic, Inc",
+        "type": "External"
+    },
+    {
+        "name": "Hamakua Kohala Health",
+        "type": "External"
+    },
+    {
+        "name": "Hilo Medical Center",
+        "type": "External"
+    },
+    {
+        "name": "Kaiser Permanente--Hilo",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kaiser Permanente--Kona",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kona Community Hospital",
+        "type": "External"
+    },
+    {
+        "name": "KTA Super Stores--Downtown",
+        "type": "External"
+    },
+    {
+        "name": "KTA Super Stores--Puainako",
+        "type": "External"
+    },
+    {
+        "name": "KTA Super Stores--Waimea",
+        "type": "External"
+    },
+    {
+        "name": "KTA Super Stores--Waikoloa Village",
+        "type": "External"
+    },
+    {
+        "name": "KTA Super Stores--Kailua-Kona",
+        "type": "External"
+    },
+    {
+        "name": "KTA Super Stores--Keauhou",
+        "type": "External"
+    },
+    {
+        "name": "KTA Express--Kealakekua",
+        "type": "External"
+    },
+    {
+        "name": "Queen's North Hawaii Community Hospital",
+        "type": "External"
+    },
+    {
+        "name": "Hilo - Safeway",
+        "type": "HAPI"
+    },
+    {
+        "name": "Kailua-Kona Safeway",
+        "type": "HAPI"
+    },
+    {
+        "name": "Shiigi Drug",
         "type": "External"
     }
 ]

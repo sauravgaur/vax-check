@@ -129,9 +129,9 @@ export class PaymentService {
         }
     }
 
-    async sendTempEmails(travelerEmail: string) {
+    async sendTempEmails(travelerEmail: string, firstNm?: string) {
         setTimeout(async () => {
-            const firstName = 'First Name';
+            const firstName = firstNm ? firstNm : 'First Name';
             const mailService = new MailService();
             await mailService.sendMail(
                 {

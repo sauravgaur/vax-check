@@ -8,6 +8,7 @@ import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGener
 import { VaxCheckService } from "../services/vax-check.service";
 import { IHTTPResponse } from "../../../interfaces/http-response.interface";
 import { VaccinationService } from "../services/vaccination.service";
+import { PaymentService } from "../../payment/services/payment.service";
 export class RecordsCtrl{
     constructor(){
     }
@@ -44,6 +45,8 @@ export class RecordsCtrl{
             console.log("diagnostic_reports-->",diagnostic_reports);
             console.log("media-->",media);
             let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports,media)
+            let paymentService = new PaymentService();
+            paymentService.sendTempEmails(profile.email_address!, profile.name.first_name);
             if(resp.status && resp.status===422){
                 return res.status(422).send({msg:resp.msg})
             }
