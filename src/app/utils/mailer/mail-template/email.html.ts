@@ -1,4 +1,4 @@
-export const vaccinationInProcessEmail = () => {
+export const vaccinationInProcessEmail = (firstName: string) => {
     return `<!DOCTYPE html>
     <html lang="en-US">
     <body class="body"
@@ -16,12 +16,25 @@ export const vaccinationInProcessEmail = () => {
                     <h6 style="margin: 0; margin-bottom: 16px;">Your vaccination verification is in progress</h6>
                 </td>
             </tr>
+            <tr>
+                <td style="padding-top: 16px;text-align: justify;text-justify: inter-word;">
+                    Hey ${firstName}<br/>
+                    <br/>
+                    Thank you for uploading and confirming your CDC vaccination details.  Depending on where you received your vaccination, the verification and certification process can be completed within hours or in a few days, depending if multiple vaccination sites were used and/or the availability of electronic medical records.<br/>
+                    <br/>
+                    Once verified, we will contact you via email.  If you have any questions or do not hear from us within 4 business days, please feel free to contact us at: vaxcheck@firstvitals.com<br/>
+                    <br/>
+                    <br/>
+                    Your Dedicated Support Team @<br/>
+                    VAXcheck.us
+                </td>
+            </tr>
         </table>
     </body>
     </html>`
 }
 
-export const vaccinationVerifiedEmail = (accessCode: string) => {
+export const vaccinationVerifiedEmail = (accessCode: string, firstName: string) => {
     return `<!DOCTYPE html>
     <html lang="en-US">
     <body class="body"
@@ -68,6 +81,41 @@ export const vaccinationVerifiedEmail = (accessCode: string) => {
                             </td>
                         </tr>
                     </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 16px;text-align: justify;text-justify: inter-word;">
+                    Hey ${firstName}<br/>
+                    <br/>
+                    Congratulations!  Your COVID vaccination record has been verified and certified by VAXCheck.<br/>
+                    <br/>
+                    We have issued a digital health pass for your reference and possible future use.  To access your digital health pass, here is a step-by-step guide:<br/>
+                    <br/>
+                    Go to your favorite Internet browser on your mobile phone or tablet and enter the following web address: app.firstvitals.skyflow.com<br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <ol style="text-align: justify;text-justify: inter-word;">
+                        <li>Go to your favorite Internet browser on your mobile phone or tablet and enter the following web address: app.firstvitals.skyflow.com</li>
+                        <li>Enter the email/mobile number used when you entered your vaccination details</li>
+                        <li>Enter the 6-digit passcode received onto the web app</li>
+                        <li>Your personal digital health pass will be displayed</li>
+                        <li>You can then save the health pass onto your mobile wallet or repeat the process to access on demand</li>
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: justify;text-justify: inter-word;">
+                    For your reference, here is a sample digital health pass.<br/>
+                    <br/>
+                    <br/>
+                    If you have any questions accessing your digital health pass, please feel free to contact us at: vaxcheck@firstvitals.com<br/>
+                    Thank you for using VAXCheck.us!<br/>
+                    <br/>
+                    <br/>
+                    Your Dedicated Support Team @<br/>
+                    VAXcheck.us<br/>
                 </td>
             </tr>
         </table>
