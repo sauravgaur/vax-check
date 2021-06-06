@@ -100,6 +100,7 @@ export class BatchService{
             redaction(profiles.name, 'PLAIN_TEXT'),
             redaction(profiles.address, 'PLAIN_TEXT'),
             redaction(profiles.healthcare_employee, 'PLAIN_TEXT'),
+            redaction(profiles.org_id, 'PLAIN_TEXT'),
            
             redaction(vaccinations.vaccination_event_identifier, 'PLAIN_TEXT'), 
             redaction(vaccinations.vaccination_certification_status, 'PLAIN_TEXT'), 
@@ -156,6 +157,7 @@ export class BatchService{
                         name:data.fields.name,
                         address:data.fields.address,
                         healthcare_employee:data.fields.healthcare_employee,
+                        org_id:data.fields.org_id
                     },
                     vaccinations:{
                         vaccination_event_identifier:data.fields.vaccination_event_identifier,
