@@ -1,0 +1,374 @@
+[
+    {
+        "name": "SAMS PHARMACY",
+        "type": "External"
+    },
+    {
+        "name": "Save Mart Supermarkets",
+        "type": "External"
+    },
+    {
+        "name": "Lucky Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "WalMart Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Walgreens",
+        "type": "External"
+    },
+    {
+        "name": "SAFEWAY PHARMACY",
+        "type": "External"
+    },
+    {
+        "name": "Diablo Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "COSTCO PHARMACY",
+        "type": "External"
+    },
+    {
+        "name": "RITE AID PHARMACY",
+        "type": "External"
+    },
+    {
+        "name": "Dougherty Valley HIgh School",
+        "type": "External"
+    },
+    {
+        "name": "San Ramon Regional Medical Center – San Ramon",
+        "type": "External"
+    },
+    {
+        "name": "Diablo Valley College in San Ramon - Contra Costa Health Services",
+        "type": "External"
+    },
+    {
+        "name": "Arthritis and Rheumatology Center - San Ramon",
+        "type": "External"
+    },
+    {
+        "name": "Tri-Valley Medical Center Inc",
+        "type": "External"
+    },
+    {
+        "name": "San Ramon Valley Fire",
+        "type": "External"
+    },
+    {
+        "name": "SF Market",
+        "type": "External"
+    },
+    {
+        "name": "OneMedical - Mission Bay",
+        "type": "External"
+    },
+    {
+        "name": "California High School",
+        "type": "External"
+    },
+    {
+        "name": "Moscone Center - San Francisco City Vaccination Site",
+        "type": "External"
+    },
+    {
+        "name": "San Ramon Valley High School",
+        "type": "External"
+    },
+    {
+        "name": "OneMedical",
+        "type": "External"
+    },
+    {
+        "name": "San Francisco Wholesale Produce Market",
+        "type": "External"
+    },
+    {
+        "name": "Bayview Child Health Center",
+        "type": "External"
+    },
+    {
+        "name": "NOWRX SPECIALTY",
+        "type": "External"
+    },
+    {
+        "name": "Axis Community Health",
+        "type": "External"
+    },
+    {
+        "name": "Hayward Adult School Gym",
+        "type": "External"
+    },
+    {
+        "name": "United in Health",
+        "type": "External"
+    },
+    {
+        "name": "Clayworth Healthcare Pharmacy",
+        "type": "External"
+    },
+    {
+        "name": "Tiburcio Vasquez Health Center Inc",
+        "type": "External"
+    },
+    {
+        "name": "NOWRX HAYWARD",
+        "type": "External"
+    },
+    {
+        "name": "Fairmont Hospital – San Leandro (Alameda Health System",
+        "type": "External"
+    },
+    {
+        "name": "California High School",
+        "type": "External"
+    },
+    {
+        "name": "ValleyCare Medical Center – Pleasanton (Stanford Health Car",
+        "type": "HAPI"
+    },
+    {
+        "name": "UCLA Healt",
+        "type": "HAPI"
+    },
+    {
+        "name": "UC San Francisco Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Santa Clara Valley Health & Hospital Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Riverside Medical Clini",
+        "type": "HAPI"
+    },
+    {
+        "name": "UC Davi",
+        "type": "HAPI"
+    },
+    {
+        "name": "Providence Health (West Coast & SW Washingo",
+        "type": "HAPI"
+    },
+    {
+        "name": "Washington Hospital Health Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Sisters of Charity of Leavenworth Health Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Renown Healt",
+        "type": "HAPI"
+    },
+    {
+        "name": "Fort Bragg Rural Health Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "UC Irvine Healt",
+        "type": "HAPI"
+    },
+    {
+        "name": "Prime Healthcar",
+        "type": "HAPI"
+    },
+    {
+        "name": "Molin",
+        "type": "HAPI"
+    },
+    {
+        "name": "Doctors Hospital Of Mantec",
+        "type": "HAPI"
+    },
+    {
+        "name": "Placentia Linda Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Corona Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Carson Valley Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "John F. Kennedy Memorial Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Huntington Memorial Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Saint Francis Memorial Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Delano Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Loma Linda University Medical Center-murriet",
+        "type": "HAPI"
+    },
+    {
+        "name": "Temecula Valley Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Twin Cities Community Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Southwest Healthcare System Rancho Springs Campu",
+        "type": "HAPI"
+    },
+    {
+        "name": "UC San Diego Health Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Cedars-Sina",
+        "type": "HAPI"
+    },
+    {
+        "name": "Rady Children's Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Stanford Hospital and Clinic",
+        "type": "HAPI"
+    },
+    {
+        "name": "MemorialCar",
+        "type": "HAPI"
+    },
+    {
+        "name": "OCHI",
+        "type": "HAPI"
+    },
+    {
+        "name": "Loma Linda Health Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Sansum Clini",
+        "type": "HAPI"
+    },
+    {
+        "name": "Sutter Healt",
+        "type": "HAPI"
+    },
+    {
+        "name": "Doctors Medical Center Of Modest",
+        "type": "HAPI"
+    },
+    {
+        "name": "Desert Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Tri-City Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Adventist Healt",
+        "type": "HAPI"
+    },
+    {
+        "name": "Pomerado Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Palomar Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Sierra Vista Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Hanford Community Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "DBA Northbay Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Contra Costa Health Service",
+        "type": "HAPI"
+    },
+    {
+        "name": "San Antonio Regional Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Lakewood Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Los Alamitos Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Palmdale Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "San Ramon Regional Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Torrance Memorial Medical Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "Fountain Valley Regional Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Community Medical Centers Healthcare Networ",
+        "type": "HAPI"
+    },
+    {
+        "name": "The Neurology Cente",
+        "type": "HAPI"
+    },
+    {
+        "name": "San Diego Sports Medicin",
+        "type": "HAPI"
+    },
+    {
+        "name": "UCSF Benioff Children's Hospital Oaklan",
+        "type": "HAPI"
+    },
+    {
+        "name": "El Camino Hospita",
+        "type": "HAPI"
+    },
+    {
+        "name": "Riverside University Health Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Stanford Children's Healt",
+        "type": "HAPI"
+    },
+    {
+        "name": "SAC Health Syste",
+        "type": "HAPI"
+    },
+    {
+        "name": "Cottage Health Syste",
+        "type": "HAP"
+    }
+]
