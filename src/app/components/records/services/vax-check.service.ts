@@ -7,10 +7,13 @@ import { IPasswordOptions, PasswordGenerator } from "../../../core/passwordGener
 import { Skyflow } from "../../../core/skyflow-adapter/skyflow.adapter";
 import { generateHash } from "../../../core";
 import { IHTTPResponse } from "../../../interfaces/http-response.interface";
+import { MailService } from "../../../utils/mailer/mail.service";
+import { vaccinationInProcessEmail, vaccinationVerifiedEmail } from "../../../utils/mailer/mail-template/email.html";
 
 export class VaxCheckService {
     recordDals: RecordsDal
     vaultConfig: ISkyflowConfig
+    mailService: MailService
     resp:IHTTPResponse
     constructor(config?: config, vaultConfig?: ISkyflowConfig) {
         console.log('DEFAULT_VAULT-->', DEFAULT_VAULT);
@@ -20,6 +23,7 @@ export class VaxCheckService {
             response:null,
             status:200
         }
+        this.mailService = new MailService();
     }
     private async updateProfileMeta(profile: IProfile): Promise<IProfile> {
         let accessCodeGenrator = new PasswordGenerator({
@@ -156,6 +160,7 @@ export class VaxCheckService {
             // if(medias && medias.length>0){
             //     await Promise.all(medias.map(async (media) => await skyflow.uploadBatch([{ media: media}])));
             // }
+
             return { profileResponse, vaccincationResponse }
         } catch (err) {
             throw err;
@@ -183,5 +188,29 @@ export class VaxCheckService {
             throw err;
         }
     }
-    
+
+    async sendInProcessEmail(travelerEmail: string, firstNm?: string) {
+        const firstName = firstNm ? firstNm : 'First Name';
+        await this.mailService.sendMail(
+            {
+                // from: 'vaxcheckservice@vaxcheck.us',
+                to: travelerEmail,
+                subject: 'Your vaccination verification is in progress',
+                html: vaccinationInProcessEmail(firstName)
+            }
+        );
+    }
+
+    async sendVerifiedEmail(travelerEmail: string, firstNm: string, accessCode: string) {
+        const firstName = firstNm ? firstNm : 'First Name';
+        // const accessCode = '3A899SK@72939@183#2';
+        await this.mailService.sendMail(
+            {
+                // from: 'vaxcheckservice@vaxcheck.us',
+                to: travelerEmail,
+                subject: 'Your vaccination information has been verified',
+                html: vaccinationVerifiedEmail(accessCode, firstName)
+            }
+        );
+    }
 }

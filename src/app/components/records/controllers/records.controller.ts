@@ -45,8 +45,7 @@ export class RecordsCtrl{
             console.log("diagnostic_reports-->",diagnostic_reports);
             console.log("media-->",media);
             let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports,media)
-            let paymentService = new PaymentService();
-            paymentService.sendTempEmails(profile.email_address!, profile.name.first_name);
+            vaxCheckService.sendInProcessEmail(profile.email_address!, profile.name.first_name);
             if(resp.status && resp.status===422){
                 return res.status(422).send({msg:resp.msg})
             }
@@ -71,6 +70,8 @@ export class RecordsCtrl{
             }
             let vaxCheckService= new VaxCheckService();
             let resp= await vaxCheckService.patientStatusUpdate(profiles_skyflow_id,verification_status,verification_source,evedence_path,vaccinations_skyflow_id)
+            // TODO: Send Verified email is pending
+            // vaxCheckService.sendVerifiedEmail(profile.email_address!, profile.name.first_name, accessCode);
             return res.send(resp)
             
         }catch(err){

@@ -3,8 +3,6 @@ import { Skyflow } from '../../../core';
 import { IStripeSessionRequest, IStripeSessionResponse, IStripeSessionValidateRequest } from "../../../interfaces/payment.interface";
 import { IProfile, IVaccinations } from '../../../interfaces/record.interface';
 import { ISkyflowConfig, ITokens } from '../../../interfaces/skyflow-config.interface';
-import { vaccinationInProcessEmail, vaccinationVerifiedEmail } from '../../../utils/mailer/mail-template/email.html';
-import { MailService } from '../../../utils/mailer/mail.service';
 import { DEFAULT_VAULT } from '../../../vaults';
 
 const secretKey = process.env.STRIPE_SECRET_KEY || 'Not-Defined';
@@ -79,7 +77,6 @@ export class PaymentService {
             response.sessionId = session.id;
 
             console.log('email start');
-            this.sendTempEmails(sessionRequest.travelerEmail);
             console.log('email end');
         } catch (e) {
             response.error = e.message;
@@ -127,32 +124,5 @@ export class PaymentService {
         } catch (e) {
             console.log('paymentSuccessEmail', e);
         }
-    }
-
-    async sendTempEmails(travelerEmail: string, firstNm?: string) {
-        setTimeout(async () => {
-            const firstName = firstNm ? firstNm : 'First Name';
-            const mailService = new MailService();
-            await mailService.sendMail(
-                {
-                    // from: 'vaxcheckservice@vaxcheck.us',
-                    to: travelerEmail,
-                    subject: 'Your vaccination verification is in progress',
-                    html: vaccinationInProcessEmail(firstName)
-                }
-            );
-
-            setTimeout(async () => {
-                const accessCode = '3A899SK@72939@183#2';
-                await mailService.sendMail(
-                    {
-                        // from: 'vaxcheckservice@vaxcheck.us',
-                        to: travelerEmail,
-                        subject: 'Your vaccination information has been verified',
-                        html: vaccinationVerifiedEmail(accessCode, firstName)
-                    }
-                );
-            }, 120000);
-        }, 1000);
     }
 }
