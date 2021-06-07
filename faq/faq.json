@@ -1,0 +1,52 @@
+[
+    {
+        "title": "How does VaxCheck work?",
+        "description": "VAXCheck enables you to upload your COVID-19 vaccination records through a secure HIPAA compliant platform and create a digital health pass that can be shared with travel authorities or demonstrate compliance with health entry rules for venues or other destinations."
+    },
+    {
+        "title": "Is the VAXCheck a contact tracing application?",
+        "description": "No. The VAXCheck application is not a contact tracing app and does not collect location information on its users."
+    },
+    {
+        "title": "Do I need to create a VAXCheck account?",
+        "description": "No, it is not required to create a VAXCheck account. However, if you want the ability to display your COVID vaccination and/or COVID lab results in a web app, you will need to create an account with VAXCheck."
+    },
+    {
+        "title": "Getting Started",
+        "description": "",
+        "extraLines": [
+            "1.) Preparation step - Take a picture of your CDC vaccination and save it on the device you plan on using to online fill vaccination related information.",
+            "<br/>",
+            "2.) Visit <a target='_blank' href='https://vaxcheck.firstvitals.com/login'>https://vaxcheck.firstvitals.com/login</a> Enter the required fields including full name, email and corporate Pass ID - ",
+            "<br/>",
+            "3.) Provide the vaccination information as asked on the web form ",
+            "<br/>",
+            "Video",
+            "** Video Block **"
+        ]
+    },
+    {
+        "title": "What is the VAXCheck Health Pass?",
+        "description": "The VAXCheck Health Pass is a verified health certificate of your CDC vaccination record which can be shared with travel and public venues in a way that doesn’t reveal any of your personal health information."
+    },
+    {
+        "title": "What information is shown on the VAXCheck Health Pass?",
+        "description": "VAXCheck displays your name, effective date and expiration date of your verified CDC vaccination record.  No personal health information is revealed."
+    },
+    {
+        "title": "How does VAXCheck obtain verification of my COVID vaccination record?",
+        "description": "Upon receipt of your consent to have VAXCheck certify your CDC vaccination record, we will verify your information from any one of the following data sources; CDC VAMS, Electronic Health Records via a patient portal or directly with your vaccinator."
+    },
+    {
+        "title": "How does VAXCheck keep my personal data safe?",
+        "description": "VAXCheck allows you to control who has access to your vaccination record. The digital vaccination record is managed on a HIPAA compliant platform.  It is secure, private and indelible: permissions and cryptography prevent unauthorized access to the health vault where your digital vaccination record is stored.  Privacy is maintained through cryptographic techniques and/or data partitioning techniques to give authorized users such as travel authority’s selective visibility into the ledger.  Participants cannot tamper with a record of the digital vaccination record.",
+        "extraLines": [
+            "<br/>",
+            "Pursuant to the privacy policy, you can remove or request deletion of your vaccination records at any time."
+        ]
+    },
+    {
+        "title": "Who is VAXCheck?",
+        "description": "VAXCheck is a vaccination verification service provided by FirstVitals Health and Wellness Inc, who is a licensed and credentialed healthcare provider.  As a healthcare provider, patient privacy and security of personal health information is a priority in its operations."
+    }
+]
