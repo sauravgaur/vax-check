@@ -32,6 +32,7 @@ export function app(port?:string){
     });
   // _app.use('/user',userModule.userRoutes.routesConfig())
   exp.use('/api',API_ROUTES);
+  exp.use('/uploads',express.static("uploads"))
   exp.get('/', (req, res) => res.send('Server is running.'));
   console.log("port-->",port)
   exp.listen(3000, () => {
