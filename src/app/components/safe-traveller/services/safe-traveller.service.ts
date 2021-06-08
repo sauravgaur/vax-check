@@ -19,9 +19,9 @@ export class SafeTravellerService{
             const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
             let query=`select profiles.skyflow_id, redaction(profiles.name, 'PLAIN_TEXT'),redaction(profiles.access_code, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT') from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id WHERE 
-            profiles.name->'first_name' = to_json('${firstName}'::text) AND profiles.name->'last_name' = to_json('${lastName}'::text) and profiles.date_of_birth='${dateOfBirth}' and profiles.access_code='${accessCode}`;
+            profiles.name->'first_name' = to_json('${firstName.toLowerCase()}'::text) AND profiles.name->'last_name' = to_json('${lastName.toLowerCase()}'::text) and profiles.date_of_birth='${dateOfBirth}' and profiles.access_code='${accessCode}`;
             if(middleName){
-                query+=` and profiles.name->'middle_name' = to_json('${middleName}'::text)`
+                query+=` and profiles.name->'middle_name' = to_json('${middleName.toLowerCase()}'::text)`
             }
             console.log('query-->',query)
             resp.response= await skyflow.skyflowQueryWrapper(query)

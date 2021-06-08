@@ -36,6 +36,10 @@ export class VaxCheckService {
 
         profile.unique_identifier = await generateHash(JSON.stringify(profile));
         profile.access_code = accessCodeGenrator.generate(32);
+        profile.name.first_name=profile.name.first_name.toLowerCase();
+        profile.name.middle_name=profile.name.middle_name.toLowerCase();
+        profile.name.last_name=profile.name.last_name.toLowerCase();
+        profile.email_address=profile.email_address?.toLowerCase();
         // profile.created_timestamp = unixTimestamp;
         // profile.updated_timestamp = unixTimestamp;
 
@@ -70,10 +74,10 @@ export class VaxCheckService {
                 skyflow=new Skyflow(this.vaultConfig)
             }
             let query=`select count(*) as numb from profiles
-                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) and date_of_birth='${profile.date_of_birth}' and sex='${profile.sex}' 
+                where name->'first_name' = to_json('${profile.name.first_name.toLowerCase()}'::text) AND name->'last_name' = to_json('${profile.name.last_name.toLowerCase()}'::text) and date_of_birth='${profile.date_of_birth}' and sex='${profile.sex}' 
             `;
             if(profile.name.middle_name){
-                query+=` and name->'middle_name' = to_json('${profile.name.middle_name}'::text)`
+                query+=` and name->'middle_name' = to_json('${profile.name.middle_name.toLowerCase()}'::text)`
             }
             console.log('query-->',query);
             // as of now only 2 attributes... "isTravelerExists" and "isPaymentDone"
@@ -90,15 +94,15 @@ export class VaxCheckService {
             let isTravelerExists=false, isPaymentDone=false,profiles_skyflow_id=null;
             let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT'),profiles.skyflow_id from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
-                where name->'first_name' = to_json('${profile.name.first_name}'::text) AND name->'last_name' = to_json('${profile.name.last_name}'::text) `;
+                where name->'first_name' = to_json('${profile.name.first_name.toLowerCase()}'::text) AND name->'last_name' = to_json('${profile.name.last_name.toLowerCase()}'::text) `;
             if(profile.name.middle_name){
-                query+=` and name->'middle_name' = to_json('${profile.name.middle_name}'::text)`
+                query+=` and name->'middle_name' = to_json('${profile.name.middle_name.toLowerCase()}'::text)`
             }
             if(profile.date_of_birth){
                 query+=` and date_of_birth='${profile.date_of_birth}'`
             }
             if(profile.email_address){
-                query+=` and email_address='${profile.email_address}'`
+                query+=` and email_address='${profile.email_address.toLowerCase()}'`
             }
             if(profile.org_id){
                 query+=` and org_id='${profile.org_id}'`
