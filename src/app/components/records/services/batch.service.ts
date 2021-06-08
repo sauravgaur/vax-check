@@ -1,7 +1,7 @@
 import { config } from "mssql"
 import { Skyflow } from "../../../core/skyflow-adapter/skyflow.adapter"
 import { IHTTPResponse } from "../../../interfaces/http-response.interface"
-import { IBatch, IRecord, IVaccinations } from "../../../interfaces/record.interface"
+import { IBatch, IMedia, IRecord, IVaccinations } from "../../../interfaces/record.interface"
 import {RecordsDal} from "../dals/records.dals"
 // import { skyflow } from "../dals/skyflow.dals"
 import {DEFAULT_VAULT} from "../../../vaults/index"
@@ -174,9 +174,22 @@ export class BatchService{
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id 
             where profiles.skyflow_id= '${id}'`;
-            // redaction(vaccinations.vaccine_dose_1, 'PLAIN_TEXT'),
-            // redaction(vaccinations.vaccine_dose_2, 'PLAIN_TEXT'),
-            this.resp.response=await skyFlow.skyflowQueryWrapper(query)
+
+            const mediaQuery=`
+            select 
+            redaction(media.profiles_skyflow_id, 'PLAIN_TEXT'),
+            redaction(media.skyflow_id, 'PLAIN_TEXT'),
+            redaction(media.document_type, 'PLAIN_TEXT'),
+            redaction(media.file_path, 'PLAIN_TEXT')
+            from media
+            where profiles_skyflow_id= '${id}'
+            `;
+            const token = await skyFlow.getBearerToken()
+            this.resp.response=await skyFlow.skyflowQueryWrapper(query,token)
+            const mediaResponse=await skyFlow.skyflowQueryWrapper(mediaQuery,token)
+            let media=mediaResponse.records.map((data:any)=>{
+                return {...data.fields} as IMedia
+            })
             this.resp.response.records=this.resp.response.records.map((data:any)=>{
                 let record:IRecord={
                     profiles:{
@@ -195,6 +208,7 @@ export class BatchService{
                         healthcare_employee:data.fields.healthcare_employee,
                         org_id:data.fields.org_id
                     },
+                    media:media,
                     vaccinations:{
                         vaccination_event_identifier:data.fields.vaccination_event_identifier,
                         vaccination_certification_status:data.fields.vaccination_certification_status,

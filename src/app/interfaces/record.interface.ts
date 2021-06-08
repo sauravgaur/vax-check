@@ -178,6 +178,7 @@ export interface IProvider{
 
 export interface IMedia{
     profiles_skyflow_id?:string,
+    skyflow_id?:string,
     document_type?:'VAX_CARD'|'SUPPLEMENT_DOC'|'EVIDENCE'|'MISC1'|'MISC2'|'MISC3'|'DIAGNOSTIC_TEST',
     file_path?:string
 }
