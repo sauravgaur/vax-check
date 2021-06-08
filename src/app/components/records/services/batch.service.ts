@@ -81,6 +81,41 @@ export class BatchService{
             throw err
         }
     }
+    // access_code
+
+    async patientDetailForMail(id:string):Promise<any>{
+        try{
+            let skyFlow= new Skyflow(this.vaultConfig);
+            let query=`select 
+                redaction(profiles.email_address, 'PLAIN_TEXT'),
+                redaction(profiles.name, 'PLAIN_TEXT'),
+                redaction(profiles.org_id, 'PLAIN_TEXT'),
+                redaction(profiles.access_code, 'PLAIN_TEXT'),
+                
+            
+                redaction(vaccinations.verification_source, 'PLAIN_TEXT'), 
+                redaction(vaccinations.verification_status, 'PLAIN_TEXT'), 
+                redaction(vaccinations.verification_expiry_date, 'PLAIN_TEXT'), 
+                redaction(vaccinations.verification_notes, 'PLAIN_TEXT'),
+            
+                profiles.created_timestamp
+                from profiles 
+                LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id 
+                where profiles.skyflow_id= '${id}'`;
+                console.log('query-->',query);
+            const response=await skyFlow.skyflowQueryWrapper(query);
+            console.log("response-->", JSON.stringify(response))
+            if(response.records.length===0){
+                throw Error("No record found");
+            }
+            return {
+                ...response.records[0].fields
+            }
+        }catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
 
     async patientById(id:string):Promise<IHTTPResponse>{
         

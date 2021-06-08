@@ -69,9 +69,13 @@ export class RecordsCtrl{
                 return httpError(res,422,"verification_source is missing",{desc:`mandatory fields are "id","verification_status" and "verification_source"`})
             }
             let vaxCheckService= new VaxCheckService();
+            let batchService = new BatchService();
+            // patientById
             let resp= await vaxCheckService.patientStatusUpdate(profiles_skyflow_id,verification_status,verification_source,evedence_path,vaccinations_skyflow_id)
-            // TODO: Send Verified email is pending
-            // vaxCheckService.sendVerifiedEmail(profile.email_address!, profile.name.first_name, accessCode);
+            if(verification_status==="VERIFIED"){
+                const {name,email_address,org_id,verification_source,verification_status,access_code}=await batchService.patientDetailForMail(profiles_skyflow_id);
+                vaxCheckService.sendVerifiedEmail(email_address, name.first_name, access_code);
+            }
             return res.send(resp)
             
         }catch(err){
