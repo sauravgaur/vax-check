@@ -168,7 +168,8 @@ export class BatchService{
             redaction(vaccinations.verification_expiry_date, 'PLAIN_TEXT'), 
             redaction(vaccinations.service_availed, 'PLAIN_TEXT'),
             redaction(vaccinations.verification_notes, 'PLAIN_TEXT'),
-           
+            redaction(vaccinations.vaccine_dose_1, 'PLAIN_TEXT'),
+            redaction(vaccinations.vaccine_dose_2, 'PLAIN_TEXT'),
             profiles.created_timestamp
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id 
@@ -226,8 +227,8 @@ export class BatchService{
                         verification_expiry_date:data.fields.verification_expiry_date,
                         service_availed:data.fields.service_availed,
                         verification_notes:data.fields.verification_notes,
-                        // vaccine_dose_1:data.fields.vaccine_dose_1,
-                        // vaccine_dose_2:data.fields.vaccine_dose_2
+                        vaccine_dose_1:data.fields.vaccine_dose_1,
+                        vaccine_dose_2:data.fields.vaccine_dose_2
                     }
                 };
                 return record;
