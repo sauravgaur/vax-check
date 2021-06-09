@@ -6,6 +6,7 @@ type STATUS = 'PENDING' | 'SUCCESS' | 'FAIL';
 type DIAGNOSTIC_TEST_TYPE = 'ANTIBODY' | 'ANTIGEN' | 'MOLECULAR';
 
 export interface IProfile {
+    skyflow_id?:string,
     unique_identifier?: string,
     age?: number,
     date_of_birth?: string,
