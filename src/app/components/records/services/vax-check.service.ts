@@ -91,7 +91,7 @@ export class VaxCheckService {
     async paymentStatus(profile: IProfile):Promise<IHTTPResponse>{
         try{
             let skyflow=new Skyflow(this.vaultConfig)
-            let isTravelerExists=false, isPaymentDone=false,profiles_skyflow_id=null;
+            let isTravelerExists=false, isPaymentDone=false,profiles_skyflow_id=null,vaccination_skyflow_id=null,media_ids=[];
             let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT'),profiles.skyflow_id from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
                 where name->'first_name' = to_json('${profile.name.first_name.toLowerCase()}'::text) AND name->'last_name' = to_json('${profile.name.last_name.toLowerCase()}'::text) `;
@@ -112,11 +112,29 @@ export class VaxCheckService {
             }
             console.log('query-->',query);
             // as of now only 2 attributes... "isTravelerExists" and "isPaymentDone"
-            let resp=await skyflow.skyflowQueryWrapper(query)
+            let token= await skyflow.getBearerToken()
+            let resp=await skyflow.skyflowQueryWrapper(query,token)
             console.log('ssss',JSON.stringify(resp))
             if(resp.records.length>0){
                 isTravelerExists=true;
                 profiles_skyflow_id=resp.records[0].fields.skyflow_id;
+                let queryVaccination=`select redaction(vaccinations.skyflow_id, 'PLAIN_TEXT') from vaccinations where profiles_skyflow_id= '${profiles_skyflow_id}'`
+                let respVaccination=await skyflow.skyflowQueryWrapper(queryVaccination,token)
+                if(respVaccination.records.length>0){
+                    vaccination_skyflow_id=respVaccination.records[0].fields.skyflow_id
+                }
+                let queryMedia=`select 
+                redaction(media.skyflow_id, 'PLAIN_TEXT'),
+                redaction(media.document_type, 'PLAIN_TEXT') from media where profiles_skyflow_id= '${profiles_skyflow_id}'`
+                let respMedia=await skyflow.skyflowQueryWrapper(queryMedia,token)
+                if(respMedia.records.length>0){
+                    media_ids=respMedia.records.map((data:any)=>{
+                        return {
+                            skyflow_id:data.fields.skyflow_id,
+                            document_type:data.fields.document_type
+                        }
+                    })
+                }
                 if(resp.records[0].fields.service_availed==='VerifyFull'|| 
                 resp.records[0].fields.service_availed==='VerifyRef' || 
                 resp.records[0].fields.service_availed==='VerifyPromo'){
@@ -125,7 +143,7 @@ export class VaxCheckService {
             }
             console.log('ssss',JSON.stringify({isTravelerExists,isPaymentDone}))
             console.log('this.resp',JSON.stringify(this.resp))
-            this.resp.response={isTravelerExists:isTravelerExists,isPaymentDone:isPaymentDone,profiles_skyflow_id}
+            this.resp.response={isTravelerExists:isTravelerExists,isPaymentDone:isPaymentDone,profiles_skyflow_id,vaccination_skyflow_id,media_ids}
             return this.resp
         }catch(err){
             throw err;

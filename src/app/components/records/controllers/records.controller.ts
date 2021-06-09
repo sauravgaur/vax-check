@@ -175,9 +175,9 @@ export class RecordsCtrl{
             if(!lastName){
                 return httpError(res,422,"lastName is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
             }
-            if(!org_id){
-                return httpError(res,422,"org_id is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
-            }
+            // if(!org_id){
+            //     return httpError(res,422,"org_id is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
+            // }
             if(!mobile_number){
                 return httpError(res,422,"mobile_number is missing",{desc:`mandatory fields are "firstName","lastName","email_address","org_id" and "mobile_number"`})
             }
