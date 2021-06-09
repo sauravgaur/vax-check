@@ -154,27 +154,46 @@ export class VaxCheckService {
             profile = await this.updateProfileMeta(profile);
             
             let skyflow = new Skyflow(this.vaultConfig)
-            if(await this.checkUserExist(profile,skyflow)){
+            let token=await skyflow.getBearerToken();
+            if(!profile.skyflow_id && await this.checkUserExist(profile,skyflow)){
                 return {msg:"user is already exist.",status:422}
             }
             console.log("saveVaxProfilesaveVaxProfilesaveVaxProfile-->", JSON.stringify(profile));
-            let profileResponse = await skyflow.uploadBatch([{ profiles: profile }])
-            let profiles_skyflow_id = profileResponse.responses[0].records[0].skyflow_id
+            let profiles_skyflow_id =profile.skyflow_id?profile.skyflow_id: (await skyflow.uploadBatch([{ profiles: profile }])).responses[0].records[0].skyflow_id
             
             let records:IRecord[]=[]
-            if(vaccination){
+            if(vaccination && !vaccination.skyflow_id){
                 vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
                 records.push({
                     vaccinations: vaccination,
                    })
+            }
+            else{
+                const vaccination_id=vaccination.skyflow_id
+                delete vaccination.skyflow_id
+                delete vaccination.profiles_skyflow_id
+                await skyflow.skyflowUpdateWrapper(vaccination,"vaccinations",vaccination_id as string,token)
             }
             if(diagnostic_reports){
                 diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
                 records.push({diagnostic_reports:diagnostic_reports})
             }
             if(medias && medias.length>0){
-                medias=this.updateMediaMeta(profiles_skyflow_id,medias)
-                records.push({media:medias})
+                let newMedia=[];
+                for(let i=0; i<medias.length;i++){
+                    if(medias[i].skyflow_id){
+                        const media_skyflow_id=medias[i].skyflow_id
+                        delete medias[i].skyflow_id;
+                        delete medias[i].profiles_skyflow_id;
+                        await skyflow.skyflowUpdateWrapper(medias[i],"media",media_skyflow_id as string,token)
+                    }else{
+                        newMedia.push(medias[i])
+                    }
+                }
+                newMedia=this.updateMediaMeta(profiles_skyflow_id,newMedia)
+                if(newMedia.length>0){
+                    records.push({media:newMedia})
+                }
             }
             let vaccincationResponse=null
             if(records.length>0)
@@ -183,7 +202,8 @@ export class VaxCheckService {
             //     await Promise.all(medias.map(async (media) => await skyflow.uploadBatch([{ media: media}])));
             // }
 
-            return { profileResponse, vaccincationResponse }
+            // return { "profileResponse", vaccincationResponse }
+            return { msg:"save/update successfully executed" }
         } catch (err) {
             throw err;
         }

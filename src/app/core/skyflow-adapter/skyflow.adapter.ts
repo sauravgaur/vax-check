@@ -3,7 +3,7 @@ import * as axiosObj from "axios"
 import { PathLike } from "fs"
 import { promises } from "fs"
 import { sign } from "jsonwebtoken"
-import { IMATADATARECORDS, IProfile, IRecord, IDiagnosticReports, IVaccinations } from "../../interfaces/record.interface"
+import { IMATADATARECORDS, IProfile, IRecord, IDiagnosticReports, IVaccinations, IMedia } from "../../interfaces/record.interface"
 import { ISkyflowConfig, ITokens } from "../../interfaces/skyflow-config.interface"
 
 export class Skyflow {
@@ -80,7 +80,7 @@ export class Skyflow {
         }
 
     }
-    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports, tableName: string, skyflowId: string,tokens?:ITokens) {
+    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports|IMedia, tableName: string, skyflowId: string,tokens?:ITokens) {
         const url = `${this.skyflowBaseUrl}/${tableName}/${skyflowId}`;
         let data = {
             "record": {
