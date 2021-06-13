@@ -9,6 +9,7 @@ export interface IProfile {
     skyflow_id?:string,
     unique_identifier?: string,
     age?: number,
+    otp?:string
     date_of_birth?: string,
     emp_id?:string,
     org_id?:string,
@@ -28,7 +29,7 @@ export interface IProfile {
     residency_state?:string,
     name: {
         first_name: string,
-        middle_name: string,
+        middle_name?: string|null,
         last_name: string
     },
     address?: IPatientAddress,

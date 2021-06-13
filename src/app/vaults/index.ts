@@ -66,6 +66,15 @@ export const VAULT_CONFIGS: Record<string,ISkyflowConfig>={
         desc:"The Passport vault provides the ability to store protected health records pertaining to the COVID-19 test and vaccination results of patientsfirst_vitals_passport in dev region",
         vaultName:"FirstVitals_dev_2",
         skyflowCredPath:join(VAULT_BASE_PATH,"credentials","FirstVitals_dev_2.json")
+    },
+    "Workspace_service_account":{
+        accountName:'firstvitals',
+        orgName:'sb1',
+        vaultId:'',
+        accountId:"f8cbab96751311eb8a60cefd4e5eec22",
+        desc:"The Passport vault provides the ability to store protected health records pertaining to the COVID-19 test and vaccination results of patientsfirst_vitals_passport in dev region",
+        vaultName:"",
+        skyflowCredPath:join(VAULT_BASE_PATH,"credentials","workspace-service-account.json")
     }
 }
 

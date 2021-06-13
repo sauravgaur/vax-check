@@ -33,11 +33,12 @@ export class VaxCheckService {
             upperCase: false
         } as IPasswordOptions)
         // let unixTimestamp = (new Date()).toISOString()
-
-        profile.unique_identifier = await generateHash(JSON.stringify(profile));
-        profile.access_code = accessCodeGenrator.generate(32);
+        if(!profile.skyflow_id){
+            profile.unique_identifier = await generateHash(JSON.stringify(profile));
+            profile.access_code = accessCodeGenrator.generate(32);
+        }
         profile.name.first_name=profile.name.first_name.toLowerCase();
-        profile.name.middle_name=profile.name.middle_name.toLowerCase();
+        profile.name.middle_name=profile.name.middle_name?profile.name.middle_name.toLowerCase():null;
         profile.name.last_name=profile.name.last_name.toLowerCase();
         profile.email_address=profile.email_address?.toLowerCase();
         // profile.created_timestamp = unixTimestamp;
@@ -159,21 +160,32 @@ export class VaxCheckService {
                 return {msg:"user is already exist.",status:422}
             }
             console.log("saveVaxProfilesaveVaxProfilesaveVaxProfile-->", JSON.stringify(profile));
-            let profiles_skyflow_id =profile.skyflow_id?profile.skyflow_id: (await skyflow.uploadBatch([{ profiles: profile }])).responses[0].records[0].skyflow_id
+            let profiles_skyflow_id = null
+            if(profile.skyflow_id){
+                profiles_skyflow_id=profile.skyflow_id;
+                delete profile.skyflow_id;
+                console.log("if--->",profile);
+                await skyflow.skyflowUpdateWrapper(profile,"profiles",profiles_skyflow_id as string,token)
+            }else{
+                profiles_skyflow_id= (await skyflow.uploadBatch([{ profiles: profile }])).responses[0].records[0].skyflow_id
+            }
             
             let records:IRecord[]=[]
-            if(vaccination && !vaccination.skyflow_id){
-                vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
-                records.push({
-                    vaccinations: vaccination,
+            if(vaccination){
+                if(!vaccination.skyflow_id){
+                    vaccination= this.updateVaccinationMeta(profiles_skyflow_id,vaccination)
+                    records.push({
+                        vaccinations: vaccination,
                    })
+                }
+                else{
+                    const vaccination_id=vaccination.skyflow_id
+                    delete vaccination.skyflow_id
+                    delete vaccination.profiles_skyflow_id
+                    await skyflow.skyflowUpdateWrapper(vaccination,"vaccinations",vaccination_id as string,token)
+                }
             }
-            else{
-                const vaccination_id=vaccination.skyflow_id
-                delete vaccination.skyflow_id
-                delete vaccination.profiles_skyflow_id
-                await skyflow.skyflowUpdateWrapper(vaccination,"vaccinations",vaccination_id as string,token)
-            }
+            
             if(diagnostic_reports){
                 diagnostic_reports=this.updateDiagnoMeta(profiles_skyflow_id,diagnostic_reports)
                 records.push({diagnostic_reports:diagnostic_reports})

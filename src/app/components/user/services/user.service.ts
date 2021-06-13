@@ -1,14 +1,18 @@
 import { IHTTPResponse } from "../../../interfaces/http-response.interface";
-import { ISkyflowConfig } from "../../../interfaces/skyflow-config.interface";
+import { ISkyflowConfig, ITokens } from "../../../interfaces/skyflow-config.interface";
 import { DEFAULT_VAULT } from "../../../vaults";
 import { config } from "mssql"
 import { IUser } from "../../../interfaces/user.interface";
-import { generateHash, Skyflow,compareHash } from "../../../core/index";
+import { generateHash, Skyflow,compareHash, PasswordGenerator } from "../../../core/index";
 import { sign } from "jsonwebtoken";
+import { MailService } from "../../../utils/mailer/mail.service";
+import { loginOtpEmail } from "../../../utils/mailer/mail-template/email.html";
+import { IProfile } from "../../../interfaces/record.interface";
 const secretKey=`b3PpYbuZefSBHJabnf3VtJ3pjyvZZbsH`
 export class UserService {
     vaultConfig: ISkyflowConfig
     resp:IHTTPResponse
+    mailService:MailService
     constructor(config?: config, vaultConfig?: ISkyflowConfig) {
         console.log('config-->', config);
         this.vaultConfig = vaultConfig || DEFAULT_VAULT
@@ -16,14 +20,19 @@ export class UserService {
             response:null,
             status:200
         }
+        this.mailService= new MailService()
     }
-    async checkUserExist(user: IUser,skyflow?:Skyflow):Promise<any>{
+    async checkUserExist(user: IUser,skyflow?:Skyflow,token?:ITokens):Promise<any>{
         try{
             if(!skyflow){
-                skyflow=new Skyflow(this.vaultConfig)
+                skyflow=new Skyflow(this.vaultConfig);
+            }
+            if(!token){
+                token=  await skyflow.getBearerToken();
             }
             let query=`select 
             redaction(users.email, 'PLAIN_TEXT'), 
+            redaction(users.skyflow_id, 'PLAIN_TEXT'), 
             redaction(users.first_name, 'PLAIN_TEXT'), 
             redaction(users.middle_name, 'PLAIN_TEXT'), 
             redaction(users.last_name, 'PLAIN_TEXT'), 
@@ -44,9 +53,17 @@ export class UserService {
             }
             console.log('query-->',query);
             // as of now only 2 attributes... "isTravelerExists" and "isPaymentDone"
-            let resp=await skyflow.skyflowQueryWrapper(query)
+            let resp=await skyflow.skyflowQueryWrapper(query,token)
             return resp.records;
         }catch(err){
+            throw err;
+        }
+    }
+    async generateUserOTP():Promise<IHTTPResponse>{
+        try{
+            return this.resp;
+        }catch(err){
+            console.log(err);
             throw err;
         }
     }
@@ -77,6 +94,135 @@ export class UserService {
             throw err
         }
     }
+    async verifyOtp(otp:string):Promise<IHTTPResponse>{
+        try{
+            const skyflow = new Skyflow(this.vaultConfig)
+            const token= await skyflow.getBearerToken();
+            let queryOtp=`
+            select 
+            redaction(profiles.skyflow_id, 'PLAIN_TEXT'), 
+            redaction(profiles.otp, 'PLAIN_TEXT'),
+            redaction(profiles.name, 'PLAIN_TEXT') 
+            from profiles 
+            where profiles.otp='${otp}'
+            `
+            let employeeResp=await skyflow.skyflowQueryWrapper(queryOtp,token)
+            if(!employeeResp.records || employeeResp.records.length===0){
+                this.resp.status=403
+                this.resp.response={
+                    msg:"User not found"
+                }
+                return this.resp;
+            }
+            employeeResp=employeeResp.records[0].fields;
+            let userOtp:IProfile={
+                otp:'0',
+                name:employeeResp.name
+            }
+            await skyflow.skyflowUpdateWrapper(userOtp,"profiles",employeeResp.skyflow_id,token);
+            this.resp.response={
+                skyflow_id:employeeResp.skyflow_id
+            }
+            return this.resp;
+        }catch(err){
+            console.log("err-->",err);
+            throw err
+        }
+    }
+    async loginEmployeeViaOtp(email:string,org_id:string):Promise<IHTTPResponse>{
+        try{
+            const skyflow = new Skyflow(this.vaultConfig)
+            const token= await skyflow.getBearerToken();
+            let queryUser=`select 
+            redaction(profiles.email_address, 'PLAIN_TEXT'), 
+            redaction(profiles.org_id, 'PLAIN_TEXT'), 
+            redaction(profiles.name, 'PLAIN_TEXT'), 
+            redaction(profiles.org_name, 'PLAIN_TEXT'), 
+            redaction(profiles.org_name, 'PLAIN_TEXT'), 
+            redaction(profiles.skyflow_id, 'PLAIN_TEXT'), 
+            redaction(profiles.emp_id, 'PLAIN_TEXT')
+            from profiles 
+            where profiles.email_address='${email}' 
+            and profiles.org_id='${org_id}'
+            `;
+            console.log("queryUser-->",queryUser,"\n\n\n\n");
+            let employeeResp=await skyflow.skyflowQueryWrapper(queryUser,token)
+            if(!employeeResp.records || employeeResp.records.length===0){
+                this.resp.status=403
+                this.resp.response={
+                    msg:"User not found"
+                }
+                return this.resp;
+            }
+            employeeResp=employeeResp.records[0].fields;
+            console.log("employeeResp-->",employeeResp,"\n\n\n")
+            let skyflow_id=employeeResp.skyflow_id
+            const passwordGenerator = new PasswordGenerator({
+                alphabets:false,
+                digits:true,
+                specialChars:false,
+                upperCase:false
+            });
+            const otp= passwordGenerator.generate(6);
+            let userOtp:IProfile={
+                otp:otp,
+                name:employeeResp.name
+            }
+            await skyflow.skyflowUpdateWrapper(userOtp,"profiles",skyflow_id,token);
+            await this.mailService.sendMail(
+                {
+                    // from: 'vaxcheckservice@vaxcheck.us',
+                    to: employeeResp.email_address,
+                    subject: 'Your VAXCheck login otp',
+                    html: loginOtpEmail(otp,employeeResp.name.first_name)
+                }
+            );
+            this.resp.response={msg:"OTP is sent on your registered email."}
+            return this.resp
+            return this.resp;
+        }catch(err){
+            console.log(err);
+            throw err;
+        }
+    }
+    async loginViaOtp(user:IUser):Promise<IHTTPResponse>{
+        try{
+            const skyflow = new Skyflow(this.vaultConfig)
+            const token= await skyflow.getBearerToken();
+            let userProfile= await this.checkUserExist(user,skyflow,token)
+            console.log('userProfile--.',userProfile)
+            if(userProfile.length===0){
+                this.resp={response:"user doesn't exist.",status:422}
+                return this.resp
+            }
+            userProfile=userProfile[0].fields;
+            const passwordGenerator = new PasswordGenerator({
+                alphabets:false,
+                digits:true,
+                specialChars:false,
+                upperCase:false
+            });
+            const otp= passwordGenerator.generate(6);
+            let userOtp:IUser={
+                otp:otp
+            }
+            await skyflow.skyflowUpdateWrapper(userOtp,"users",userProfile.skyflow_id,token);
+            await this.mailService.sendMail(
+                {
+                    // from: 'vaxcheckservice@vaxcheck.us',
+                    to: userProfile.email,
+                    subject: 'Your VAXCheck login otp',
+                    html: loginOtpEmail(otp,userProfile.first_name)
+                }
+            );
+            this.resp.response={msg:"OTP is sent on your registered email."}
+            return this.resp
+        }catch(err){
+            console.log("createUser err-->",err);
+            throw err
+        }
+    }
+    
     async createUser(user:IUser):Promise<IHTTPResponse>{
         try{
             const skyflow = new Skyflow(this.vaultConfig)

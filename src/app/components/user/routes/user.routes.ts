@@ -9,6 +9,9 @@ export function routesConfig():Router {
     let userCtrl=new UserCtrl()
     console.log("enter into router--->")
     router.post('/login',userCtrl.login);
+    router.post('/login-emp-via-otp',userCtrl.loginEmployeeViaOtp);
+    router.post('/verify-otp/:otp',userCtrl.verifyOtp);
+    
     router.get('/user/getById',isAuthenticated,userCtrl.getById)
     router.post('/user/signup',userCtrl.signup);
     // app.get('/user/passwordreset/:email',passwordReset);

@@ -5,6 +5,8 @@ import { promises } from "fs"
 import { sign } from "jsonwebtoken"
 import { IMATADATARECORDS, IProfile, IRecord, IDiagnosticReports, IVaccinations, IMedia } from "../../interfaces/record.interface"
 import { ISkyflowConfig, ITokens } from "../../interfaces/skyflow-config.interface"
+import { IUser } from "../../interfaces/user.interface"
+import { VAULT_CONFIGS } from "../../vaults"
 
 export class Skyflow {
     private skyflowBaseUrl: string
@@ -54,6 +56,31 @@ export class Skyflow {
             throw err;
         }
     }
+    async signedJwtTokenWorkspace() {
+        try {
+            let creds = JSON.parse(await promises.readFile(VAULT_CONFIGS["Workspace_service_account"].skyflowCredPath, { encoding: 'utf8' }))
+            let currrentTimeStamp = Math.floor((new Date()).getTime() / 1000)
+            let claims = {
+                "iss": creds["clientID"],
+                "key": creds["keyID"],
+                "aud": creds["tokenURI"],
+                "exp": currrentTimeStamp + (3600),
+                "sub": creds["clientID"],
+                "iat":0
+            }
+            const signedJWT = sign(claims, creds["privateKey"], { algorithm: 'RS256' })
+            // console.log("signedJWT-->",signedJWT);
+            let resp:any=await new Promise((resolve,reject)=>{
+                return setTimeout(()=>{
+                    resolve({ signedJWT, creds })
+                },1000)
+            })
+            return {signedJWT:resp.signedJWT,creds}
+        } catch (err) {
+            console.log("err-->", err)
+            throw err;
+        }
+    }
     public async getBearerToken():Promise<ITokens> {
         const { signedJWT, creds } = await this.signedJwtToken()
         let body = {
@@ -80,7 +107,7 @@ export class Skyflow {
         }
 
     }
-    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports|IMedia, tableName: string, skyflowId: string,tokens?:ITokens) {
+    async skyflowUpdateWrapper(fields: IProfile|IVaccinations|IMATADATARECORDS|IDiagnosticReports|IMedia|IUser, tableName: string, skyflowId: string,tokens?:ITokens) {
         const url = `${this.skyflowBaseUrl}/${tableName}/${skyflowId}`;
         let data = {
             "record": {

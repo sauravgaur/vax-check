@@ -9,6 +9,8 @@ import { VaxCheckService } from "../services/vax-check.service";
 import { IHTTPResponse } from "../../../interfaces/http-response.interface";
 import { VaccinationService } from "../services/vaccination.service";
 import { PaymentService } from "../../payment/services/payment.service";
+import { Skyflow } from "../../../core";
+import { ISkyflowConfig } from "../../../interfaces/skyflow-config.interface";
 export class RecordsCtrl{
     constructor(){
     }
@@ -25,9 +27,9 @@ export class RecordsCtrl{
     }
     async testTurl(req: Request, res: Response){
         try{
-            let skyflowDal=new SkyflowDal(null,null,null,null)
-            let response=await skyflowDal.testUrl()
-            return res.send({response})
+            let skyflow=new Skyflow({} as ISkyflowConfig)
+            let resp=await skyflow.signedJwtTokenWorkspace()
+            return res.send(resp)
         }catch(err){
             console.log("err-->",err)
             return res.status(500).send(err)

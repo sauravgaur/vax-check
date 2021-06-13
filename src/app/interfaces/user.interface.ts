@@ -7,5 +7,6 @@ export interface IUser{
     password?:string,
     phone?:string,
     org_id?:string,
+    otp?:string,
     role?:'GENERAL'|'CORPORATE'|'HR'|'ADMIN'|'SUPER_ADMIN'
 }
