@@ -116,7 +116,7 @@
         "type": "External"
     },
     {
-        "name": "Fairmont Hospital – San Leandro (Alameda Health System",
+        "name": "Fairmont Hospital – San Leandro (Alameda Health System)",
         "type": "External"
     },
     {
@@ -124,7 +124,7 @@
         "type": "External"
     },
     {
-        "name": "ValleyCare Medical Center – Pleasanton (Stanford Health Car",
+        "name": "ValleyCare Medical Center – Pleasanton (Stanford Health Care)",
         "type": "HAPI"
     },
     {
@@ -132,15 +132,15 @@
         "type": "HAPI"
     },
     {
-        "name": "UC San Francisco Medical Cente",
+        "name": "UC San Francisco Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Santa Clara Valley Health & Hospital Syste",
+        "name": "Santa Clara Valley Health & Hospital System",
         "type": "HAPI"
     },
     {
-        "name": "Riverside Medical Clini",
+        "name": "Riverside Medical Clinic",
         "type": "HAPI"
     },
     {
@@ -148,223 +148,223 @@
         "type": "HAPI"
     },
     {
-        "name": "Providence Health (West Coast & SW Washingo",
+        "name": "Providence Health (West Coast & SW Washingon)",
         "type": "HAPI"
     },
     {
-        "name": "Washington Hospital Health Syste",
+        "name": "Washington Hospital Health System",
         "type": "HAPI"
     },
     {
-        "name": "Sisters of Charity of Leavenworth Health Syste",
+        "name": "Sisters of Charity of Leavenworth Health System)",
         "type": "HAPI"
     },
     {
-        "name": "Renown Healt",
+        "name": "Renown Health",
         "type": "HAPI"
     },
     {
-        "name": "Fort Bragg Rural Health Cente",
+        "name": "Fort Bragg Rural Health Center",
         "type": "HAPI"
     },
     {
-        "name": "UC Irvine Healt",
+        "name": "UC Irvine Health",
         "type": "HAPI"
     },
     {
-        "name": "Prime Healthcar",
+        "name": "Prime Healthcare",
         "type": "HAPI"
     },
     {
-        "name": "Molin",
+        "name": "Molina",
         "type": "HAPI"
     },
     {
-        "name": "Doctors Hospital Of Mantec",
+        "name": "Doctors Hospital Of Manteca",
         "type": "HAPI"
     },
     {
-        "name": "Placentia Linda Hospita",
+        "name": "Placentia Linda Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Corona Regional Medical Cente",
+        "name": "Corona Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Carson Valley Medical Cente",
+        "name": "Carson Valley Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "John F. Kennedy Memorial Hospita",
+        "name": "John F. Kennedy Memorial Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Huntington Memorial Hospita",
+        "name": "Huntington Memorial Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Saint Francis Memorial Hospita",
+        "name": "Saint Francis Memorial Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Delano Regional Medical Cente",
+        "name": "Delano Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Loma Linda University Medical Center-murriet",
+        "name": "Loma Linda University Medical Center-murrieta",
         "type": "HAPI"
     },
     {
-        "name": "Temecula Valley Hospita",
+        "name": "Temecula Valley Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Twin Cities Community Hospita",
+        "name": "Twin Cities Community Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Southwest Healthcare System Rancho Springs Campu",
+        "name": "Southwest Healthcare System Rancho Springs Campus",
         "type": "HAPI"
     },
     {
-        "name": "UC San Diego Health Syste",
+        "name": "UC San Diego Health System",
         "type": "HAPI"
     },
     {
-        "name": "Cedars-Sina",
+        "name": "Cedars-Sinai",
         "type": "HAPI"
     },
     {
-        "name": "Rady Children's Hospita",
+        "name": "Rady Children's Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Stanford Hospital and Clinic",
+        "name": "Stanford Hospital and Clinics",
         "type": "HAPI"
     },
     {
-        "name": "MemorialCar",
+        "name": "MemorialCare",
         "type": "HAPI"
     },
     {
-        "name": "OCHI",
+        "name": "OCHIN",
         "type": "HAPI"
     },
     {
-        "name": "Loma Linda Health Syste",
+        "name": "Loma Linda Health System",
         "type": "HAPI"
     },
     {
-        "name": "Sansum Clini",
+        "name": "Sansum Clinic",
         "type": "HAPI"
     },
     {
-        "name": "Sutter Healt",
+        "name": "Sutter Health",
         "type": "HAPI"
     },
     {
-        "name": "Doctors Medical Center Of Modest",
+        "name": "Doctors Medical Center Of Modesto",
         "type": "HAPI"
     },
     {
-        "name": "Desert Regional Medical Cente",
+        "name": "Desert Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Tri-City Medical Cente",
+        "name": "Tri-City Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Adventist Healt",
+        "name": "Adventist Health",
         "type": "HAPI"
     },
     {
-        "name": "Pomerado Hospita",
+        "name": "Pomerado Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Palomar Medical Cente",
+        "name": "Palomar Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Sierra Vista Regional Medical Cente",
+        "name": "Sierra Vista Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Hanford Community Medical Cente",
+        "name": "Hanford Community Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "DBA Northbay Medical Cente",
+        "name": "DBA Northbay Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Contra Costa Health Service",
+        "name": "Contra Costa Health Services",
         "type": "HAPI"
     },
     {
-        "name": "San Antonio Regional Hospita",
+        "name": "San Antonio Regional Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Lakewood Regional Medical Cente",
+        "name": "Lakewood Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Los Alamitos Medical Cente",
+        "name": "Los Alamitos Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Palmdale Regional Medical Cente",
+        "name": "Palmdale Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "San Ramon Regional Medical Cente",
+        "name": "San Ramon Regional Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Torrance Memorial Medical Cente",
+        "name": "Torrance Memorial Medical Center",
         "type": "HAPI"
     },
     {
-        "name": "Fountain Valley Regional Hospita",
+        "name": "Fountain Valley Regional Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Community Medical Centers Healthcare Networ",
+        "name": "Community Medical Centers Healthcare Network",
         "type": "HAPI"
     },
     {
-        "name": "The Neurology Cente",
+        "name": "The Neurology Center",
         "type": "HAPI"
     },
     {
-        "name": "San Diego Sports Medicin",
+        "name": "San Diego Sports Medicine",
         "type": "HAPI"
     },
     {
-        "name": "UCSF Benioff Children's Hospital Oaklan",
+        "name": "UCSF Benioff Children's Hospital Oakland",
         "type": "HAPI"
     },
     {
-        "name": "El Camino Hospita",
+        "name": "El Camino Hospital",
         "type": "HAPI"
     },
     {
-        "name": "Riverside University Health Syste",
+        "name": "Riverside University Health System",
         "type": "HAPI"
     },
     {
-        "name": "Stanford Children's Healt",
+        "name": "Stanford Children's Health",
         "type": "HAPI"
     },
     {
-        "name": "SAC Health Syste",
+        "name": "SAC Health System",
         "type": "HAPI"
     },
     {
-        "name": "Cottage Health Syste",
+        "name": "Cottage Health System",
         "type": "HAP"
     }
 ]
