@@ -12,7 +12,7 @@ export const vaccinationInProcessEmail = (firstName: string) => {
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <h3 style="margin: 0;">Vaccination in Progress</h3>
+                    <h3 style="margin: 0;">Vaccination Verification</h3>
                     <h6 style="margin: 0; margin-bottom: 16px;">Your vaccination verification is in progress</h6>
                 </td>
             </tr>
