@@ -1,0 +1,8 @@
+{
+    "apps": [
+        {
+            "name": "vax-check-prod",
+            "script": "npm run start:prod"
+        }
+    ]
+}

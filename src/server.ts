@@ -35,7 +35,7 @@ export function app(port?:string){
   exp.use('/uploads',express.static("uploads"))
   exp.get('/', (req, res) => res.send('Server is running.'));
   console.log("port-->",port)
-  exp.listen(3000, () => {
+  exp.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
   });
 };

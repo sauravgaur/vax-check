@@ -1,6 +1,8 @@
 import {config,DotenvConfigOptions} from "dotenv"
 
-let env=process.env.NODE_ENV || 'develop'
+// let env=process.env.NODE_ENV || 'develop'
+let env=process.argv[2] || 'develop'
+console.log('process.env---->',process.argv);
 let configOption:DotenvConfigOptions={path:`dotenv/${env}.env`}
 
 config(configOption)
