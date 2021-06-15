@@ -49,8 +49,8 @@ export class UserCtrl{
 
             let batchService= new BatchService();
             let userService= new UserService()
-            let userResponse =await userService.verifyOtp(otp);
-            let {status,response}= await batchService.patientById(userResponse.response.skyflow_id)
+            let {status,response} =await userService.verifyOtp(otp);
+            //let {status,response}= await batchService.patientById(userResponse.response.skyflow_id)
             return res.status(status).send(response)
         }catch(err){
             return res.status(500).send(err)

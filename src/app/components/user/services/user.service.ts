@@ -125,8 +125,8 @@ export class UserService {
             await skyflow.skyflowUpdateWrapper(userOtp,"profiles",employeeResp.skyflow_id,token);
 
             let vaxcheckService= new VaxCheckService(this.config,this.vaultConfig);
-            this.resp.response=vaxcheckService.paymentStatus(employeeResp as IProfile,skyflow,token)
-            return this.resp;
+            return await vaxcheckService.paymentStatus(employeeResp as IProfile,skyflow,token)
+           // return this.resp;
         }catch(err){
             console.log("err-->",err);
             throw err
