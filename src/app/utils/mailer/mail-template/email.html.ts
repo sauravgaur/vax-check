@@ -12,7 +12,7 @@ export const vaccinationInProcessEmail = (firstName: string) => {
             </tr>
             <tr>
                 <td style="text-align: center">
-                    <h3 style="margin: 0;">Vaccination Verified</h3>
+                    <h3 style="margin: 0;">Vaccination in Progress</h3>
                     <h6 style="margin: 0; margin-bottom: 16px;">Your vaccination verification is in progress</h6>
                 </td>
             </tr>
@@ -114,53 +114,38 @@ export const loginOtpEmail = (otp: string, firstName: string) => {
                 </td>
             </tr>
             <tr>
-                <td style="text-align: center">
-                    <h3 style="margin: 0;">Vaccination Verified</h3>
-                    <h6 style="margin: 0; margin-bottom: 16px;">Your vaccination records have been verified.</h6>
-                </td>
-            </tr>
-            <tr>
                 <td style="padding-top: 16px;text-align: justify;text-justify: inter-word;">
                     Hey ${firstName}<br/>
                     <br/>
-                    Welcome back to VAXCheck.<br/>
+                    Please use the verification code below on the VAXCheck Login to confirm your identity. 
                 </td>
             </tr>
             <tr>
                 <td style="padding: 24px">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td style="font-size: 12px;padding-bottom: 4px;">
-                                <strong>Here is the login OTP:</strong>
-                            </td>
-                        </tr>
                         <tr style="background-color: #d9fcdf; color: #067a1b;">
                             <td style="padding: 10px;border: 1px solid #69ef7f; border-radius: 4px;">
-                                <span>Access Code: </span> <span style="padding-left: 10px;">${otp}</span>
+                                <span>Verification Code: </span> <span style="padding-left: 10px;">${otp}</span>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <p>We have issued a digital health pass for your reference and possible future use.  To access your digital health pass, here is a step-by-step guide</p>
-                    <ol style="text-align: justify;text-justify: inter-word;">
-                        <li>Go to an Internet browser and enter the following web address: app.firstvitals.skyflow.com</li>
-                        <li>Enter the email/mobile number used when you entered your vaccination details, followed by  6-digit passcode</li>
-                        <li>Your personal digital health pass will be displayed</li>
-                    </ol>
-                </td>
-            </tr>
-            <tr>
                 <td style="text-align: justify;text-justify: inter-word;">
                     <br/>
-                    If you have any questions accessing your digital health pass, please feel free to contact us at: vaxcheck@firstvitals.com<br/>
-                    Thank you for using VAXCheck.us!<br/>
+                    For general information about VAXCheck, see the FAQs. For additional help, contact VAXCheck Support. Thank you for using VAXCheck.us!<br/>
                     <br/>
                     <br/>
                     Your Dedicated Support Team @<br/>
                     VAXcheck.us<br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br/>
+                    <br/>
+                    <small>Do not reply to this message. This mailbox is not monitored.</small>
                 </td>
             </tr>
         </table>
