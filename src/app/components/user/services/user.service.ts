@@ -13,9 +13,11 @@ const secretKey=`b3PpYbuZefSBHJabnf3VtJ3pjyvZZbsH`
 export class UserService {
     vaultConfig: ISkyflowConfig
     resp:IHTTPResponse
+    config?:config
     mailService:MailService
     constructor(config?: config, vaultConfig?: ISkyflowConfig) {
-        console.log('config-->', config);
+        // console.log('config-->', config);
+        this.config=config;
         this.vaultConfig = vaultConfig || DEFAULT_VAULT
         this.resp={
             response:null,
@@ -122,7 +124,7 @@ export class UserService {
             }
             await skyflow.skyflowUpdateWrapper(userOtp,"profiles",employeeResp.skyflow_id,token);
 
-            let vaxcheckService= new VaxCheckService(this.vaultConfig);
+            let vaxcheckService= new VaxCheckService(this.config,this.vaultConfig);
             this.resp.response=vaxcheckService.paymentStatus(employeeResp as IProfile,skyflow,token)
             return this.resp;
         }catch(err){
