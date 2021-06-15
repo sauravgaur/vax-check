@@ -89,9 +89,10 @@ export class VaxCheckService {
         }
     }
     
-    async paymentStatus(profile: IProfile):Promise<IHTTPResponse>{
+    async paymentStatus(profile: IProfile,skyflow?:Skyflow,token?:ITokens):Promise<IHTTPResponse>{
         try{
-            let skyflow=new Skyflow(this.vaultConfig)
+            if(!skyflow)
+                skyflow=new Skyflow(this.vaultConfig)
             let isTravelerExists=false, isPaymentDone=false,profiles_skyflow_id=null,vaccination_skyflow_id=null,media_ids=[];
             let query=`select redaction(vaccinations.service_availed, 'PLAIN_TEXT'),profiles.skyflow_id from profiles
                 LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id
@@ -113,7 +114,8 @@ export class VaxCheckService {
             }
             console.log('query-->',query);
             // as of now only 2 attributes... "isTravelerExists" and "isPaymentDone"
-            let token= await skyflow.getBearerToken()
+            if(!token)
+                token= await skyflow.getBearerToken()
             let resp=await skyflow.skyflowQueryWrapper(query,token)
             console.log('ssss',JSON.stringify(resp))
             if(resp.records.length>0){

@@ -8,6 +8,7 @@ import { sign } from "jsonwebtoken";
 import { MailService } from "../../../utils/mailer/mail.service";
 import { loginOtpEmail } from "../../../utils/mailer/mail-template/email.html";
 import { IProfile } from "../../../interfaces/record.interface";
+import { VaxCheckService } from "../../records/services/vax-check.service";
 const secretKey=`b3PpYbuZefSBHJabnf3VtJ3pjyvZZbsH`
 export class UserService {
     vaultConfig: ISkyflowConfig
@@ -120,9 +121,9 @@ export class UserService {
                 name:employeeResp.name
             }
             await skyflow.skyflowUpdateWrapper(userOtp,"profiles",employeeResp.skyflow_id,token);
-            this.resp.response={
-                skyflow_id:employeeResp.skyflow_id
-            }
+
+            let vaxcheckService= new VaxCheckService(this.vaultConfig);
+            this.resp.response=vaxcheckService.paymentStatus(employeeResp as IProfile,skyflow,token)
             return this.resp;
         }catch(err){
             console.log("err-->",err);
