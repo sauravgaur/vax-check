@@ -113,7 +113,7 @@ export class UserService {
             if(!employeeResp.records || employeeResp.records.length===0){
                 this.resp.status=403
                 this.resp.response={
-                    msg:"User not found"
+                    msg:"OTP is invalid."
                 }
                 return this.resp;
             }
