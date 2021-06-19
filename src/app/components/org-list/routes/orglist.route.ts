@@ -5,6 +5,6 @@ let router=Router()
 
 export function routesConfigInner():Router {
     let orgListController=new OrgListController()
-    router.get('/orgList/:state',orgListController.defaultResponse);
+    router.post('/orgList/:state',orgListController.defaultResponse);
     return router
  }
