@@ -136,6 +136,8 @@ export class BatchService{
             redaction(profiles.address, 'PLAIN_TEXT'),
             redaction(profiles.healthcare_employee, 'PLAIN_TEXT'),
             redaction(profiles.org_id, 'PLAIN_TEXT'),
+            redaction(profiles.residency_state, 'PLAIN_TEXT'),
+            redaction(profiles.consent, 'PLAIN_TEXT'),
            
             redaction(vaccinations.vaccination_event_identifier, 'PLAIN_TEXT'), 
             redaction(vaccinations.vaccination_certification_status, 'PLAIN_TEXT'), 
@@ -170,6 +172,9 @@ export class BatchService{
             redaction(vaccinations.verification_notes, 'PLAIN_TEXT'),
             redaction(vaccinations.vaccine_dose_1, 'PLAIN_TEXT'),
             redaction(vaccinations.vaccine_dose_2, 'PLAIN_TEXT'),
+            redaction(vaccinations.provider, 'PLAIN_TEXT'),
+            redaction(vaccinations.appointment_email_confirmation, 'PLAIN_TEXT'),
+            
             profiles.created_timestamp
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id 
@@ -206,7 +211,9 @@ export class BatchService{
                         name:data.fields.name,
                         address:data.fields.address,
                         healthcare_employee:data.fields.healthcare_employee,
-                        org_id:data.fields.org_id
+                        residency_state:data.fields.residency_state,
+                        org_id:data.fields.org_id,
+                        consent:data.fields.consent
                     },
                     media:media,
                     vaccinations:{
@@ -242,7 +249,10 @@ export class BatchService{
                         service_availed:data.fields.service_availed,
                         verification_notes:data.fields.verification_notes,
                         vaccine_dose_1:data.fields.vaccine_dose_1,
-                        vaccine_dose_2:data.fields.vaccine_dose_2
+                        vaccine_dose_2:data.fields.vaccine_dose_2,
+                        provider:data.fields.provider,
+                        appointment_email_confirmation:data.fields.appointment_email_confirmation
+                        
                     }
                 };
                 return record;
