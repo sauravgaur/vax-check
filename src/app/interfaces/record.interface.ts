@@ -6,16 +6,16 @@ type STATUS = 'PENDING' | 'SUCCESS' | 'FAIL';
 type DIAGNOSTIC_TEST_TYPE = 'ANTIBODY' | 'ANTIGEN' | 'MOLECULAR';
 
 export interface IProfile {
-    skyflow_id?:string,
+    skyflow_id?: string,
     unique_identifier?: string,
     age?: number,
-    otp?:string
+    otp?: string
     date_of_birth?: string,
-    emp_id?:string,
-    org_id?:string,
-    work_location?:string,
+    emp_id?: string,
+    org_id?: string,
+    work_location?: string,
     race?: string,
-    stripe_session_id?:string,
+    stripe_session_id?: string,
     race2?: string,
     race3?: string,
     ethnicity?: string,
@@ -26,10 +26,10 @@ export interface IProfile {
     mobile_number?: string,
     mobile_number2?: string,
     email_address?: string,
-    residency_state?:string,
+    residency_state?: string,
     name: {
         first_name: string,
-        middle_name?: string|null,
+        middle_name?: string | null,
         last_name: string
     },
     address?: IPatientAddress,
@@ -50,11 +50,11 @@ export interface IProfile {
     updated_timestamp?: string | Date,
 }
 
-export interface IVaccineDosing{
-    date?:string,
-    lot_number?:string,
-    site_name?:string,
-    site_address?:IAddress2
+export interface IVaccineDosing {
+    date?: string,
+    lot_number?: string,
+    site_name?: string,
+    site_address?: IAddress2
 }
 
 export interface IDiagnosticReports {
@@ -169,21 +169,21 @@ export interface IMATADATARECORDS {
     },
 }
 
-export interface IProvider{
-    provider_org_name?:string,
-    provider_name?:string,
-    provider_type?:string,
-    provider_npi?:string,
+export interface IProvider {
+    provider_org_name?: string,
+    provider_name?: string,
+    provider_type?: string,
+    provider_npi?: string,
     provider_email?: string,
     provider_phone?:string,
     provider_address?:IAddress2
 }
 
-export interface IMedia{
-    profiles_skyflow_id?:string,
-    skyflow_id?:string,
-    document_type?:'VAX_CARD'|'SUPPLEMENT_DOC'|'EVIDENCE'|'MISC1'|'MISC2'|'MISC3'|'DIAGNOSTIC_TEST',
-    file_path?:string
+export interface IMedia {
+    profiles_skyflow_id?: string,
+    skyflow_id?: string,
+    document_type?: 'VAX_CARD' | 'SUPPLEMENT_DOC' | 'EVIDENCE' | 'MISC1' | 'MISC2' | 'MISC3' | 'DIAGNOSTIC_TEST',
+    file_path?: string
 }
 
 export interface IVaccinations {
@@ -219,15 +219,15 @@ export interface IVaccinations {
     reference_id?: string,
     reference_system?: string,
     verification_source?: string,
-    verification_status?: 'PENDING'|'VERIFIED'|'DECLINED'|'CONDITION_APPROVAL',
+    verification_status?: 'PENDING' | 'VERIFIED' | 'DECLINED' | 'CONDITION_APPROVAL',
     access_code?: string,
     travel_date?: string,
     supporting_doc?: string,
     traveler_type?: string,
     service_availed?: string,
     verification_expiry_date?: string,
-    vaccine_dose_1?:IVaccineDosing,
-    vaccine_dose_2?:IVaccineDosing,
+    vaccine_dose_1?: IVaccineDosing,
+    vaccine_dose_2?: IVaccineDosing,
     recipient?: {
         unique_identifier?: string,
         phone_number?: string,
@@ -241,7 +241,7 @@ export interface IVaccinations {
             last_name?: string
         },
     },
-    verification_notes?:string,
+    verification_notes?: string,
     performer?: {
         performer_org_name?: string,
         performer_name?: string,
@@ -249,7 +249,7 @@ export interface IVaccinations {
         performer_npi?: string,
         performer_address?: IPatientAddress,
     },
-    provider?:IProvider
+    provider?: IProvider
 }
 
 // export interface IPatientAddress{
@@ -278,9 +278,9 @@ export interface IAddress2 {
     country?: string,
     zip_code?: string,
     city?: string,
-    county?:string,
-    county_fips?:string,
-    island?:string
+    county?: string,
+    county_fips?: string,
+    island?: string
 }
 
 export interface IRecord {
@@ -288,8 +288,8 @@ export interface IRecord {
     diagnostic_reports?: IDiagnosticReports,
     metadata_records?: IMATADATARECORDS,
     vaccinations?: IVaccinations,
-    media?:IMedia[],
-    users?:IUser
+    media?: IMedia[],
+    users?: IUser
 }
 
 export interface ISourceProvider {
