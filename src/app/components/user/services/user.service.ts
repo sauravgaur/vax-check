@@ -6,7 +6,7 @@ import { IUser } from "../../../interfaces/user.interface";
 import { generateHash, Skyflow,compareHash, PasswordGenerator } from "../../../core/index";
 import { sign } from "jsonwebtoken";
 import { MailService } from "../../../utils/mailer/mail.service";
-import { loginOtpEmail } from "../../../utils/mailer/mail-template/email.html";
+import { changePasswordEmail, loginOtpEmail } from "../../../utils/mailer/mail-template/email.html";
 import { IProfile } from "../../../interfaces/record.interface";
 import { VaxCheckService } from "../../records/services/vax-check.service";
 const secretKey=`b3PpYbuZefSBHJabnf3VtJ3pjyvZZbsH`
@@ -242,6 +242,60 @@ export class UserService {
             return this.resp
         }catch(err){
             console.log("createUser err-->",err);
+            throw err
+        }
+        
+    }
+    
+    async changePassword(user:IUser,newPassword:string):Promise<IHTTPResponse>{
+        try{
+            const skyflow = new Skyflow(this.vaultConfig)
+            const token= await skyflow.getBearerToken();
+            let queryUser=`select 
+            redaction(users.skyflow_id, 'PLAIN_TEXT'), 
+            redaction(users.password, 'PLAIN_TEXT'), 
+            redaction(users.first_name, 'PLAIN_TEXT'), 
+            redaction(users.middle_name, 'PLAIN_TEXT'), 
+            redaction(users.last_name, 'PLAIN_TEXT'), 
+            redaction(users.email, 'PLAIN_TEXT')
+            from users 
+            where users.skyflow_id='${user.skyflow_id}' 
+            `;
+            console.log("queryUser-->",queryUser,"\n\n\n\n");
+            let userProfile=await skyflow.skyflowQueryWrapper(queryUser,token)
+            console.log("userProfile-->",JSON.stringify(userProfile),"\n\n\n\n");
+            
+            if(userProfile.length===0){
+                this.resp.status=422;
+                this.resp.response="user doesn't exist"
+                return this.resp;
+            }
+            userProfile=userProfile.records[0].fields;
+            console.log("user.password-->",user.password);
+            console.log("userProfile[0].password-->",userProfile);
+            const passwordMatched=await compareHash(user.password as string,userProfile.password)
+            if(!passwordMatched){
+                this.resp.status=422;
+                this.resp.response="password is not correct"
+                return this.resp
+            }
+            const newPasswordHash= await generateHash(newPassword as string)
+            const updateUserFields:IUser={
+                password:newPasswordHash
+            }
+            await skyflow.skyflowUpdateWrapper(updateUserFields,"users",user.skyflow_id as string,token)
+            await this.mailService.sendMail(
+                {
+                    // from: 'vaxcheckservice@vaxcheck.us',
+                    to: userProfile.email,
+                    subject: 'Your VAXCheck has been changed',
+                    html: changePasswordEmail(newPassword,userProfile.first_name)
+                }
+            );
+            this.resp.response="password changed successfully";
+            return this.resp
+        }catch(err){
+            console.log("changePassword err-->",err);
             throw err
         }
         

@@ -14,6 +14,7 @@ export function routesConfig():Router {
     
     router.get('/user/getById',isAuthenticated,userCtrl.getById)
     router.post('/user/signup',userCtrl.signup);
+    router.post('/user/change-password',userCtrl.changePassword);
     // app.get('/user/passwordreset/:email',passwordReset);
     
  

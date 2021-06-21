@@ -149,6 +149,54 @@ export const loginOtpEmail = (otp: string, firstName: string) => {
     </html>`
 }
 
+export const changePasswordEmail = (newPassword: string, firstName: string) => {
+    firstName=firstName[0].toUpperCase()+firstName.substr(1)
+    return `<!DOCTYPE html>
+    <html lang="en-US">
+    <body class="body"
+        style="background-color: #e1e3ed; padding-top:24px; margin:0 !important; display:block !important; -webkit-text-size-adjust:none">
+        <table style="margin: 24px auto;padding: 24px;background-color: #ffffff;border-radius: 12px;" width="500px"
+            border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="text-align: center">
+                    <img width="70" alt="" src="https://api-vaxcheck.firstvitals.com/public/logo-dark.png" />
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 16px;text-align: justify;text-justify: inter-word;">
+                    Hey ${firstName}<br/>
+                    <br/>
+                   your password has been changed to ${newPassword}
+                Welcome to VAXCheck.us vaccination service.  
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: justify;text-justify: inter-word;">
+                    <br/>
+                    We are excited to have you onboard. 
+                    <br/>
+                    You have been selected by your employer - Fast.Co for the vaccination verification and booster shot updates. 
+
+                    <br/>
+                    
+                    <br/>
+                    <br/>
+                    Your Dedicated Support Team @<br/>
+                    VAXcheck.us<br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br/>
+                    <br/>
+                    <small>Do not reply to this message. This mailbox is not monitored.</small>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>`
+}
+
 // export const loginOtpEmail = (otp: string, firstName: string) => {
 //     firstName=firstName[0].toUpperCase()+firstName.substr(1)
 //     return `<!DOCTYPE html>

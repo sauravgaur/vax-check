@@ -84,6 +84,27 @@ export class UserCtrl{
             res.status(500).send(err)
         }
     }
+    async changePassword(req: Request, res: Response) {
+        try{
+            console.log("req-->",req.body)
+            let user=req.body
+            console.log("res-->",res)
+            if(!user.skyflow_id){
+                return httpError(res,422,"first_name is missing",{desc:`mandatory fields are "first_name","last_name","role","email" and "password"`})
+            }
+            if(!user.password){
+                return httpError(res,422,"password is missing",{desc:`mandatory fields are "first_name","last_name","role","email" and "password"`})
+            }
+            let userService= new UserService()
+            const {status,response}= await userService.changePassword(user,user.newPassword);
+            
+            return res.status(status).send(response)
+        }catch(err){
+            console.log('signup err-->',err);
+            res.status(500).send(err)
+        }
+    }
+    
     
     async getById(req: Request, res: Response) {
         return res.send("get By id..")
