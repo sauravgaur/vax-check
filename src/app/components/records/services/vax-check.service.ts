@@ -210,8 +210,12 @@ export class VaxCheckService {
                 }
             }
             let vaccincationResponse=null
-            if(records.length>0)
+            // console.log('\n\n\n\n\n records--->',records)
+            if(records.length>0){
+                console.log("if records.length>0---->")
                 vaccincationResponse = await skyflow.uploadBatch(records)
+            }
+                
             // if(medias && medias.length>0){
             //     await Promise.all(medias.map(async (media) => await skyflow.uploadBatch([{ media: media}])));
             // }
