@@ -20,6 +20,7 @@ export function routesConfig():Router {
     router.put('/batch/patient/status-update',recordCtrl.patientStatusUpdate);
     router.put('/batch/patient/update-vax-note',recordCtrl.updateVaccinationNotes);
     router.get('/batch/patient-by-org/:org_id',recordCtrl.allEmployees);
+    router.get('/batch/patient-count-by-org/:org_id',recordCtrl.allEmployeesCount);
     
     return router
  }

@@ -229,13 +229,28 @@ export class RecordsCtrl{
         try{
             let batchService= new BatchService();
             let {org_id}= req.params
-            let {status,response}= await batchService.allPatient(org_id)
+            let limit=req.query.limit as string;
+            let offset=req.query.offset as string;
+            
+            let {status,response}= await batchService.allPatient(org_id,limit,offset)
             return res.status(status).send(response)
             
         }catch(err){
             return httpError(res,500,"Internal server error",{desc:err})
         }
     }
+    async allEmployeesCount(req: Request, res: Response){
+        try{
+            let batchService= new BatchService();
+            let {org_id}= req.params
+            let {status,response}= await batchService.allPatientCount(org_id)
+            return res.status(status).send(response)
+            
+        }catch(err){
+            return httpError(res,500,"Internal server error",{desc:err})
+        }
+    }
+    
     async patientById(req: Request, res: Response){
         try{
             let batchService= new BatchService();

@@ -33,7 +33,22 @@ export class BatchService{
             throw err
         }
     }
-    async allPatient(org_id?:string):Promise<IHTTPResponse>{
+    
+    async allPatientCount(org_id?:string):Promise<IHTTPResponse>{
+        try{
+            let skyFlow= new Skyflow(this.vaultConfig)
+            let query=`select count(*) as numb 
+            from profiles 
+            where profiles.org_id ='${org_id}' `;
+            
+            this.resp.response=await skyFlow.skyflowQueryWrapper(query)
+            this.resp.response.records=this.resp.response.records.map((data:any)=>data.fields.numb)
+            return this.resp;
+        }catch(err){
+            throw err
+        }
+    }
+    async allPatient(org_id?:string,limit?:string,offset?:string):Promise<IHTTPResponse>{
         try{
             let skyFlow= new Skyflow(this.vaultConfig)
             let query=`select redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT'),redaction(profiles.created_timestamp, 'PLAIN_TEXT') , redaction(profiles.name, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT'), redaction(profiles.age, 'PLAIN_TEXT') , redaction(vaccinations.site, 'PLAIN_TEXT'), redaction(profiles.travel_date, 'PLAIN_TEXT'), redaction(profiles.traveler_type, 'PLAIN_TEXT'), redaction(profiles.address, 'PLAIN_TEXT'), 
@@ -46,7 +61,7 @@ export class BatchService{
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id `;
             if(org_id){
-                query+=`where profiles.org_id ='${org_id}'`
+                query+=`where profiles.org_id ='${org_id}' limit ${limit} offset ${offset}`
             }
             console.log("\n\n\n\n\n\n\n\n\n Query--->",query)
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
