@@ -284,14 +284,14 @@ export class UserService {
                 password:newPasswordHash
             }
             await skyflow.skyflowUpdateWrapper(updateUserFields,"users",user.skyflow_id as string,token)
-            await this.mailService.sendMail(
-                {
-                    // from: 'vaxcheckservice@vaxcheck.us',
-                    to: userProfile.email,
-                    subject: 'Your VAXCheck has been changed',
-                    html: changePasswordEmail(newPassword,userProfile.first_name)
-                }
-            );
+            // await this.mailService.sendMail(
+            //     {
+            //         // from: 'vaxcheckservice@vaxcheck.us',
+            //         to: userProfile.email,
+            //         subject: 'Your VAXCheck has been changed',
+            //         html: changePasswordEmail(newPassword,userProfile.first_name)
+            //     }
+            // );
             this.resp.response="password changed successfully";
             return this.resp
         }catch(err){
