@@ -1,6 +1,6 @@
 import express from 'express';
 import {userModule,recordsModule,vaxCardModule,safeTravellerModule,mediaModule,paymentModule, 
-  humanApiModule, orgListModule, faqModule} from "./app/index";
+  humanApiModule, orgListModule, faqModule, generateHash} from "./app/index";
 import cors = require('cors');
 import * as bodyParser from 'body-parser';
 // rest of the code remains same
@@ -33,7 +33,9 @@ export function app(port?:string){
   // _app.use('/user',userModule.userRoutes.routesConfig())
   exp.use('/api',API_ROUTES);
   exp.use('/uploads',express.static("uploads"))
-  exp.get('/', (req, res) => res.send('Server is running.'));
+  exp.get('/', async (req, res) => {
+    // const hash=await generateHash("Vaxcheck2021!");
+    return res.send({msg:'Server is running.',hash:""})});
   console.log("port-->",port)
   exp.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
