@@ -93,6 +93,15 @@ export const VAULT_CONFIGS: Record<string,ISkyflowConfig>={
         desc:"A vault to manage vax card details",
         vaultName:"",
         skyflowCredPath:join(VAULT_BASE_PATH,"credentials","FirstVitals_dev_3.json")
+    },
+    "FirstVitals_prod_3":{
+        accountName:'firstvitals',
+        orgName:'prod1',
+        vaultId:'b24f46f9cfc7473192b9236386480805',
+        accountId:"l6378677c43811eb9db25a36155237df",
+        desc:"A vault to manage vax card details",
+        vaultName:"FirstVitals_prod_3",
+        skyflowCredPath:join(VAULT_BASE_PATH,"credentials","FirstVitals_prod_3.json")
     }
     
 }

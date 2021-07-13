@@ -47,7 +47,7 @@ export class RecordsCtrl{
             console.log("diagnostic_reports-->",diagnostic_reports);
             console.log("media-->",media);
             let resp= await vaxCheckService.saveVaxProfile(profile,vaccination,diagnostic_reports,media)
-            vaxCheckService.sendInProcessEmail(profile.email_address!, profile.name.first_name);
+            // vaxCheckService.sendInProcessEmail(profile.email_address!, profile.name.first_name);
             if(resp.status && resp.status===422){
                 return res.status(422).send({msg:resp.msg})
             }

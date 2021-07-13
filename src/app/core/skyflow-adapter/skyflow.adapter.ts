@@ -103,7 +103,8 @@ export class Skyflow {
             const response = await axiosObj.default.post(url, data, this.httpConfig)
             return response.data
         } catch (err) {
-            console.log("err.response.data.error.message-->", err.response.data.error.message)
+           // console.log("err.response.data.error.message-->", err.response.data.error.message)
+            console.log("err.response.data-->", err.response.data)
             throw err.response.data.error
         }
 

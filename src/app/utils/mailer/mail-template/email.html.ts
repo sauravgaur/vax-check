@@ -116,25 +116,26 @@ export const loginOtpEmail = (otp: string, firstName: string) => {
             </tr>
             <tr>
                 <td style="padding-top: 16px;text-align: justify;text-justify: inter-word;">
-                    Hey ${firstName}<br/>
+                    Dear ${firstName}<br/>
                     <br/>
                    
-                Welcome to VAXCheck.us vaccination service.  
+                    Welcome to VAXCheck, a service of FirstVitals Health and Wellness who is providing the verification and certification of your CDC vaccination record for Fast.co.
                 </td>
             </tr>
             <tr>
                 <td style="text-align: justify;text-justify: inter-word;">
                     <br/>
-                    We are excited to have you onboard. 
+                    We are in receipt of your uploaded CDC vaccination card and if we have questions such as the name and location of your vaccination site, we will contact you via email.
                     <br/>
-                    You have been selected by your employer - Fast.Co for the vaccination verification and booster shot updates. 
+                    Upon certification, we will forward you instructions as to how you can access your digital health pass.
+If you have any questions concerning this service, please feel free to email us at vaxcheck@firstvitals.com.
 
                     <br/>
                     
                     <br/>
                     <br/>
-                    Your Dedicated Support Team @<br/>
-                    VAXcheck.us<br/>
+                    Best regards,<br/>
+                    Your dedicated VAXCheck support team!<br/>
                 </td>
             </tr>
             <tr>
