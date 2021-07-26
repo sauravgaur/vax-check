@@ -90,7 +90,7 @@ export class Skyflow {
         }
         const tokenURI = creds["tokenURI"]
         let resp = await axiosObj.default.post(tokenURI, body)
-        console.log("resp-->", JSON.stringify(resp.data))
+        // console.log("resp-->", JSON.stringify(resp.data))
         // console.log("accessToken-->", JSON.stringify(resp.data["accessToken"]))
         return { accessToken: resp.data["accessToken"], tokenType: resp.data["tokenType"] }
     }

@@ -100,8 +100,66 @@ export const vaccinationVerifiedEmail = (accessCode: string, firstName: string) 
     </body>
     </html>`
 }
-
 export const loginOtpEmail = (otp: string, firstName: string) => {
+    firstName=firstName[0].toUpperCase()+firstName.substr(1)
+    return `<!DOCTYPE html>
+    <html lang="en-US">
+    <body class="body"
+        style="background-color: #e1e3ed; padding-top:24px; margin:0 !important; display:block !important; -webkit-text-size-adjust:none">
+        <table style="margin: 24px auto;padding: 24px;background-color: #ffffff;border-radius: 12px;" width="500px"
+            border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="text-align: center">
+                    <img width="70" alt="" src="https://api-vaxcheck.firstvitals.com/public/logo-dark.png" />
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 16px;text-align: justify;text-justify: inter-word;">
+                    Hey ${firstName},<br/>
+                    <br/>
+                    Welcome back to VAXCheck. 
+                    <br/>
+                </td>
+            </tr>
+            <tr>
+           <td style='padding-top: 10px;'> Here is the login One Time Password (OTP):</td>
+            </tr>
+            <tr>
+                <td style="padding: 16px 0px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr style="background-color: #d9fcdf; color: #067a1b;">
+                            <td style="padding: 10px;border: 1px solid #69ef7f; border-radius: 4px;">
+                                <span>One Time Password: </span> <span style="padding-left: 10px;">${otp}</span>
+                            </td>
+                        </tr>
+                        <tr><td>
+                        Please use the above code on the VAXCheck Login to confirm your identity.
+                        </td></tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: justify;text-justify: inter-word;">
+                    <br/>
+                    For general information about VAXCheck, see the FAQs. If you have any other access questions, please feel free to contact us at: vaxcheck@firstvitals.com <br/>
+                    <br/>
+                    <br/>
+                    Your Dedicated Support Team @<br/>
+                    VAXcheck.us<br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br/>
+                    <br/>
+                    <small>Do not reply to this message. This mailbox is not monitored.</small>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>`
+}
+export const loginOtpEmail_old = (otp: string, firstName: string) => {
     firstName=firstName[0].toUpperCase()+firstName.substr(1)
     return `<!DOCTYPE html>
     <html lang="en-US">

@@ -19,7 +19,7 @@ export class SafeTravellerService{
             const name=middleName?`${firstName} ${middleName} ${lastName}`:`${firstName} ${lastName}`
             let query=`select profiles.skyflow_id, redaction(profiles.name, 'PLAIN_TEXT'),redaction(profiles.access_code, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT') from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id WHERE 
-            profiles.name->'first_name' = to_json('${firstName.toLowerCase()}'::text) AND profiles.name->'last_name' = to_json('${lastName.toLowerCase()}'::text) and profiles.date_of_birth='${dateOfBirth}' and profiles.access_code='${accessCode}`;
+            profiles.name->'first_name' = to_json('${firstName.toLowerCase()}'::text) AND profiles.name->'last_name' = to_json('${lastName.toLowerCase()}'::text) and profiles.date_of_birth='${dateOfBirth}' and profiles.access_code='${accessCode}'`;
             if(middleName){
                 query+=` and profiles.name->'middle_name' = to_json('${middleName.toLowerCase()}'::text)`
             }
@@ -35,11 +35,14 @@ export class SafeTravellerService{
                     vax_effective:record.fields.vax_effective
                 }
             })
-            if(resp.response && resp.response.length==0){
+            console.log("resp-->",resp)
+            if(resp.response && resp.response.records.length==0){
+                console.log("entre in if")
                 resp.response["accessStatus"]="NOT_VERIFIED";
                 resp.status= 403
             }
             else{
+                console.log("enter in else")
                 resp.response["accessStatus"]="VERIFIED";
             }
             // const query=`select * FROM patients`
