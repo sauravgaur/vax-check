@@ -218,7 +218,9 @@ export class RecordsCtrl{
     async allPatient(req: Request, res: Response){
         try{
             let batchService= new BatchService();
-            let {status,response}= await batchService.allPatient()
+            let limit=req.query.limit as string;
+            let offset=req.query.offset as string;
+            let {status,response}= await batchService.allPatient(null,limit,offset)
             return res.status(status).send(response)
             
         }catch(err){

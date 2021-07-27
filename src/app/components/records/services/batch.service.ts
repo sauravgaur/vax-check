@@ -38,9 +38,11 @@ export class BatchService{
         try{
             let skyFlow= new Skyflow(this.vaultConfig)
             let query=`select count(*) as numb 
-            from profiles 
-            where profiles.org_id ='${org_id}' `;
-            
+            from profiles`; 
+           
+            if(org_id!=="ALL"){
+                query+=` where profiles.org_id ='${org_id}' `;
+            }
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
             this.resp.response.records=this.resp.response.records.map((data:any)=>data.fields.numb)
             return this.resp;
@@ -48,7 +50,7 @@ export class BatchService{
             throw err
         }
     }
-    async allPatient(org_id?:string,limit?:string,offset?:string):Promise<IHTTPResponse>{
+    async allPatient(org_id?:string|null,limit?:string,offset?:string):Promise<IHTTPResponse>{
         try{
             let skyFlow= new Skyflow(this.vaultConfig)
             let query=`select redaction(vaccinations.profiles_skyflow_id, 'PLAIN_TEXT'),redaction(profiles.created_timestamp, 'PLAIN_TEXT') , redaction(profiles.name, 'PLAIN_TEXT'),redaction(vaccinations.expiration_date, 'PLAIN_TEXT'),redaction(vaccinations.effective_date, 'PLAIN_TEXT'), redaction(profiles.date_of_birth, 'PLAIN_TEXT'), redaction(profiles.age, 'PLAIN_TEXT') , redaction(vaccinations.site, 'PLAIN_TEXT'), redaction(profiles.travel_date, 'PLAIN_TEXT'), redaction(profiles.traveler_type, 'PLAIN_TEXT'), redaction(profiles.address, 'PLAIN_TEXT'), 
@@ -57,11 +59,15 @@ export class BatchService{
             redaction(profiles.emp_id, 'PLAIN_TEXT'), 
             redaction(profiles.work_location, 'PLAIN_TEXT'), 
             redaction(vaccinations.verification_status, 'PLAIN_TEXT'), 
+            redaction(vaccinations.created_timestamp, 'PLAIN_TEXT'),
             redaction(profiles.email_address, 'PLAIN_TEXT')
             from profiles 
             LEFT JOIN vaccinations ON profiles.skyflow_id=vaccinations.profiles_skyflow_id `;
             if(org_id){
                 query+=`where profiles.org_id ='${org_id}' order by profiles.emp_id limit ${limit} offset ${offset}`
+            }
+            if(!org_id && limit && offset){
+                query+=` order by profiles.emp_id limit ${limit} offset ${offset}`
             }
             console.log("\n\n\n\n\n\n\n\n\n Query--->",query)
             this.resp.response=await skyFlow.skyflowQueryWrapper(query)
