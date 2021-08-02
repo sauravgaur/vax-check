@@ -15,12 +15,13 @@
         "title": "Getting Started",
         "description": "",
         "extraLines": [
-            "1.) Preparation step - Take a picture of your CDC vaccination and save it on the device you plan on using to online fill vaccination related information.",
+            "1.) Login to the VAXCheck secure web portal to verify the information on your CDC vaccination card at <a target='_blank' href='https://vaxcheck.firstvitals.com/'>https://vaxcheck.firstvitals.com/</a>",
             "<br/>",
-            "2.) Visit <a target='_blank' href='https://vaxcheck.firstvitals.com/login'>https://vaxcheck.firstvitals.com/login</a> Enter the required fields including full name, email and corporate Pass ID - ",
+            "2.) Input your PERSONAL email as your email address.  The reason we used your email address is to allow you to access the digital health pass for your personal use.  If you want to change your email address, please let us know.",
             "<br/>",
-            "3.) Provide the vaccination information as asked on the web form ",
+            "3.) You will receive via email, a One-Time Password (OTP) to access your account information.",
             "<br/>",
+            "4.) Verify and if required, input or edit the vaccination information displayed.",
             "Video",
             "** Video Block **"
         ]
@@ -31,7 +32,7 @@
     },
     {
         "title": "What information is shown on the VAXCheck Health Pass?",
-        "description": "VAXCheck displays your name, effective date and expiration date of your verified CDC vaccination record.  No personal health information is revealed."
+        "description": "VAXCheck displays your name, effective date and expiration date of your verified CDC vaccination record. No personal health information is revealed."
     },
     {
         "title": "How does VAXCheck obtain verification of my COVID vaccination record?",
